@@ -1,0 +1,147 @@
+/* src/components/ui/button/button.module.css */
+
+/**
+ * File purpose:
+ * Styles the shared Button primitive for Asancha Admin.
+ *
+ * Security note:
+ * Visual disabled states do not replace backend authorization.
+ */
+
+.button {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--asancha-radius-md);
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background-color var(--asancha-transition-fast),
+    border-color var(--asancha-transition-fast),
+    color var(--asancha-transition-fast),
+    box-shadow var(--asancha-transition-fast),
+    transform var(--asancha-transition-fast);
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--asancha-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.button:not(:disabled):not(.disabled):active {
+  transform: translateY(1px);
+}
+
+.button:disabled,
+.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.primary {
+  background: var(--asancha-color-brand);
+  color: var(--asancha-color-brand-contrast);
+}
+
+.primary:hover {
+  background: var(--asancha-color-brand-hover);
+}
+
+.secondary {
+  border-color: var(--asancha-color-border);
+  background: var(--asancha-color-surface);
+  color: var(--asancha-color-text);
+}
+
+.secondary:hover {
+  background: var(--asancha-color-surface-muted);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--asancha-color-text-muted);
+}
+
+.ghost:hover {
+  background: var(--asancha-color-surface-muted);
+  color: var(--asancha-color-text);
+}
+
+.danger {
+  background: var(--asancha-color-danger);
+  color: #ffffff;
+}
+
+.danger:hover {
+  background: #991b1b;
+}
+
+.warning {
+  background: var(--asancha-color-warning);
+  color: #ffffff;
+}
+
+.warning:hover {
+  background: #92400e;
+}
+
+.success {
+  background: var(--asancha-color-success);
+  color: #ffffff;
+}
+
+.success:hover {
+  background: #065f46;
+}
+
+.sm {
+  min-height: 2rem;
+  padding: 0.45rem 0.75rem;
+  font-size: var(--asancha-font-size-sm);
+}
+
+.md {
+  min-height: 2.5rem;
+  padding: 0.65rem 1rem;
+  font-size: var(--asancha-font-size-sm);
+}
+
+.lg {
+  min-height: 3rem;
+  padding: 0.85rem 1.25rem;
+  font-size: var(--asancha-font-size-base);
+}
+
+.icon {
+  width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--asancha-radius-full);
+  animation: button-spin 700ms linear infinite;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

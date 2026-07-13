@@ -1,0 +1,55 @@
+/* src/components/ui/dropdown-menu/dropdown-menu.module.css */
+
+/**
+ * File purpose:
+ * Styles the shared DropdownMenu primitive for Asancha Admin.
+ */
+
+.root {
+  position: relative;
+  display: inline-block;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  z-index: var(--asancha-z-dropdown);
+  min-width: 12rem;
+  overflow: hidden;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface);
+  box-shadow: var(--asancha-shadow-lg);
+  padding: 0.35rem;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.item {
+  width: 100%;
+  border: 0;
+  border-radius: var(--asancha-radius-md);
+  background: transparent;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+}
+
+.item:hover {
+  background: var(--asancha-color-surface-muted);
+}
+
+.item:disabled {
+  opacity: 0.5;
+}
+
+.danger {
+  color: var(--asancha-color-danger);
+}

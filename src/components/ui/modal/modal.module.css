@@ -1,0 +1,14 @@
+/* src/components/ui/modal/modal.module.css */
+
+/**
+ * File purpose:
+ * Reserved module stylesheet for the Modal wrapper.
+ *
+ * Role in the project:
+ * Modal currently delegates to Dialog styles. Keep this file so the project
+ * structure remains stable when modal-specific styling is needed.
+ */
+
+.modalRoot {
+  display: contents;
+}

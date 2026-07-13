@@ -1,0 +1,191 @@
+/* src/styles/admin-layout.css */
+
+/**
+ * File purpose:
+ * Defines shared admin layout primitives for the Asancha Admin frontend.
+ *
+ * Role in the project:
+ * This file provides reusable classes for admin shell, page containers, sidebar
+ * offsets, sticky headers, dense content areas, panels, grids, and responsive
+ * layout behaviour.
+ *
+ * Business relevance:
+ * asancha-admin is a serious internal operations frontend. Layout must support
+ * role dashboards, review queues, users, staff, payments, documents,
+ * verification reviews, bookings, messages, API access, AI, audit logs, and
+ * settings without mixing public-user routes into the admin app.
+ *
+ * Security note:
+ * Layout classes do not protect routes or data. Backend permission checks and
+ * frontend guards remain required for protected admin screens.
+ */
+
+.asancha-admin-root {
+  min-height: 100vh;
+  background: var(--asancha-color-page);
+  color: var(--asancha-color-text);
+}
+
+.asancha-admin-shell {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: var(--asancha-admin-sidebar-width) minmax(0, 1fr);
+  background: var(--asancha-color-page);
+}
+
+.asancha-admin-shell[data-sidebar-collapsed='true'] {
+  grid-template-columns: var(--asancha-admin-sidebar-collapsed-width) minmax(0, 1fr);
+}
+
+.asancha-admin-main {
+  min-width: 0;
+  padding-top: var(--asancha-admin-top-bar-height);
+}
+
+.asancha-admin-content {
+  width: 100%;
+  max-width: var(--asancha-admin-content-max-width);
+  margin-inline: auto;
+  padding: var(--asancha-space-6);
+}
+
+.asancha-page-shell {
+  display: flex;
+  min-height: calc(100vh - var(--asancha-admin-top-bar-height));
+  flex-direction: column;
+  gap: var(--asancha-space-6);
+}
+
+.asancha-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--asancha-space-4);
+}
+
+.asancha-page-header-main {
+  display: grid;
+  gap: var(--asancha-space-2);
+}
+
+.asancha-page-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--asancha-space-3);
+}
+
+.asancha-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--asancha-space-4);
+}
+
+.asancha-dashboard-card {
+  grid-column: span 3 / span 3;
+}
+
+.asancha-dashboard-card-wide {
+  grid-column: span 6 / span 6;
+}
+
+.asancha-dashboard-card-full {
+  grid-column: 1 / -1;
+}
+
+.asancha-panel {
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  box-shadow: var(--asancha-shadow-sm);
+}
+
+.asancha-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--asancha-space-4);
+  border-bottom: 1px solid var(--asancha-color-border-muted);
+  padding: var(--asancha-space-5);
+}
+
+.asancha-panel-body {
+  padding: var(--asancha-space-5);
+}
+
+.asancha-panel-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--asancha-space-3);
+  border-top: 1px solid var(--asancha-color-border-muted);
+  padding: var(--asancha-space-5);
+}
+
+.asancha-table-region {
+  overflow: hidden;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.asancha-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.asancha-sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: var(--asancha-z-sticky);
+}
+
+.asancha-sticky-below-top-bar {
+  position: sticky;
+  top: var(--asancha-admin-top-bar-height);
+  z-index: var(--asancha-z-sticky);
+}
+
+@media (max-width: 1023px) {
+  .asancha-admin-shell,
+  .asancha-admin-shell[data-sidebar-collapsed='true'] {
+    display: block;
+  }
+
+  .asancha-admin-main {
+    padding-top: var(--asancha-admin-mobile-top-bar-height);
+  }
+
+  .asancha-admin-content {
+    padding: var(--asancha-space-4);
+  }
+
+  .asancha-page-shell {
+    min-height: calc(100vh - var(--asancha-admin-mobile-top-bar-height));
+    gap: var(--asancha-space-4);
+  }
+
+  .asancha-page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .asancha-page-header-actions {
+    justify-content: flex-start;
+  }
+
+  .asancha-dashboard-card,
+  .asancha-dashboard-card-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .asancha-dashboard-card {
+    grid-column: span 6 / span 6;
+  }
+
+  .asancha-dashboard-card-wide {
+    grid-column: 1 / -1;
+  }
+}

@@ -1,0 +1,91 @@
+/* src/components/layout/page-shell/page-shell.module.css */
+
+/**
+ * File purpose:
+ * Styles the reusable page shell for Asancha Admin screens.
+ */
+
+.shell {
+  display: grid;
+  width: 100%;
+  max-width: var(--asancha-admin-content-max-width);
+  gap: 1.25rem;
+  margin-inline: auto;
+  padding: 1.5rem;
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-sm);
+  list-style: none;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  content: '/';
+  margin-left: 0.4rem;
+  color: var(--asancha-color-border-strong);
+}
+
+.breadcrumbs a {
+  color: var(--asancha-color-text-muted);
+  font-weight: 650;
+}
+
+.breadcrumbs a:hover {
+  color: var(--asancha-color-brand);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.heading {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.title {
+  color: var(--asancha-color-text);
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.description {
+  max-width: 64rem;
+  color: var(--asancha-color-text-muted);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.content {
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .shell {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+}

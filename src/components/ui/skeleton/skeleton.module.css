@@ -1,0 +1,39 @@
+/* src/components/ui/skeleton/skeleton.module.css */
+
+/**
+ * File purpose:
+ * Styles the shared Skeleton primitive for Asancha Admin.
+ */
+
+.skeleton {
+  min-height: 1rem;
+  border-radius: var(--asancha-radius-md);
+  background: var(--asancha-color-neutral-muted);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  transform: translateX(-100%);
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.45),
+      transparent
+    );
+  animation: skeleton-shimmer 1.4s infinite;
+}
+
+.rounded {
+  border-radius: var(--asancha-radius-full);
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

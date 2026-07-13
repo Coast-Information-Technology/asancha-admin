@@ -1,0 +1,54 @@
+/* src/components/ui/table/table.module.css */
+
+/**
+ * File purpose:
+ * Styles shared semantic table primitives for Asancha Admin.
+ */
+
+.wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+}
+
+.header {
+  background: var(--asancha-color-surface-muted);
+}
+
+.head {
+  border-bottom: 1px solid var(--asancha-color-border);
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.row {
+  border-bottom: 1px solid var(--asancha-color-border-muted);
+}
+
+.body .row:hover {
+  background: var(--asancha-color-surface-muted);
+}
+
+.cell {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  padding: 0.9rem 1rem;
+  vertical-align: top;
+}
+
+.footer {
+  background: var(--asancha-color-surface-muted);
+}

@@ -1,0 +1,81 @@
+/* src/components/ui/dialog/dialog.module.css */
+
+/**
+ * File purpose:
+ * Styles the shared Dialog primitive for Asancha Admin.
+ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--asancha-z-modal);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(15 23 42 / 0.62);
+}
+
+.dialog {
+  position: relative;
+  width: min(100%, 36rem);
+  max-height: min(90vh, 48rem);
+  overflow: hidden;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  box-shadow: var(--asancha-shadow-lg);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--asancha-color-border-muted);
+  padding: 1.25rem;
+}
+
+.title {
+  font-size: var(--asancha-font-size-xl);
+}
+
+.description {
+  margin-top: 0.35rem;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+}
+
+.closeButton {
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: var(--asancha-radius-md);
+  background: transparent;
+  color: var(--asancha-color-text-muted);
+  font-size: 1.5rem;
+}
+
+.closeButton:hover {
+  background: var(--asancha-color-surface-muted);
+  color: var(--asancha-color-text);
+}
+
+.body {
+  max-height: 60vh;
+  overflow: auto;
+  padding: 1.25rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid var(--asancha-color-border-muted);
+  padding: 1rem 1.25rem;
+}

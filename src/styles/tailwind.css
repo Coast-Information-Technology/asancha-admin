@@ -1,0 +1,62 @@
+/* src/styles/tailwind.css */
+
+/**
+ * File purpose:
+ * Tailwind CSS layer entry file for the Asancha Admin frontend.
+ *
+ * Role in the project:
+ * This file loads Tailwind base, component, and utility layers. Project-level
+ * admin styling is kept in variables.css, typography.css, admin-layout.css, and
+ * utilities.css to keep global Tailwind usage predictable.
+ *
+ * Business relevance:
+ * Tailwind is used for layout, spacing, grid, flex, responsive behaviour,
+ * common utilities, and simple visual states across admin screens.
+ *
+ * Security note:
+ * Tailwind classes and visual states must never be treated as permission or
+ * data-security enforcement.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+}
+
+@layer components {
+  .asancha-focus-card {
+    border: 1px solid var(--asancha-color-border);
+    border-radius: var(--asancha-radius-xl);
+    background: var(--asancha-color-surface);
+    box-shadow: var(--asancha-shadow-sm);
+  }
+
+  .asancha-muted-panel {
+    border: 1px solid var(--asancha-color-border-muted);
+    border-radius: var(--asancha-radius-lg);
+    background: var(--asancha-color-surface-muted);
+  }
+}
+
+@layer utilities {
+  .asancha-text-balance {
+    text-wrap: balance;
+  }
+
+  .asancha-text-pretty {
+    text-wrap: pretty;
+  }
+
+  .asancha-scrollbar-stable {
+    scrollbar-gutter: stable;
+  }
+}

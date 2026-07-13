@@ -1,0 +1,42 @@
+/* src/components/ui/card/card.module.css */
+
+/**
+ * File purpose:
+ * Styles shared Card primitives for Asancha Admin.
+ */
+
+.card {
+  overflow: hidden;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  box-shadow: var(--asancha-shadow-sm);
+}
+
+.header {
+  display: grid;
+  gap: 0.35rem;
+  border-bottom: 1px solid var(--asancha-color-border-muted);
+  padding: 1.25rem;
+}
+
+.title {
+  font-size: var(--asancha-font-size-lg);
+}
+
+.description {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+}
+
+.content {
+  padding: 1.25rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid var(--asancha-color-border-muted);
+  padding: 1rem 1.25rem;
+}

@@ -1,0 +1,241 @@
+/* src/styles/utilities.css */
+
+/**
+ * File purpose:
+ * Defines reusable utility classes for the Asancha Admin frontend.
+ *
+ * Role in the project:
+ * This file contains shared accessibility, layout, state, badge, status, and
+ * interaction utilities that are reused by components and feature screens.
+ *
+ * Business relevance:
+ * Admin UI must be accessible, clear, and safe for operational staff. Utilities
+ * support keyboard navigation, screen-reader content, status display, loading
+ * states, redaction display, and dense data presentation.
+ *
+ * Security note:
+ * Utility classes are visual helpers only. Sensitive values must be redacted in
+ * data and component logic before rendering.
+ */
+
+.asancha-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.asancha-not-sr-only {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  padding: initial;
+  margin: initial;
+  clip: auto;
+  white-space: normal;
+}
+
+.asancha-skip-link {
+  position: fixed;
+  top: var(--asancha-space-4);
+  left: var(--asancha-space-4);
+  z-index: var(--asancha-z-toast);
+  transform: translateY(-150%);
+  border-radius: var(--asancha-radius-md);
+  background: var(--asancha-color-brand);
+  color: var(--asancha-color-brand-contrast);
+  font-weight: 700;
+  padding: var(--asancha-space-3) var(--asancha-space-4);
+  transition: transform var(--asancha-transition-base);
+}
+
+.asancha-skip-link:focus {
+  transform: translateY(0);
+}
+
+.asancha-card-grid {
+  display: grid;
+  gap: var(--asancha-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+.asancha-stack-xs {
+  display: grid;
+  gap: var(--asancha-space-1);
+}
+
+.asancha-stack-sm {
+  display: grid;
+  gap: var(--asancha-space-2);
+}
+
+.asancha-stack-md {
+  display: grid;
+  gap: var(--asancha-space-4);
+}
+
+.asancha-stack-lg {
+  display: grid;
+  gap: var(--asancha-space-6);
+}
+
+.asancha-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--asancha-space-2);
+}
+
+.asancha-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--asancha-space-3);
+}
+
+.asancha-cluster-between {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--asancha-space-3);
+}
+
+.asancha-divider {
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--asancha-color-border-muted);
+}
+
+.asancha-muted {
+  color: var(--asancha-color-text-muted);
+}
+
+.asancha-subtle {
+  color: var(--asancha-color-text-subtle);
+}
+
+.asancha-redacted {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--asancha-radius-sm);
+  background: var(--asancha-color-neutral-muted);
+  color: var(--asancha-color-text-muted);
+  font-family: var(--asancha-font-mono);
+  font-size: var(--asancha-font-size-sm);
+  letter-spacing: 0.08em;
+  padding: 0.1rem 0.35rem;
+}
+
+.asancha-status {
+  display: inline-flex;
+  min-height: 1.625rem;
+  align-items: center;
+  gap: var(--asancha-space-1);
+  border: 1px solid transparent;
+  border-radius: var(--asancha-radius-full);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.25rem 0.625rem;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.asancha-status-neutral {
+  border-color: var(--asancha-color-neutral-border);
+  background: var(--asancha-color-neutral-muted);
+  color: var(--asancha-color-neutral);
+}
+
+.asancha-status-info {
+  border-color: var(--asancha-color-info-border);
+  background: var(--asancha-color-info-muted);
+  color: var(--asancha-color-info);
+}
+
+.asancha-status-success {
+  border-color: var(--asancha-color-success-border);
+  background: var(--asancha-color-success-muted);
+  color: var(--asancha-color-success);
+}
+
+.asancha-status-warning {
+  border-color: var(--asancha-color-warning-border);
+  background: var(--asancha-color-warning-muted);
+  color: var(--asancha-color-warning);
+}
+
+.asancha-status-danger {
+  border-color: var(--asancha-color-danger-border);
+  background: var(--asancha-color-danger-muted);
+  color: var(--asancha-color-danger);
+}
+
+.asancha-loading-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: var(--asancha-color-neutral-muted);
+}
+
+.asancha-loading-shimmer::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  transform: translateX(-100%);
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.45),
+      transparent
+    );
+  animation: asancha-shimmer 1.4s infinite;
+}
+
+.asancha-disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.asancha-clickable {
+  cursor: pointer;
+  transition:
+    background-color var(--asancha-transition-fast),
+    border-color var(--asancha-transition-fast),
+    color var(--asancha-transition-fast),
+    box-shadow var(--asancha-transition-fast);
+}
+
+.asancha-clickable:hover {
+  background: var(--asancha-color-surface-muted);
+}
+
+.asancha-danger-zone {
+  border: 1px solid var(--asancha-color-danger-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-danger-muted);
+}
+
+@keyframes asancha-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

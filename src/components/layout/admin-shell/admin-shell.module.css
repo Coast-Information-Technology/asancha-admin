@@ -1,0 +1,45 @@
+/* src/components/layout/admin-shell/admin-shell.module.css */
+
+/**
+ * File purpose:
+ * Styles the authenticated admin shell frame for Asancha Admin.
+ *
+ * Security note:
+ * Layout visibility does not replace backend authorization or route guards.
+ */
+
+.root {
+  min-height: 100vh;
+  background: var(--asancha-color-page);
+  color: var(--asancha-color-text);
+}
+
+.desktopSidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: var(--asancha-z-sticky);
+  width: var(--asancha-admin-sidebar-width);
+}
+
+.main {
+  min-height: 100vh;
+  padding-top: var(--asancha-admin-top-bar-height);
+  padding-left: var(--asancha-admin-sidebar-width);
+  transition: padding-left var(--asancha-transition-base);
+}
+
+.main[data-sidebar-collapsed='true'] {
+  padding-left: var(--asancha-admin-sidebar-collapsed-width);
+}
+
+@media (max-width: 1023px) {
+  .desktopSidebar {
+    display: none;
+  }
+
+  .main,
+  .main[data-sidebar-collapsed='true'] {
+    padding-top: var(--asancha-admin-mobile-top-bar-height);
+    padding-left: 0;
+  }
+}

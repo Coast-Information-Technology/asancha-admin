@@ -1,0 +1,46 @@
+/* src/components/ui/tabs/tabs.module.css */
+
+/**
+ * File purpose:
+ * Styles shared Tabs primitives for Asancha Admin.
+ */
+
+.root {
+  display: grid;
+  gap: 1rem;
+}
+
+.list {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--asancha-color-border);
+}
+
+.tab {
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 800;
+  padding: 0.85rem 1rem;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--asancha-color-text);
+}
+
+.active {
+  border-bottom-color: var(--asancha-color-brand);
+  color: var(--asancha-color-brand);
+}
+
+.tab:disabled {
+  opacity: 0.5;
+}
+
+.panel {
+  min-width: 0;
+}

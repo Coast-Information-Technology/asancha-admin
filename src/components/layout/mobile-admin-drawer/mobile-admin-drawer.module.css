@@ -1,0 +1,42 @@
+/* src/components/layout/mobile-admin-drawer/mobile-admin-drawer.module.css */
+
+/**
+ * File purpose:
+ * Styles the mobile drawer navigation for Asancha Admin.
+ */
+
+.nav {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.link {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: var(--asancha-radius-md);
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 750;
+  padding: 0.65rem 0.75rem;
+  text-decoration: none;
+}
+
+.link:hover,
+.link[data-active='true'] {
+  background: var(--asancha-color-brand-muted);
+  color: var(--asancha-color-brand);
+}
+
+.iconBox {
+  display: grid;
+  width: 1.85rem;
+  height: 1.85rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: var(--asancha-radius-md);
+  background: var(--asancha-color-surface-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 900;
+}

@@ -1,0 +1,31 @@
+/* src/components/ui/data-table/data-table.module.css */
+
+/**
+ * File purpose:
+ * Styles the shared DataTable primitive for Asancha Admin.
+ */
+
+.state {
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  color: var(--asancha-color-text-muted);
+  padding: 2rem;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .hideOnMobile {
+    display: none;
+  }
+}

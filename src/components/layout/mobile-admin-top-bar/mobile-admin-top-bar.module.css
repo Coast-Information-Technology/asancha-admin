@@ -1,0 +1,87 @@
+/* src/components/layout/mobile-admin-top-bar/mobile-admin-top-bar.module.css */
+
+/**
+ * File purpose:
+ * Styles the mobile top bar for Asancha Admin.
+ */
+
+.topBar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--asancha-z-sticky);
+  display: none;
+  height: var(--asancha-admin-mobile-top-bar-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  background: color-mix(in srgb, var(--asancha-color-surface) 94%, transparent);
+  padding: 0 0.85rem;
+  backdrop-filter: blur(14px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 850;
+}
+
+.brandMark {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: var(--asancha-radius-md);
+  background: var(--asancha-color-brand);
+  color: var(--asancha-color-brand-contrast);
+}
+
+.shortcuts {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.shortcut,
+.menuButton {
+  position: relative;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-full);
+  background: var(--asancha-color-surface);
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 800;
+  padding: 0.45rem 0.6rem;
+  text-decoration: none;
+}
+
+.menuButton {
+  color: var(--asancha-color-brand);
+}
+
+.badge {
+  position: absolute;
+  top: -0.35rem;
+  right: -0.25rem;
+  display: grid;
+  min-width: 1rem;
+  height: 1rem;
+  place-items: center;
+  border-radius: var(--asancha-radius-full);
+  background: var(--asancha-color-danger);
+  color: #ffffff;
+  font-size: 0.6rem;
+}
+
+@media (max-width: 1023px) {
+  .topBar {
+    display: flex;
+  }
+}
+
+@media (max-width: 520px) {
+  .shortcut {
+    display: none;
+  }
+}

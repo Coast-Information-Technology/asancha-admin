@@ -1,0 +1,55 @@
+/* src/components/ui/badge/badge.module.css */
+
+/**
+ * File purpose:
+ * Styles the shared Badge primitive for Asancha Admin.
+ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid transparent;
+  border-radius: var(--asancha-radius-full);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 800;
+  line-height: 1;
+  padding: 0.25rem 0.6rem;
+  white-space: nowrap;
+}
+
+.neutral {
+  border-color: var(--asancha-color-neutral-border);
+  background: var(--asancha-color-neutral-muted);
+  color: var(--asancha-color-neutral);
+}
+
+.info {
+  border-color: var(--asancha-color-info-border);
+  background: var(--asancha-color-info-muted);
+  color: var(--asancha-color-info);
+}
+
+.success {
+  border-color: var(--asancha-color-success-border);
+  background: var(--asancha-color-success-muted);
+  color: var(--asancha-color-success);
+}
+
+.warning {
+  border-color: var(--asancha-color-warning-border);
+  background: var(--asancha-color-warning-muted);
+  color: var(--asancha-color-warning);
+}
+
+.danger {
+  border-color: var(--asancha-color-danger-border);
+  background: var(--asancha-color-danger-muted);
+  color: var(--asancha-color-danger);
+}
+
+.muted {
+  border-color: var(--asancha-color-border-muted);
+  background: var(--asancha-color-surface-muted);
+  color: var(--asancha-color-text-subtle);
+}

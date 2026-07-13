@@ -1,0 +1,111 @@
+/* src/components/auth/auth.module.css */
+
+/**
+ * File purpose:
+ * Styles shared auth components for the Asancha Admin frontend.
+ *
+ * Role in the project:
+ * This stylesheet supports staff sign-in, forgot password, reset password, and
+ * invited staff set-password forms.
+ *
+ * Business relevance:
+ * Auth screens must communicate that this is a staff-only admin frontend and
+ * must not resemble public signup/onboarding flows.
+ *
+ * Security note:
+ * Styling does not enforce authentication, authorization, staff role checks,
+ * account status checks, lockout, rate limiting, or audit logging.
+ */
+
+.form {
+  display: grid;
+  width: min(100%, 28rem);
+  gap: 1.25rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-2xl);
+  background: var(--asancha-color-surface);
+  box-shadow: var(--asancha-shadow-lg);
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.formHeader {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.title {
+  color: var(--asancha-color-text);
+  font-size: clamp(1.65rem, 3vw, 2rem);
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  line-height: var(--asancha-line-height-tight);
+}
+
+.description {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.fields {
+  display: grid;
+  gap: 1rem;
+}
+
+.formRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.inlineLink {
+  color: var(--asancha-color-brand);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.inlineLink:hover {
+  color: var(--asancha-color-brand-hover);
+  text-decoration: underline;
+}
+
+.errorBanner,
+.successBanner {
+  border-radius: var(--asancha-radius-lg);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 650;
+  line-height: var(--asancha-line-height-base);
+  padding: 0.85rem 1rem;
+}
+
+.errorBanner {
+  border: 1px solid var(--asancha-color-danger-border);
+  background: var(--asancha-color-danger-muted);
+  color: var(--asancha-color-danger);
+}
+
+.successBanner {
+  border: 1px solid var(--asancha-color-success-border);
+  background: var(--asancha-color-success-muted);
+  color: var(--asancha-color-success);
+}
+
+.footerNote {
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .form {
+    border-radius: var(--asancha-radius-xl);
+    padding: 1rem;
+  }
+
+  .formRow {
+    flex-direction: column;
+  }
+}

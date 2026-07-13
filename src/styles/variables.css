@@ -1,0 +1,183 @@
+/* src/styles/variables.css */
+
+/**
+ * File purpose:
+ * Defines global design tokens for the Asancha Admin frontend.
+ *
+ * Role in the project:
+ * This file centralises colours, typography, spacing, radius, shadows, z-index,
+ * layout dimensions, and status tones used across the internal admin UI.
+ *
+ * Business relevance:
+ * Admin screens need calm, consistent, accessible visual hierarchy for review
+ * queues, operational dashboards, tables, payments, verification, documents,
+ * messages, notifications, API access, audit logs, and settings.
+ *
+ * Security note:
+ * Design tokens are visual only. Colour, opacity, or hidden states must not be
+ * used as security boundaries.
+ */
+
+:root {
+  --asancha-font-sans:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  --asancha-font-mono:
+    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+  --asancha-font-size-xs: 0.75rem;
+  --asancha-font-size-sm: 0.875rem;
+  --asancha-font-size-base: 1rem;
+  --asancha-font-size-lg: 1.125rem;
+  --asancha-font-size-xl: 1.25rem;
+  --asancha-font-size-2xl: 1.5rem;
+  --asancha-font-size-3xl: 1.875rem;
+
+  --asancha-line-height-tight: 1.2;
+  --asancha-line-height-snug: 1.35;
+  --asancha-line-height-base: 1.5;
+  --asancha-line-height-relaxed: 1.7;
+
+  --asancha-color-page: #f6f8fb;
+  --asancha-color-surface: #ffffff;
+  --asancha-color-surface-muted: #f8fafc;
+  --asancha-color-surface-raised: #ffffff;
+  --asancha-color-surface-inverse: #0f172a;
+
+  --asancha-color-text: #0f172a;
+  --asancha-color-text-muted: #475569;
+  --asancha-color-text-subtle: #64748b;
+  --asancha-color-text-inverse: #ffffff;
+
+  --asancha-color-border: #dbe3ee;
+  --asancha-color-border-muted: #e7edf5;
+  --asancha-color-border-strong: #b8c4d4;
+
+  --asancha-color-brand: #1e3a8a;
+  --asancha-color-brand-hover: #1d4ed8;
+  --asancha-color-brand-muted: #dbeafe;
+  --asancha-color-brand-contrast: #ffffff;
+
+  --asancha-color-accent: #b7791f;
+  --asancha-color-accent-hover: #92400e;
+  --asancha-color-accent-muted: #fef3c7;
+  --asancha-color-accent-contrast: #111827;
+
+  --asancha-color-success: #047857;
+  --asancha-color-success-muted: #d1fae5;
+  --asancha-color-success-border: #86efac;
+
+  --asancha-color-info: #0369a1;
+  --asancha-color-info-muted: #e0f2fe;
+  --asancha-color-info-border: #7dd3fc;
+
+  --asancha-color-warning: #b45309;
+  --asancha-color-warning-muted: #fef3c7;
+  --asancha-color-warning-border: #fcd34d;
+
+  --asancha-color-danger: #b91c1c;
+  --asancha-color-danger-muted: #fee2e2;
+  --asancha-color-danger-border: #fca5a5;
+
+  --asancha-color-neutral: #334155;
+  --asancha-color-neutral-muted: #e2e8f0;
+  --asancha-color-neutral-border: #cbd5e1;
+
+  --asancha-color-focus-ring: #2563eb;
+  --asancha-color-selection-bg: #1e3a8a;
+  --asancha-color-selection-text: #ffffff;
+
+  --asancha-shadow-xs: 0 1px 2px rgb(15 23 42 / 0.06);
+  --asancha-shadow-sm: 0 1px 3px rgb(15 23 42 / 0.1), 0 1px 2px rgb(15 23 42 / 0.06);
+  --asancha-shadow-md:
+    0 10px 15px -3px rgb(15 23 42 / 0.1),
+    0 4px 6px -4px rgb(15 23 42 / 0.1);
+  --asancha-shadow-lg:
+    0 20px 25px -5px rgb(15 23 42 / 0.12),
+    0 8px 10px -6px rgb(15 23 42 / 0.1);
+
+  --asancha-radius-sm: 0.375rem;
+  --asancha-radius-md: 0.5rem;
+  --asancha-radius-lg: 0.75rem;
+  --asancha-radius-xl: 1rem;
+  --asancha-radius-2xl: 1.25rem;
+  --asancha-radius-full: 9999px;
+
+  --asancha-space-1: 0.25rem;
+  --asancha-space-2: 0.5rem;
+  --asancha-space-3: 0.75rem;
+  --asancha-space-4: 1rem;
+  --asancha-space-5: 1.25rem;
+  --asancha-space-6: 1.5rem;
+  --asancha-space-8: 2rem;
+  --asancha-space-10: 2.5rem;
+  --asancha-space-12: 3rem;
+
+  --asancha-admin-sidebar-width: 17.5rem;
+  --asancha-admin-sidebar-collapsed-width: 5rem;
+  --asancha-admin-top-bar-height: 4rem;
+  --asancha-admin-mobile-top-bar-height: 3.75rem;
+  --asancha-admin-content-max-width: 96rem;
+
+  --asancha-z-base: 1;
+  --asancha-z-dropdown: 20;
+  --asancha-z-sticky: 30;
+  --asancha-z-drawer: 40;
+  --asancha-z-modal: 50;
+  --asancha-z-toast: 60;
+
+  --asancha-transition-fast: 120ms ease;
+  --asancha-transition-base: 180ms ease;
+  --asancha-transition-slow: 260ms ease;
+}
+
+.dark {
+  --asancha-color-page: #020617;
+  --asancha-color-surface: #0f172a;
+  --asancha-color-surface-muted: #111827;
+  --asancha-color-surface-raised: #1e293b;
+  --asancha-color-surface-inverse: #f8fafc;
+
+  --asancha-color-text: #f8fafc;
+  --asancha-color-text-muted: #cbd5e1;
+  --asancha-color-text-subtle: #94a3b8;
+  --asancha-color-text-inverse: #0f172a;
+
+  --asancha-color-border: #263244;
+  --asancha-color-border-muted: #1e293b;
+  --asancha-color-border-strong: #475569;
+
+  --asancha-color-brand: #60a5fa;
+  --asancha-color-brand-hover: #93c5fd;
+  --asancha-color-brand-muted: #172554;
+  --asancha-color-brand-contrast: #020617;
+
+  --asancha-color-accent: #fbbf24;
+  --asancha-color-accent-hover: #f59e0b;
+  --asancha-color-accent-muted: #422006;
+  --asancha-color-accent-contrast: #020617;
+
+  --asancha-color-success: #34d399;
+  --asancha-color-success-muted: #064e3b;
+  --asancha-color-success-border: #047857;
+
+  --asancha-color-info: #38bdf8;
+  --asancha-color-info-muted: #082f49;
+  --asancha-color-info-border: #0369a1;
+
+  --asancha-color-warning: #fbbf24;
+  --asancha-color-warning-muted: #451a03;
+  --asancha-color-warning-border: #b45309;
+
+  --asancha-color-danger: #f87171;
+  --asancha-color-danger-muted: #450a0a;
+  --asancha-color-danger-border: #b91c1c;
+
+  --asancha-color-neutral: #cbd5e1;
+  --asancha-color-neutral-muted: #1e293b;
+  --asancha-color-neutral-border: #475569;
+
+  --asancha-color-focus-ring: #60a5fa;
+  --asancha-color-selection-bg: #60a5fa;
+  --asancha-color-selection-text: #020617;
+}

@@ -1,0 +1,136 @@
+/* src/styles/typography.css */
+
+/**
+ * File purpose:
+ * Defines typography defaults and reusable text classes for the Asancha Admin
+ * frontend.
+ *
+ * Role in the project:
+ * This file provides accessible text hierarchy for dashboards, forms, tables,
+ * review queues, detail pages, modals, drawers, empty states, and audit views.
+ *
+ * Business relevance:
+ * Admin users need fast, readable, unambiguous text while reviewing sensitive
+ * operational records and support workflows.
+ *
+ * Security note:
+ * Typography does not enforce authorization. Sensitive content must be
+ * protected and redacted before it reaches the UI.
+ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-weight: 700;
+  line-height: var(--asancha-line-height-tight);
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(1.875rem, 3vw, 2.5rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.3vw, 2rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+}
+
+h4 {
+  font-size: 1.125rem;
+}
+
+h5,
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  margin: 0;
+}
+
+small {
+  font-size: var(--asancha-font-size-sm);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--asancha-font-mono);
+}
+
+pre {
+  overflow-x: auto;
+}
+
+.asancha-page-title {
+  color: var(--asancha-color-text);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 750;
+  line-height: var(--asancha-line-height-tight);
+  letter-spacing: -0.03em;
+}
+
+.asancha-page-description {
+  max-width: 64rem;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-base);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.asancha-section-title {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-xl);
+  font-weight: 700;
+  line-height: var(--asancha-line-height-snug);
+}
+
+.asancha-section-description {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.asancha-label {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 650;
+  line-height: var(--asancha-line-height-snug);
+}
+
+.asancha-helper-text {
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-base);
+}
+
+.asancha-error-text {
+  color: var(--asancha-color-danger);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 600;
+  line-height: var(--asancha-line-height-base);
+}
+
+.asancha-mono {
+  font-family: var(--asancha-font-mono);
+  font-size: 0.95em;
+}
+
+.asancha-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.asancha-break-word {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}

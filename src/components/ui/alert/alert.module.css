@@ -1,0 +1,54 @@
+/* src/components/ui/alert/alert.module.css */
+
+/**
+ * File purpose:
+ * Styles the shared Alert primitive for Asancha Admin.
+ */
+
+.alert {
+  border: 1px solid transparent;
+  border-radius: var(--asancha-radius-lg);
+  padding: 1rem;
+}
+
+.title {
+  display: block;
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 800;
+}
+
+.body {
+  margin-top: 0.35rem;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+}
+
+.info {
+  border-color: var(--asancha-color-info-border);
+  background: var(--asancha-color-info-muted);
+  color: var(--asancha-color-info);
+}
+
+.success {
+  border-color: var(--asancha-color-success-border);
+  background: var(--asancha-color-success-muted);
+  color: var(--asancha-color-success);
+}
+
+.warning {
+  border-color: var(--asancha-color-warning-border);
+  background: var(--asancha-color-warning-muted);
+  color: var(--asancha-color-warning);
+}
+
+.danger {
+  border-color: var(--asancha-color-danger-border);
+  background: var(--asancha-color-danger-muted);
+  color: var(--asancha-color-danger);
+}
+
+.neutral {
+  border-color: var(--asancha-color-neutral-border);
+  background: var(--asancha-color-neutral-muted);
+  color: var(--asancha-color-neutral);
+}

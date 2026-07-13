@@ -1,0 +1,138 @@
+/*
+ * src/components/dashboard/dashboard.module.css
+ *
+ * File purpose:
+ * Provides CSS Module styles for Asancha Admin dashboard reusable components.
+ *
+ * Role in the project:
+ * These classes support dashboard cards, review queue summaries, staff activity
+ * summaries, operational alerts, and customer care support summaries.
+ *
+ * Business relevance:
+ * Dashboards must present role-specific operational information clearly without
+ * making status indicators depend on colour alone.
+ *
+ * Security note:
+ * Styles do not enforce permissions. Backend permissions and route guards remain
+ * final.
+ */
+
+.card {
+  height: 100%;
+}
+
+.cardBody {
+  display: grid;
+  gap: 1rem;
+}
+
+.metricValue {
+  color: var(--asancha-color-text);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 850;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.metricDescription {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.cardFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.listItem {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.listItemHeader {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.listItemTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 800;
+}
+
+.listItemDescription {
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.emptyState {
+  display: grid;
+  gap: 0.5rem;
+  place-items: center;
+  padding: 1.25rem;
+  border: 1px dashed var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  color: var(--asancha-color-text-muted);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 800;
+}
+
+.emptyDescription {
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.alertLow {
+  border-color: var(--asancha-color-border);
+}
+
+.alertMedium {
+  border-color: color-mix(in srgb, var(--asancha-color-warning) 35%, var(--asancha-color-border));
+}
+
+.alertHigh {
+  border-color: color-mix(in srgb, var(--asancha-color-danger) 45%, var(--asancha-color-border));
+}
+
+.alertCritical {
+  border-color: color-mix(in srgb, var(--asancha-color-danger) 70%, var(--asancha-color-border));
+  background: color-mix(in srgb, var(--asancha-color-danger) 8%, var(--asancha-color-surface));
+}

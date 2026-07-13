@@ -1,0 +1,50 @@
+/* src/components/ui/command-menu/command-menu.module.css */
+
+/**
+ * File purpose:
+ * Styles the shared CommandMenu primitive for Asancha Admin.
+ */
+
+.root {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.list {
+  display: grid;
+  max-height: 22rem;
+  overflow: auto;
+  gap: 0.35rem;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: var(--asancha-radius-md);
+  background: transparent;
+  color: var(--asancha-color-text);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.item:hover {
+  background: var(--asancha-color-surface-muted);
+}
+
+.item small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--asancha-color-text-muted);
+}
+
+.icon {
+  color: var(--asancha-color-text-subtle);
+}
+
+.empty {
+  color: var(--asancha-color-text-muted);
+  padding: 1rem;
+  text-align: center;
+}
