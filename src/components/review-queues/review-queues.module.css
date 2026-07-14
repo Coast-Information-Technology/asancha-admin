@@ -1,0 +1,192 @@
+/*
+ * src/components/review-queues/review-queues.module.css
+ *
+ * File purpose:
+ * Provides CSS Module styles for Asancha Admin review queue components.
+ *
+ * Role in the project:
+ * These styles support review queue cards, queue tables, priority badges,
+ * metadata rows, empty states, and responsive queue layouts.
+ *
+ * Business relevance:
+ * Review queues must be readable, dense enough for operations, and clear about
+ * priority, status, age, and navigation.
+ *
+ * Security note:
+ * Styles do not enforce permissions. Backend permissions, queue visibility,
+ * redaction, and audit logging remain final.
+ */
+
+.card {
+  height: 100%;
+}
+
+.cardBody {
+  display: grid;
+  gap: 1rem;
+}
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.countGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.countBox {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.875rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.countValue {
+  color: var(--asancha-color-text);
+  font-size: 1.5rem;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.countLabel {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 700;
+}
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 56rem;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--asancha-color-surface-subtle);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.itemTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.itemSummary {
+  max-width: 32rem;
+  margin: 0.25rem 0 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.itemMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.priorityBadge {
+  display: inline-flex;
+  gap: 0.375rem;
+  align-items: center;
+  width: fit-content;
+  min-height: 1.5rem;
+  padding: 0.1875rem 0.5rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: 999px;
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.priorityDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.priorityLow {
+  color: var(--asancha-color-text-muted);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.priorityNormal {
+  color: var(--asancha-color-brand);
+  background: color-mix(in srgb, var(--asancha-color-brand) 8%, var(--asancha-color-surface));
+}
+
+.priorityHigh {
+  color: var(--asancha-color-warning);
+  background: color-mix(in srgb, var(--asancha-color-warning) 10%, var(--asancha-color-surface));
+}
+
+.priorityUrgent {
+  color: var(--asancha-color-danger);
+  background: color-mix(in srgb, var(--asancha-color-danger) 10%, var(--asancha-color-surface));
+}
+
+.emptyState {
+  display: grid;
+  gap: 0.5rem;
+  place-items: center;
+  padding: 2rem;
+  border: 1px dashed var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.emptyDescription {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}

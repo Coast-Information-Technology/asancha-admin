@@ -1,0 +1,207 @@
+/*
+ * src/components/users/users.module.css
+ *
+ * File purpose:
+ * Provides CSS Module styles for Asancha Admin user components.
+ *
+ * Role in the project:
+ * These styles support user tables, user detail headers, status badges, role
+ * badges, tab navigation, metadata rows, and empty states.
+ *
+ * Business relevance:
+ * User screens must be clear, support-safe, and operationally useful for
+ * authorised staff.
+ *
+ * Security note:
+ * Styles do not enforce permissions. Backend authorization, redaction, and
+ * audit logging remain final.
+ */
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 58rem;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--asancha-color-surface-subtle);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.userName {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.userMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.badge {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 1.5rem;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1875rem 0.55rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: 999px;
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.badgeNeutral {
+  color: var(--asancha-color-text-muted);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.badgeInfo {
+  color: var(--asancha-color-brand);
+  background: color-mix(in srgb, var(--asancha-color-brand) 8%, var(--asancha-color-surface));
+}
+
+.badgeSuccess {
+  color: var(--asancha-color-success);
+  background: color-mix(in srgb, var(--asancha-color-success) 10%, var(--asancha-color-surface));
+}
+
+.badgeWarning {
+  color: var(--asancha-color-warning);
+  background: color-mix(in srgb, var(--asancha-color-warning) 10%, var(--asancha-color-surface));
+}
+
+.badgeDanger {
+  color: var(--asancha-color-danger);
+  background: color-mix(in srgb, var(--asancha-color-danger) 10%, var(--asancha-color-surface));
+}
+
+.header {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.headerTop {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.headerTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.headerDescription {
+  margin: 0.35rem 0 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.headerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.75rem;
+}
+
+.headerItem {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.headerItemLabel {
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 750;
+}
+
+.headerItemValue {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.emptyState {
+  display: grid;
+  gap: 0.5rem;
+  place-items: center;
+  padding: 2rem;
+  border: 1px dashed var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.emptyDescription {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
