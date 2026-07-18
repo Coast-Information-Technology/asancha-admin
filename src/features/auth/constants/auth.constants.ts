@@ -26,13 +26,13 @@
  */
 
 export const AUTH_API_PATHS = {
-  staffSignIn: '/api/v1/admin/auth/sign-in',
-  staffSignOut: '/api/v1/admin/auth/sign-out',
-  currentStaffSession: '/api/v1/admin/auth/session',
-  forgotPassword: '/api/v1/admin/auth/forgot-password',
-  resetPassword: '/api/v1/admin/auth/reset-password',
-  setPassword: '/api/v1/admin/auth/set-password',
-  verifyStaffInvite: '/api/v1/admin/auth/verify-staff-invite',
+  staffSignIn: '/auth/login',
+  staffSignOut: '/auth/logout',
+  currentStaffSession: '/auth/me',
+  forgotPassword: '/auth/forgot-password',
+  resetPassword: '/auth/reset-password',
+  setPassword: '/auth/set-password',
+  verifyStaffInvite: '/auth/verify-staff-invite',
 } as const;
 
 export const AUTH_QUERY_KEYS = {

@@ -32,6 +32,7 @@ import {
   FALLBACK_REVIEW_QUEUE_SUMMARY,
   FALLBACK_SUPER_ADMIN_DASHBOARD_STATE,
 } from '../constants/dashboard.constants';
+import { adminGet } from '../../../lib/api/admin-fetch';
 import type {
   AdminDashboardState,
   CustomerCareDashboardState,
@@ -46,28 +47,6 @@ type JsonRecord = Record<string, unknown>;
 
 function isRecord(value: unknown): value is JsonRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function getApiBaseUrl(): string | null {
-  const rawValue = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
-
-  if (!rawValue) {
-    return null;
-  }
-
-  return rawValue.replace(/\/+$/, '');
-}
-
-function createApiUrl(path: string): string | null {
-  const baseUrl = getApiBaseUrl();
-
-  if (!baseUrl) {
-    return null;
-  }
-
-  const safePath = path.startsWith('/') ? path : `/${path}`;
-
-  return `${baseUrl}${safePath}`;
 }
 
 function isDashboardMetric(value: unknown): value is DashboardMetric {
@@ -146,26 +125,13 @@ function unwrapEnvelopeData(payload: unknown): unknown {
 }
 
 async function getJsonFromApi(path: string): Promise<unknown> {
-  const url = createApiUrl(path);
+  try {
+    const response = await adminGet<unknown>(path);
 
-  if (!url) {
+    return response.data;
+  } catch {
     return null;
   }
-
-  const response = await fetch(url, {
-    method: 'GET',
-    credentials: 'include',
-    cache: 'no-store',
-    headers: {
-      Accept: 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    return null;
-  }
-
-  return response.json() as Promise<unknown>;
 }
 
 export async function getSuperAdminDashboardState(): Promise<SuperAdminDashboardState> {

@@ -27,15 +27,20 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getStaffDashboardState } from '../api/dashboard.api';
 import {
+  DASHBOARD_DATA_SOURCE,
   DASHBOARD_QUERY_KEYS,
   DASHBOARD_STALE_TIME_MS,
 } from '../constants/dashboard.constants';
+import { getMockStaffDashboardState } from '../constants/dashboard.mock';
 import type { DashboardStaffRole, StaffDashboardState } from '../types/dashboard.types';
 
 export function useStaffDashboardState(role: DashboardStaffRole) {
   return useQuery<StaffDashboardState>({
     queryKey: DASHBOARD_QUERY_KEYS.staffState(role),
-    queryFn: () => getStaffDashboardState(role),
+    queryFn: () =>
+      DASHBOARD_DATA_SOURCE === 'mock'
+        ? Promise.resolve(getMockStaffDashboardState(role))
+        : getStaffDashboardState(role),
     staleTime: DASHBOARD_STALE_TIME_MS,
   });
 }

@@ -63,6 +63,9 @@ export interface NotificationsState {
   resetNotifications: () => void;
 }
 
+/** Replace this initial preview value with the notification API response later. */
+const DEMO_UNREAD_NOTIFICATION_COUNT = 6;
+
 function normaliseCount(value: number): number {
   if (!Number.isFinite(value)) {
     return 0;
@@ -72,7 +75,7 @@ function normaliseCount(value: number): number {
 }
 
 export const useNotificationsStore = create<NotificationsState>((set) => ({
-  unreadCount: 0,
+  unreadCount: DEMO_UNREAD_NOTIFICATION_COUNT,
   latestNotifications: [],
   drawerOpen: false,
   loading: false,

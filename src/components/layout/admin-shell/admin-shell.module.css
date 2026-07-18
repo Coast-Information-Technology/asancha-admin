@@ -28,6 +28,66 @@
   transition: padding-left var(--asancha-transition-base);
 }
 
+.commandMenu {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--asancha-z-modal) + 1);
+  display: grid;
+  place-items: start center;
+  background: color-mix(in srgb, #0f172a 42%, transparent);
+  padding: 7rem 1rem 1rem;
+}
+
+.commandMenuPanel {
+  width: min(100%, 34rem);
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface);
+  box-shadow: var(--asancha-shadow-lg);
+  padding: 1rem;
+}
+
+.commandMenuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.commandMenuHeader p {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-lg);
+  font-weight: 800;
+}
+
+.commandMenuHeader button {
+  border: 0;
+  background: transparent;
+  color: var(--asancha-color-text-muted);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.commandMenuHint {
+  margin: 0.75rem 0 1rem;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: 1.5;
+}
+
+.commandMenuLink {
+  width: 100%;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-md);
+  background: var(--asancha-color-surface-muted);
+  color: var(--asancha-color-text);
+  cursor: pointer;
+  padding: 0.7rem 0.8rem;
+  text-align: left;
+  font-weight: 700;
+}
+
 .main[data-sidebar-collapsed='true'] {
   padding-left: var(--asancha-admin-sidebar-collapsed-width);
 }

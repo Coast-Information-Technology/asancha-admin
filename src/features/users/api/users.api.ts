@@ -38,11 +38,11 @@ import type {
 } from '../types/users.types';
 
 const USERS_API_PATHS = {
-  list: '/admin/users',
-  detail: (userPublicId: string) => `/admin/users/${encodeURIComponent(userPublicId)}`,
+  list: '/api/v1/admin/users',
+  detail: (userPublicId: string) => `/api/v1/admin/users/${encodeURIComponent(userPublicId)}`,
   updateStatus: (userPublicId: string) =>
-    `/admin/users/${encodeURIComponent(userPublicId)}/status`,
-  updateRole: (userPublicId: string) => `/admin/users/${encodeURIComponent(userPublicId)}/role`,
+    `/api/v1/admin/users/${encodeURIComponent(userPublicId)}/status`,
+  updateRole: (userPublicId: string) => `/api/v1/admin/users/${encodeURIComponent(userPublicId)}/role`,
 } as const;
 
 const FALLBACK_USERS_RESPONSE: UsersResponse = {

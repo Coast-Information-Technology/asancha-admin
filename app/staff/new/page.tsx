@@ -87,7 +87,7 @@ export default function NewStaffPage() {
         ))}
       </section>
 
-      <section style={{ marginTop: '1.5rem' }}>
+      <section>
         <Card>
           <CardHeader>
             <div className="asancha-cluster-between">

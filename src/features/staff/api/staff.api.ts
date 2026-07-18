@@ -42,12 +42,12 @@ import type {
 } from '../types/staff.types';
 
 const STAFF_API_PATHS = {
-  list: '/admin/staff',
-  detail: (staffPublicId: string) => `/admin/staff/${encodeURIComponent(staffPublicId)}`,
-  create: '/admin/staff',
+  list: '/api/v1/admin/staff',
+  detail: (staffPublicId: string) => `/api/v1/admin/staff/${encodeURIComponent(staffPublicId)}`,
+  create: '/api/v1/admin/staff',
   updateStatus: (staffPublicId: string) =>
-    `/admin/staff/${encodeURIComponent(staffPublicId)}/status`,
-  updateRole: (staffPublicId: string) => `/admin/staff/${encodeURIComponent(staffPublicId)}/role`,
+    `/api/v1/admin/staff/${encodeURIComponent(staffPublicId)}/status`,
+  updateRole: (staffPublicId: string) => `/api/v1/admin/staff/${encodeURIComponent(staffPublicId)}/role`,
 } as const;
 
 const FALLBACK_STAFF_LIST_RESPONSE: StaffListResponse = {

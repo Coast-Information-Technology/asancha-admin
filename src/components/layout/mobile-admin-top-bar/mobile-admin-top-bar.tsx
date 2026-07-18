@@ -5,15 +5,8 @@
  * Provides the mobile top bar for the Asancha Admin frontend.
  *
  * Role in the project:
- * This component renders mobile shortcuts for dashboard, review queues,
- * Messages, Notifications, and the drawer menu button.
- *
- * Key exports:
- * - MobileAdminTopBar renders mobile admin navigation.
- *
- * Business relevance:
- * Messages must appear in mobile admin navigation. Help/Support must not be a
- * separate admin top-bar item.
+ * This component renders the current page title, notification icon, and drawer
+ * menu button for smaller screens.
  *
  * Security note:
  * Mobile navigation is UX only. Backend permissions remain final.
@@ -23,10 +16,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Bell, Menu } from 'lucide-react';
 
 import type { StaffNavigationRole } from '../../../lib/navigation/admin-top-bar-navigation';
+import { getAdminPageTitle } from '../../../lib/navigation/admin-page-title';
 import { useAdminNavigationStore } from '../../../store/admin-navigation.store';
 import { useNotificationsStore } from '../../../store/notifications.store';
+import { ThemeToggle } from '../theme-toggle/theme-toggle';
 
 import styles from './mobile-admin-top-bar.module.css';
 
@@ -35,13 +32,14 @@ export interface MobileAdminTopBarProps {
 }
 
 export function MobileAdminTopBar({ role }: MobileAdminTopBarProps) {
+  const pathname = usePathname();
   const openMobileDrawer = useAdminNavigationStore((state) => state.openMobileDrawer);
   const unreadCount = useNotificationsStore((state) => state.unreadCount);
-  const canSeeReviewQueues = role === 'super_admin' || role === 'admin';
+  const pageTitle = getAdminPageTitle(pathname, role);
 
   return (
     <header className={styles.topBar}>
-      <Link className={styles.brand} href="/dashboard">
+      <Link aria-label="Go to dashboard" className={styles.brand} href="/dashboard">
         <Image
           alt="Asancha Properties"
           height={249}
@@ -53,20 +51,21 @@ export function MobileAdminTopBar({ role }: MobileAdminTopBarProps) {
         <span>Admin</span>
       </Link>
 
+      <p className={styles.pageTitle}>{pageTitle}</p>
+
       <nav aria-label="Mobile admin shortcuts" className={styles.shortcuts}>
-        {canSeeReviewQueues ? (
-          <Link className={styles.shortcut} href="/review-queues">
-            Queues
-          </Link>
-        ) : null}
+        <ThemeToggle />
 
-        <Link className={styles.shortcut} href="/messages">
-          Messages
-        </Link>
-
-        <Link className={styles.shortcut} href="/notifications">
-          Notifications
-          {unreadCount > 0 ? <span className={styles.badge}>{unreadCount}</span> : null}
+        <Link
+          aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
+          className={styles.notificationButton}
+          href="/notifications"
+          title="Notifications"
+        >
+          <Bell aria-hidden size={18} strokeWidth={2} />
+          {unreadCount > 0 ? (
+            <span className={styles.badge}>{unreadCount > 99 ? '99+' : unreadCount}</span>
+          ) : null}
         </Link>
 
         <button
@@ -75,7 +74,8 @@ export function MobileAdminTopBar({ role }: MobileAdminTopBarProps) {
           onClick={openMobileDrawer}
           type="button"
         >
-          Menu
+          <Menu aria-hidden size={18} strokeWidth={2} />
+          <span className={styles.menuLabel}>Menu</span>
         </button>
       </nav>
     </header>

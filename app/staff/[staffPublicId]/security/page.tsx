@@ -85,7 +85,7 @@ export default async function StaffSecurityPage({ params }: StaffSecurityPagePro
         ))}
       </section>
 
-      <div style={{ marginTop: '1.5rem' }}>
+      <div>
         <Button href={`/staff/${staffPublicId}`} size="sm" variant="secondary">
           Back to staff detail
         </Button>

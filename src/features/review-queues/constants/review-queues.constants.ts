@@ -36,8 +36,8 @@ import type {
 } from '../types/review-queues.types';
 
 export const REVIEW_QUEUES_API_PATHS = {
-  summaries: '/admin/review-queues',
-  items: '/admin/review-queues/items',
+  summaries: '/api/v1/admin/review-queues',
+  items: '/api/v1/admin/review-queues/items',
 } as const;
 
 export const REVIEW_QUEUES_QUERY_KEYS = {

@@ -22,7 +22,6 @@
  */
 
 import type { AdminNavigationItem, StaffNavigationRole } from './admin-top-bar-navigation';
-import { ADMIN_TOP_BAR_NAVIGATION } from './admin-top-bar-navigation';
 import { ADMIN_SIDEBAR_NAVIGATION } from './admin-sidebar-navigation';
 import { CUSTOMER_CARE_SIDEBAR_NAVIGATION } from './customer-care-sidebar-navigation';
 import { SUPER_ADMIN_SIDEBAR_NAVIGATION } from './super-admin-sidebar-navigation';
@@ -85,12 +84,9 @@ function mergeNavigationItems(
 
 export function getMobileAdminDrawerNavigation(role: StaffNavigationRole): AdminNavigationItem[] {
   const sidebarNavigation = getRoleSidebarNavigation(role);
-  const topBarNavigation = ADMIN_TOP_BAR_NAVIGATION.filter((item) =>
-    item.allowedRoles.includes(role),
-  );
   const footerNavigation = MOBILE_ADMIN_DRAWER_FOOTER_NAVIGATION.filter((item) =>
     item.allowedRoles.includes(role),
   );
 
-  return mergeNavigationItems(sidebarNavigation, [...topBarNavigation, ...footerNavigation]);
+  return mergeNavigationItems(sidebarNavigation, footerNavigation);
 }

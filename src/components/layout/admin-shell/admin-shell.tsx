@@ -25,15 +25,27 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import * as LucideIcons from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { useCallback, useEffect, useMemo } from 'react';
 
-import type { StaffNavigationRole } from '../../../lib/navigation/admin-top-bar-navigation';
+import { signOutStaff } from '../../../features/auth/api/auth.api';
+import type {
+  AdminNavigationItem,
+  StaffNavigationRole,
+} from '../../../lib/navigation/admin-top-bar-navigation';
+import { getAdminSidebarNavigation } from '../../../lib/navigation/admin-sidebar-navigation';
+import { getCustomerCareSidebarNavigation } from '../../../lib/navigation/customer-care-sidebar-navigation';
+import { getSuperAdminSidebarNavigation } from '../../../lib/navigation/super-admin-sidebar-navigation';
 import { useAdminNavigationStore } from '../../../store/admin-navigation.store';
+import { useAdminSearchStore } from '../../../store/admin-search.store';
+import { useStaffAuthStore } from '../../../store/staff-auth.store';
 import { AdminSidebar } from '../admin-sidebar/admin-sidebar';
 import { AdminTopBar } from '../admin-top-bar/admin-top-bar';
 import { MobileAdminDrawer } from '../mobile-admin-drawer/mobile-admin-drawer';
 import { MobileAdminTopBar } from '../mobile-admin-top-bar/mobile-admin-top-bar';
+import { CommandMenu, type CommandMenuItem } from '../../ui/command-menu/command-menu';
 
 import styles from './admin-shell.module.css';
 
@@ -52,15 +64,77 @@ export interface AdminShellProps {
 
 export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const sidebarCollapsed = useAdminNavigationStore((state) => state.sidebarCollapsed);
   const mobileDrawerOpen = useAdminNavigationStore((state) => state.mobileDrawerOpen);
   const setActivePathname = useAdminNavigationStore((state) => state.setActivePathname);
   const closeMobileDrawer = useAdminNavigationStore((state) => state.closeMobileDrawer);
+  const commandMenuOpen = useAdminSearchStore((state) => state.commandMenuOpen);
+  const commandQuery = useAdminSearchStore((state) => state.query);
+  const setCommandQuery = useAdminSearchStore((state) => state.setQuery);
+  const closeCommandMenu = useAdminSearchStore((state) => state.closeCommandMenu);
+  const clearSession = useStaffAuthStore((state) => state.clearSession);
+
+  const handleLogout = useCallback(() => {
+    void signOutStaff().catch(() => undefined).finally(() => {
+      clearSession();
+      router.replace('/auth/sign-in');
+    });
+  }, [clearSession, router]);
+
+  const effectiveLogout = onLogout ?? handleLogout;
+  const commandItems = useMemo<CommandMenuItem[]>(() => {
+    const seenHrefs = new Set<string>();
+
+    return flattenNavigation(getSidebarNavigation(staff.role))
+      .filter((item) => {
+        if (seenHrefs.has(item.href)) {
+          return false;
+        }
+
+        seenHrefs.add(item.href);
+        return true;
+      })
+      .map((item) => {
+        const Icon = getNavigationIcon(item.iconName);
+
+        return {
+          key: item.href,
+          label: item.label,
+          description: item.description,
+          icon: <Icon aria-hidden size={17} strokeWidth={2} />,
+          onSelect: () => {
+            closeCommandMenu();
+            setCommandQuery('');
+            router.push(item.href);
+          },
+        };
+      });
+  }, [closeCommandMenu, router, setCommandQuery, staff.role]);
+
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent): void => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        useAdminSearchStore.getState().openCommandMenu();
+      }
+    };
+
+    window.addEventListener('keydown', handleShortcut);
+
+    return () => {
+      window.removeEventListener('keydown', handleShortcut);
+    };
+  }, []);
 
   useEffect(() => {
     setActivePathname(pathname);
     closeMobileDrawer();
   }, [closeMobileDrawer, pathname, setActivePathname]);
+
+  if (pathname === '/auth' || pathname.startsWith('/auth/')) {
+    return children;
+  }
 
   return (
     <div className={styles.root}>
@@ -72,7 +146,7 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
         <AdminSidebar collapsed={sidebarCollapsed} role={staff.role} />
       </div>
 
-      <AdminTopBar staff={staff} onLogout={onLogout} />
+      <AdminTopBar staff={staff} onLogout={effectiveLogout} />
       <MobileAdminTopBar role={staff.role} />
 
       <MobileAdminDrawer
@@ -89,6 +163,55 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
       >
         {children}
       </main>
+
+      {commandMenuOpen ? (
+        <div
+          aria-label="Search admin records"
+          className={styles.commandMenu}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              closeCommandMenu();
+            }
+          }}
+          role="dialog"
+        >
+          <div className={styles.commandMenuPanel}>
+            <div className={styles.commandMenuHeader}>
+              <p>Search admin records</p>
+              <button onClick={closeCommandMenu} type="button">
+                Close
+              </button>
+            </div>
+            <CommandMenu
+              items={commandItems}
+              onQueryChange={setCommandQuery}
+              query={commandQuery}
+            />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
+}
+
+function getSidebarNavigation(role: StaffNavigationRole): AdminNavigationItem[] {
+  if (role === 'super_admin') {
+    return getSuperAdminSidebarNavigation();
+  }
+
+  if (role === 'admin') {
+    return getAdminSidebarNavigation();
+  }
+
+  return getCustomerCareSidebarNavigation();
+}
+
+function flattenNavigation(items: readonly AdminNavigationItem[]): AdminNavigationItem[] {
+  return items.flatMap((item) => [item, ...(item.children ? flattenNavigation(item.children) : [])]);
+}
+
+function getNavigationIcon(iconName: string): LucideIcon {
+  const icon = (LucideIcons as unknown as Record<string, LucideIcon>)[iconName];
+
+  return icon ?? LucideIcons.Circle;
 }

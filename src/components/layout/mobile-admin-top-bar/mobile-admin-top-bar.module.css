@@ -11,8 +11,8 @@
   z-index: var(--asancha-z-sticky);
   display: none;
   height: var(--asancha-admin-mobile-top-bar-height);
+  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 0.75rem;
   border-bottom: 1px solid var(--asancha-color-border);
   background: color-mix(in srgb, var(--asancha-color-surface) 94%, transparent);
@@ -22,41 +22,55 @@
 
 .brand {
   display: inline-flex;
+  min-width: 0;
   align-items: center;
   gap: 0.5rem;
   font-weight: 850;
 }
 
-.brandMark {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border-radius: var(--asancha-radius-md);
-  background: var(--asancha-color-brand);
-  color: var(--asancha-color-brand-contrast);
+.brand span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pageTitle {
+  min-width: 0;
+  max-width: 36vw;
+  overflow: hidden;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .shortcuts {
   display: flex;
   align-items: center;
+  justify-self: end;
   gap: 0.4rem;
 }
 
-.shortcut,
+.notificationButton,
 .menuButton {
   position: relative;
+  display: inline-flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--asancha-color-border);
   border-radius: var(--asancha-radius-full);
   background: var(--asancha-color-surface);
   color: var(--asancha-color-text-muted);
-  font-size: var(--asancha-font-size-xs);
-  font-weight: 800;
-  padding: 0.45rem 0.6rem;
+  padding: 0;
   text-decoration: none;
 }
 
 .menuButton {
+  cursor: pointer;
   color: var(--asancha-color-brand);
 }
 
@@ -76,12 +90,13 @@
 
 @media (max-width: 1023px) {
   .topBar {
-    display: flex;
+    display: grid;
   }
 }
 
 @media (max-width: 520px) {
-  .shortcut {
+  .brand span,
+  .menuLabel {
     display: none;
   }
 }

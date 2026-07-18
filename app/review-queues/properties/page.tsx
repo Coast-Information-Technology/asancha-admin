@@ -1,88 +1,21 @@
 // app/review-queues/properties/page.tsx
 
-/**
- * File purpose:
- * Renders the property review queue page for Asancha Admin.
- *
- * Role in the project:
- * This page provides a queue entry point for submitted properties and their
- * review lifecycle.
- *
- * Key exports:
- * - PropertyReviewQueuePage renders /review-queues/properties.
- *
- * Business relevance:
- * Property review helps ensure submitted property records meet Asancha standards
- * before listings and deal activity progress.
- *
- * Security note:
- * Property review actions are permission-aware but must be enforced by backend
- * authorization, validation, visibility, and audit logging.
- */
-
-import { PageShell } from '../../../src/components/layout/page-shell/page-shell';
-import { Badge } from '../../../src/components/ui/badge/badge';
-import { Button } from '../../../src/components/ui/button/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '../../../src/components/ui/card/card';
-
-const propertyQueues = [
-  {
-    title: 'Submitted properties',
-    description: 'Newly submitted property records waiting for first review.',
-    href: '/properties?status=submitted',
-    tone: 'warning',
-  },
-  {
-    title: 'Under review',
-    description: 'Properties currently being checked by authorised staff.',
-    href: '/properties?status=under_review',
-    tone: 'info',
-  },
-  {
-    title: 'Approved properties',
-    description: 'Approved properties ready for connected listing workflows.',
-    href: '/properties?status=approved',
-    tone: 'success',
-  },
-  {
-    title: 'Rejected properties',
-    description: 'Rejected property records retained for safe operational status tracking.',
-    href: '/properties?status=rejected',
-    tone: 'danger',
-  },
-] as const;
+import { PropertiesTable } from '../../../src/components/properties/properties-table';
+import { ManagementListPage } from '../../../src/components/layout/page-shell/management-list-page';
+import { DEMO_PROPERTIES } from '../../../src/lib/demo/management-demo-data';
 
 export default function PropertyReviewQueuePage() {
-  return (
-    <PageShell
-      description="Property submission and lifecycle review queue."
-      title="Property review queue"
-    >
-      <section className="asancha-card-grid">
-        {propertyQueues.map((queue) => (
-          <Card key={queue.href}>
-            <CardHeader>
-              <div className="asancha-cluster-between">
-                <CardTitle>{queue.title}</CardTitle>
-                <Badge tone={queue.tone}>0 records</Badge>
-              </div>
-              <CardDescription>{queue.description}</CardDescription>
-            </CardHeader>
+  const properties = DEMO_PROPERTIES.filter((property) => property.status !== 'approved');
 
-            <CardContent>
-              <Button href={queue.href} size="sm" variant="secondary">
-                Open properties
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </section>
-    </PageShell>
+  return (
+    <ManagementListPage
+      description="Property submission, document readiness, and lifecycle review queue."
+      filters={[{ label: 'All properties', href: '/properties' }, { label: 'Submitted', href: '/properties?status=submitted' }, { label: 'Correction required', href: '/properties?status=correction_requested' }]}
+      metrics={[{ label: 'Queue records', value: String(properties.length), detail: 'Demo properties requiring review', tone: 'warning' }, { label: 'Documents pending', value: '2', detail: 'Property documents need assessment', tone: 'info' }, { label: 'Correction required', value: '1', detail: 'Source action is needed', tone: 'danger' }, { label: 'Approved outside queue', value: '2', detail: 'Ready property records', tone: 'success' }]}
+      title="Property review queue"
+      totalLabel={`${properties.length} queued properties`}
+    >
+      <PropertiesTable properties={properties} />
+    </ManagementListPage>
   );
 }

@@ -30,12 +30,13 @@ import type {
   ReviewQueueSummaryItem,
   SuperAdminDashboardState,
 } from '../types/dashboard.types';
+import { API_ROUTES } from '../../../lib/api/api-routes';
 
 export const DASHBOARD_API_PATHS = {
-  superAdmin: '/admin/dashboard/super-admin',
-  admin: '/admin/dashboard/admin',
-  customerCare: '/admin/dashboard/customer-care',
-  reviewQueueSummary: '/admin/dashboard/review-queues',
+  superAdmin: API_ROUTES.dashboard.superAdmin,
+  admin: API_ROUTES.dashboard.admin,
+  customerCare: API_ROUTES.dashboard.customerCare,
+  reviewQueueSummary: `${API_ROUTES.dashboard.root}/review-queues`,
 } as const;
 
 export const DASHBOARD_QUERY_KEYS = {
@@ -48,6 +49,9 @@ export const DASHBOARD_QUERY_KEYS = {
 } as const;
 
 export const DASHBOARD_STALE_TIME_MS = 60_000;
+
+/** Keep dashboard rendering deterministic while the UI is being designed. */
+export const DASHBOARD_DATA_SOURCE: 'mock' | 'api' = 'mock';
 
 export const FALLBACK_REVIEW_QUEUE_SUMMARY: readonly ReviewQueueSummaryItem[] = [
   {

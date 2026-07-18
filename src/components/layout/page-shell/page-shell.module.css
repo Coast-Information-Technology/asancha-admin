@@ -12,6 +12,7 @@
   gap: 1.25rem;
   margin-inline: auto;
   padding: 1.5rem;
+  align-content: start;
 }
 
 .breadcrumbs ol {
@@ -73,12 +74,20 @@
 }
 
 .content {
+  display: grid;
+  align-content: start;
+  gap: 1.5rem;
   min-width: 0;
 }
 
 @media (max-width: 767px) {
   .shell {
+    gap: 1rem;
     padding: 1rem;
+  }
+
+  .content {
+    gap: 1.25rem;
   }
 
   .header {

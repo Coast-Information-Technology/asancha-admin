@@ -88,7 +88,7 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
         </CardContent>
       </Card>
 
-      <section className="asancha-card-grid" style={{ marginTop: '1.5rem' }}>
+      <section className="asancha-card-grid">
         {detailLinks.map((link) => (
           <Card key={link.href}>
             <CardHeader>

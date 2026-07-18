@@ -18,15 +18,27 @@
  */
 
 .card {
+  display: flex;
+  min-width: 0;
   height: 100%;
+  flex-direction: column;
 }
 
-.cardBody {
-  display: grid;
+.metricHeader {
+  min-width: 0;
+}
+
+.metricContent {
+  display: flex;
+  min-width: 0;
+  height: 100%;
+  flex-direction: column;
   gap: 1rem;
 }
 
 .metricValue {
+  overflow-wrap: anywhere;
+  margin: 0;
   color: var(--asancha-color-text);
   font-size: clamp(1.75rem, 5vw, 2.5rem);
   font-weight: 850;
@@ -42,6 +54,7 @@
 
 .cardFooter {
   display: flex;
+  margin-top: auto;
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: center;

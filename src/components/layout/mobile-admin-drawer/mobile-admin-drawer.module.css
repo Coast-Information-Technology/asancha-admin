@@ -10,6 +10,20 @@
   gap: 0.35rem;
 }
 
+.sectionGroup {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.sectionLabel {
+  margin: 0.85rem 0 0.15rem;
+  color: var(--asancha-color-text-subtle);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .link {
   display: flex;
   min-height: 2.75rem;
@@ -21,6 +35,10 @@
   font-weight: 750;
   padding: 0.65rem 0.75rem;
   text-decoration: none;
+}
+
+.linkLabel {
+  flex: 1;
 }
 
 .link:hover,
@@ -39,4 +57,40 @@
   background: var(--asancha-color-surface-muted);
   font-size: var(--asancha-font-size-xs);
   font-weight: 900;
+}
+
+.children {
+  display: grid;
+  gap: 0.15rem;
+  margin-left: 2.6rem;
+}
+
+.childLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-radius: var(--asancha-radius-md);
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  padding: 0.45rem 0.65rem;
+  text-decoration: none;
+}
+
+.childLink:hover,
+.childLink[data-active='true'] {
+  background: var(--asancha-color-surface-muted);
+  color: var(--asancha-color-text);
+}
+
+.badge {
+  display: grid;
+  min-width: 1.2rem;
+  height: 1.2rem;
+  place-items: center;
+  border-radius: var(--asancha-radius-full);
+  background: var(--asancha-color-danger);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 850;
 }

@@ -25,6 +25,8 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
 
+import { canStaffRoleAccessRoute, findRoutePermissionRule } from './src/lib/permissions/route-permissions';
+
 type StaffRole = 'super_admin' | 'admin' | 'customer_care_rep';
 
 type StaffAccountStatus =
@@ -106,6 +108,10 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
+
   if (pathname === '/') {
     return NextResponse.redirect(createRedirectUrl(request, '/dashboard'));
   }
@@ -123,6 +129,10 @@ export function proxy(request: NextRequest) {
   }
 
   if (isAuthRoute(pathname)) {
+    if (pathname === '/auth/locked' || pathname === '/auth/unauthorized') {
+      return NextResponse.next();
+    }
+
     if (hasSessionCookie && hasStaffRole && !lockedAccount) {
       return NextResponse.redirect(createRedirectUrl(request, '/dashboard'));
     }
@@ -135,6 +145,12 @@ export function proxy(request: NextRequest) {
   }
 
   if (!hasStaffRole) {
+    return NextResponse.redirect(createRedirectUrl(request, '/auth/unauthorized'));
+  }
+
+  const routeRule = findRoutePermissionRule(pathname);
+
+  if (routeRule && !canStaffRoleAccessRoute(role, pathname)) {
     return NextResponse.redirect(createRedirectUrl(request, '/auth/unauthorized'));
   }
 

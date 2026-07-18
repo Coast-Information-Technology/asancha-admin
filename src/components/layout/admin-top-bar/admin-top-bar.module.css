@@ -13,13 +13,17 @@
   z-index: var(--asancha-z-sticky);
   display: grid;
   height: var(--asancha-admin-top-bar-height);
-  grid-template-columns: auto minmax(14rem, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 1rem;
   border-bottom: 1px solid var(--asancha-color-border);
   background: color-mix(in srgb, var(--asancha-color-surface) 94%, transparent);
   padding: 0 1.25rem;
   backdrop-filter: blur(14px);
+}
+
+.topBar[data-sidebar-collapsed='true'] {
+  left: var(--asancha-admin-sidebar-collapsed-width);
 }
 
 .brandArea {
@@ -49,11 +53,13 @@
 
 .searchArea {
   min-width: 0;
+  justify-self: start;
+  width: min(100%, 32rem);
 }
 
 .searchButton {
   display: flex;
-  width: min(100%, 32rem);
+  width: 100%;
   min-height: 2.5rem;
   align-items: center;
   justify-content: space-between;
@@ -81,34 +87,56 @@
   gap: 0.35rem;
 }
 
-.navLink {
-  position: relative;
-  display: inline-flex;
-  min-height: 2.35rem;
-  align-items: center;
-  gap: 0.4rem;
-  border-radius: var(--asancha-radius-md);
-  color: var(--asancha-color-text-muted);
-  font-size: var(--asancha-font-size-sm);
-  font-weight: 700;
-  padding: 0.55rem 0.75rem;
+.pageTitle {
+  min-width: 0;
+  max-width: min(34rem, 40vw);
+  overflow: hidden;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-lg);
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.navLink:hover,
-.navLink[data-active='true'] {
+.actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-self: end;
+  gap: 0.65rem;
+}
+
+.notificationButton {
+  position: relative;
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--asancha-radius-md);
+  color: var(--asancha-color-text-muted);
+  text-decoration: none;
+}
+
+.notificationButton:hover {
   background: var(--asancha-color-surface-muted);
   color: var(--asancha-color-text);
 }
 
 .badge {
+  position: absolute;
+  top: -0.2rem;
+  right: -0.2rem;
   display: grid;
-  min-width: 1.1rem;
-  height: 1.1rem;
+  min-width: 1.15rem;
+  height: 1.15rem;
   place-items: center;
   border-radius: var(--asancha-radius-full);
   background: var(--asancha-color-danger);
   color: #ffffff;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 800;
 }
 

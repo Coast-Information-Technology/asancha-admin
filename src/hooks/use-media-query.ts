@@ -31,7 +31,13 @@ import { useEffect, useState } from 'react';
 const DEFAULT_MOBILE_QUERY = '(max-width: 767px)';
 
 export function useMediaQuery(query: string, defaultValue = false): boolean {
-  const [matches, setMatches] = useState<boolean>(defaultValue);
+  const [matches, setMatches] = useState<boolean>(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia === 'undefined') {
+      return defaultValue;
+    }
+
+    return window.matchMedia(query).matches;
+  });
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia === 'undefined') {
@@ -39,8 +45,6 @@ export function useMediaQuery(query: string, defaultValue = false): boolean {
     }
 
     const mediaQueryList = window.matchMedia(query);
-
-    setMatches(mediaQueryList.matches);
 
     const handleChange = (event: MediaQueryListEvent): void => {
       setMatches(event.matches);

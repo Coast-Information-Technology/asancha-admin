@@ -1,37 +1,27 @@
 // src/components/layout/admin-sidebar/admin-sidebar.tsx
 
-/**
- * File purpose:
- * Provides the desktop sidebar navigation for the Asancha Admin frontend.
- *
- * Role in the project:
- * This component renders role-specific sidebar navigation for super_admin,
- * admin, and customer_care_rep users.
- *
- * Key exports:
- * - AdminSidebar renders the desktop sidebar.
- *
- * Business relevance:
- * Customer care must only see safe support views. Detail pages must not be
- * placed in sidebar menus. The frontend menu label must be Messages.
- *
- * Security note:
- * Sidebar visibility is not security. Backend route/resource/action checks
- * remain mandatory.
- */
+/** Role-aware desktop navigation for the authenticated staff shell. */
 
 'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import * as LucideIcons from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-import type { AdminNavigationItem, StaffNavigationRole } from '../../../lib/navigation/admin-top-bar-navigation';
+import {
+  getNavigationSection,
+  getNavigationSectionLabel,
+  type AdminNavigationItem,
+  type StaffNavigationRole,
+} from '../../../lib/navigation/admin-top-bar-navigation';
 import { getAdminSidebarNavigation } from '../../../lib/navigation/admin-sidebar-navigation';
 import { getCustomerCareSidebarNavigation } from '../../../lib/navigation/customer-care-sidebar-navigation';
 import { getSuperAdminSidebarNavigation } from '../../../lib/navigation/super-admin-sidebar-navigation';
 import { isRouteActive } from '../../../lib/utils/routes';
 import { useAdminNavigationStore } from '../../../store/admin-navigation.store';
+import { useNotificationsStore } from '../../../store/notifications.store';
 
 import styles from './admin-sidebar.module.css';
 
@@ -52,12 +42,26 @@ function getSidebarNavigation(role: StaffNavigationRole): AdminNavigationItem[] 
   return getCustomerCareSidebarNavigation();
 }
 
+function getNavigationIcon(iconName: string): LucideIcon {
+  const icon = (LucideIcons as unknown as Record<string, LucideIcon>)[iconName];
+
+  return icon ?? LucideIcons.Circle;
+}
+
+function getBadgeCount(item: AdminNavigationItem, unreadNotifications: number): number {
+  return item.badgeKey === 'notificationUnreadCount' ? unreadNotifications : 0;
+}
+
 export function AdminSidebar({ role, collapsed = false }: AdminSidebarProps) {
   const pathname = usePathname();
   const toggleSidebarCollapsed = useAdminNavigationStore((state) => state.toggleSidebarCollapsed);
+  const setSidebarCollapsed = useAdminNavigationStore((state) => state.setSidebarCollapsed);
   const expandedGroups = useAdminNavigationStore((state) => state.expandedGroups);
   const toggleExpandedGroup = useAdminNavigationStore((state) => state.toggleExpandedGroup);
-  const navigation = getSidebarNavigation(role);
+  const unreadNotifications = useNotificationsStore((state) => state.unreadCount);
+  const navigation = getSidebarNavigation(role).filter(
+    (item) => item.label !== 'Notifications' && item.label !== 'My Staff Account',
+  );
 
   return (
     <aside className={styles.sidebar} data-collapsed={collapsed}>
@@ -85,56 +89,95 @@ export function AdminSidebar({ role, collapsed = false }: AdminSidebarProps) {
       </div>
 
       <nav aria-label="Admin sidebar navigation" className={styles.nav}>
-        {navigation.map((item) => {
+        {navigation.map((item, index) => {
           const hasChildren = Boolean(item.children?.length);
           const expanded = expandedGroups.includes(item.href);
           const active = isRouteActive(pathname, item.href);
+          const section = getNavigationSection(item);
+          const previousItem = index > 0 ? navigation[index - 1] : undefined;
+          const previousSection = previousItem ? getNavigationSection(previousItem) : null;
+          const Icon = getNavigationIcon(item.iconName);
+          const badgeCount = getBadgeCount(item, unreadNotifications);
 
           return (
-            <div className={styles.navGroup} key={item.href}>
-              {hasChildren ? (
-                <button
-                  aria-expanded={expanded}
-                  className={styles.navItem}
-                  data-active={active}
-                  onClick={() => toggleExpandedGroup(item.href)}
-                  type="button"
-                >
-                  <span className={styles.iconBox}>{item.iconName.slice(0, 1)}</span>
-                  {!collapsed ? <span className={styles.navLabel}>{item.label}</span> : null}
-                  {!collapsed ? <span className={styles.chevron}>{expanded ? '⌃' : '⌄'}</span> : null}
-                </button>
-              ) : (
-                <Link
-                  aria-current={active ? 'page' : undefined}
-                  className={styles.navItem}
-                  data-active={active}
-                  href={item.href}
-                >
-                  <span className={styles.iconBox}>{item.iconName.slice(0, 1)}</span>
-                  {!collapsed ? <span className={styles.navLabel}>{item.label}</span> : null}
-                </Link>
-              )}
-
-              {hasChildren && expanded && !collapsed ? (
-                <div className={styles.children}>
-                  {item.children?.map((child) => {
-                    const childActive = isRouteActive(pathname, child.href, { exact: true });
-
-                    return (
-                      <Link
-                        aria-current={childActive ? 'page' : undefined}
-                        className={styles.childLink}
-                        data-active={childActive}
-                        href={child.href}
-                        key={child.href}
-                      >
-                        {child.label}
-                      </Link>
-                    );
-                  })}
-                </div>
+            <div className={styles.sectionGroup} key={item.href}>
+              {section !== previousSection && !collapsed ? (
+                <p className={styles.sectionLabel}>{getNavigationSectionLabel(section)}</p>
               ) : null}
+
+              <div className={styles.navGroup}>
+                {hasChildren ? (
+                  <button
+                    aria-expanded={expanded}
+                    aria-label={collapsed ? item.label : undefined}
+                    className={styles.navItem}
+                    data-active={active}
+                    onClick={() => {
+                      if (collapsed) {
+                        setSidebarCollapsed(false);
+                      }
+
+                      toggleExpandedGroup(item.href);
+                    }}
+                    title={collapsed ? item.label : undefined}
+                    type="button"
+                  >
+                    <span className={styles.iconBox}>
+                      <Icon aria-hidden size={17} strokeWidth={2} />
+                    </span>
+                    {!collapsed ? <span className={styles.navLabel}>{item.label}</span> : null}
+                    {!collapsed ? (
+                      <span className={styles.chevron}>
+                        {expanded ? (
+                          <LucideIcons.ChevronDown aria-hidden size={15} />
+                        ) : (
+                          <LucideIcons.ChevronRight aria-hidden size={15} />
+                        )}
+                      </span>
+                    ) : null}
+                    {badgeCount > 0 ? <span className={styles.badge}>{badgeCount}</span> : null}
+                  </button>
+                ) : (
+                  <Link
+                    aria-current={active ? 'page' : undefined}
+                    aria-label={collapsed ? item.label : undefined}
+                    className={styles.navItem}
+                    data-active={active}
+                    href={item.href}
+                    title={collapsed ? item.label : undefined}
+                  >
+                    <span className={styles.iconBox}>
+                      <Icon aria-hidden size={17} strokeWidth={2} />
+                    </span>
+                    {!collapsed ? <span className={styles.navLabel}>{item.label}</span> : null}
+                    {badgeCount > 0 ? <span className={styles.badge}>{badgeCount}</span> : null}
+                  </Link>
+                )}
+
+                {hasChildren && expanded && !collapsed ? (
+                  <div className={styles.children}>
+                    {item.children?.map((child) => {
+                      const childActive = isRouteActive(pathname, child.href, { exact: true });
+                      const childBadgeCount = getBadgeCount(child, unreadNotifications);
+
+                      return (
+                        <Link
+                          aria-current={childActive ? 'page' : undefined}
+                          className={styles.childLink}
+                          data-active={childActive}
+                          href={child.href}
+                          key={child.href}
+                        >
+                          <span>{child.label}</span>
+                          {childBadgeCount > 0 ? (
+                            <span className={styles.badge}>{childBadgeCount}</span>
+                          ) : null}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
             </div>
           );
         })}

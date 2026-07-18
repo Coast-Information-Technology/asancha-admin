@@ -20,7 +20,6 @@
  * remain final.
  */
 
-import { Badge } from '../ui/badge/badge';
 import { Button } from '../ui/button/button';
 import {
   Card,
@@ -42,20 +41,18 @@ export interface AdminDashboardCardProps {
 export function AdminDashboardCard({ metric, actionLabel = 'Open' }: AdminDashboardCardProps) {
   return (
     <Card className={styles.card}>
-      <CardHeader>
-        <div className="asancha-cluster-between">
-          <CardTitle>{metric.label}</CardTitle>
-          <Badge tone={metric.tone}>{metric.value}</Badge>
-        </div>
+      <CardHeader className={styles.metricHeader}>
+        <CardTitle>{metric.label}</CardTitle>
         <CardDescription>{metric.description}</CardDescription>
       </CardHeader>
 
       <CardContent>
-        <div className={styles.cardBody}>
-          <p className={styles.metricValue}>{metric.value.toLocaleString()}</p>
+        <div className={styles.metricContent}>
+          <p aria-label={`${metric.label}: ${metric.value}`} className={styles.metricValue}>
+            {metric.value.toLocaleString()}
+          </p>
 
           <div className={styles.cardFooter}>
-            <p className={styles.metricDescription}>{metric.description}</p>
             <Button href={metric.href} size="sm" variant="secondary">
               {actionLabel}
             </Button>

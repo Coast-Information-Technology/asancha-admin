@@ -37,6 +37,7 @@ import { isStaffRole, type StaffRole } from './staff-role-guards';
 export const STAFF_COOKIE_NAMES = {
   accessToken: 'asancha_admin_access_token',
   refreshToken: 'asancha_admin_refresh_token',
+  sessionId: 'asancha_admin_session_id',
   role: 'asancha_admin_role',
   accountStatus: 'asancha_admin_account_status',
   staffPublicId: 'asancha_admin_staff_public_id',

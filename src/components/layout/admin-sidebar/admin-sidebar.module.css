@@ -78,6 +78,20 @@
   gap: 0.2rem;
 }
 
+.sectionGroup {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.sectionLabel {
+  margin: 0.8rem 0 0.25rem;
+  color: var(--asancha-color-text-subtle);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .navItem {
   display: flex;
   width: 100%;
@@ -131,12 +145,28 @@
 }
 
 .childLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   border-radius: var(--asancha-radius-md);
   color: var(--asancha-color-text-muted);
   font-size: var(--asancha-font-size-sm);
   font-weight: 650;
   padding: 0.45rem 0.65rem;
   text-decoration: none;
+}
+
+.badge {
+  display: grid;
+  min-width: 1.2rem;
+  height: 1.2rem;
+  place-items: center;
+  border-radius: var(--asancha-radius-full);
+  background: var(--asancha-color-danger);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 850;
 }
 
 .childLink:hover,

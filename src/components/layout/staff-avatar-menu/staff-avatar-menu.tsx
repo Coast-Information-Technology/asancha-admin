@@ -21,7 +21,7 @@
 
 'use client';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import type { AdminShellStaff } from '../admin-shell/admin-shell';
@@ -44,6 +44,7 @@ function getInitials(displayName: string): string {
 }
 
 export function StaffAvatarMenu({ staff, onLogout }: StaffAvatarMenuProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   return (
@@ -53,21 +54,21 @@ export function StaffAvatarMenu({ staff, onLogout }: StaffAvatarMenuProps) {
           key: 'profile',
           label: 'My Profile',
           onSelect: () => {
-            window.location.href = '/my-profile';
+            router.push('/my-profile');
           },
         },
         {
           key: 'security',
           label: 'Security',
           onSelect: () => {
-            window.location.href = '/my-profile/security';
+            router.push('/my-profile/security');
           },
         },
         {
           key: 'notifications',
           label: 'Notification Preferences',
           onSelect: () => {
-            window.location.href = '/my-profile/notifications';
+            router.push('/my-profile/notifications');
           },
         },
         {

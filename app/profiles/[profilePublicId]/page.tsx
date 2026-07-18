@@ -1,132 +1,68 @@
 // app/profiles/[profilePublicId]/page.tsx
 
-/**
- * File purpose:
- * Renders the profile detail page for Asancha Admin.
- *
- * Role in the project:
- * This dynamic route displays a safe profile detail shell before the live
- * profiles feature API and reusable detail components are connected.
- *
- * Key exports:
- * - ProfileDetailPage renders /profiles/[profilePublicId].
- *
- * Business relevance:
- * Profile detail pages centralise business-role context, onboarding status,
- * verification status, related user/company links, and permission-aware review
- * actions.
- *
- * Security note:
- * Profile detail must use public IDs only. It must not expose MongoDB ObjectIds,
- * private KYC notes, internal admin notes, restricted document URLs, secrets,
- * private risk data, or unauthorised audit details. Backend permissions remain
- * final.
- */
-
-import { PageShell } from '../../../src/components/layout/page-shell/page-shell';
 import { Badge } from '../../../src/components/ui/badge/badge';
-import { Button } from '../../../src/components/ui/button/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '../../../src/components/ui/card/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../src/components/ui/card/card';
+import { ManagementDetailPage } from '../../../src/components/layout/page-shell/management-detail-page';
+import { getDemoProfile } from '../../../src/lib/demo/management-demo-data';
 
 export interface ProfileDetailPageProps {
-  params: Promise<{
-    profilePublicId: string;
-  }>;
+  params: Promise<{ profilePublicId: string }>;
 }
 
-const profileDetailSections = [
-  {
-    title: 'Overview',
-    description: 'Safe profile summary, public user context, role type, and onboarding status.',
-    href: '#overview',
-    tone: 'info',
-  },
-  {
-    title: 'Related user',
-    description: 'Safe related user context and support-safe identity labels.',
-    href: '#related-user',
-    tone: 'neutral',
-  },
-  {
-    title: 'Company context',
-    description: 'Related company, membership, and verification context where available.',
-    href: '#company-context',
-    tone: 'warning',
-  },
-  {
-    title: 'Verification status',
-    description: 'Profile verification status and safe review state. Risk data is restricted.',
-    href: '#verification-status',
-    tone: 'danger',
-  },
-  {
-    title: 'Review actions',
-    description: 'Permission-aware review actions will appear after live backend connection.',
-    href: '#review-actions',
-    tone: 'success',
-  },
-] as const;
+function getStatusTone(status: string) {
+  if (status === 'approved') return 'success';
+  if (status === 'rejected' || status === 'suspended') return 'danger';
+  if (status === 'pending' || status === 'under_review' || status === 'correction_requested') return 'warning';
+  return 'neutral';
+}
 
 export default async function ProfileDetailPage({ params }: ProfileDetailPageProps) {
   const { profilePublicId } = await params;
+  const profile = getDemoProfile(profilePublicId);
 
   return (
-    <PageShell
-      description="Safe profile detail page for authorised staff review and support."
+    <ManagementDetailPage
+      description="Business profile detail with related user, company, property, listing, document, and verification workflows."
+      links={[
+        { label: 'Related user', href: `/users/${profile.userPublicId}` },
+        { label: 'Related company', href: '/companies/co_demo_001' },
+        { label: 'All profiles', href: '/profiles' },
+        { label: 'Verification reviews', href: '/verification-reviews' },
+      ]}
+      publicId={profile.profilePublicId}
+      recordLabel={profile.profileType.replace(/_/g, ' ')}
+      recordName={profile.displayName}
+      status={profile.status.replace(/_/g, ' ')}
+      statusTone={getStatusTone(profile.status)}
+      summary={profile.summary}
       title="Profile detail"
     >
-      <Card>
-        <CardHeader>
-          <div className="asancha-cluster-between">
-            <div>
-              <CardTitle>Profile public ID</CardTitle>
-              <CardDescription>
-                This page uses the safe public profile identifier. Internal database identifiers
-                must never be displayed.
-              </CardDescription>
-            </div>
-            <Badge tone="neutral">{profilePublicId}</Badge>
-          </div>
-        </CardHeader>
+      <section aria-label="Profile related records" className="asancha-card-grid">
+        <RelatedCard label="Properties" value={profile.relatedSummary.relatedPropertiesCount} href="/properties" />
+        <RelatedCard label="Listings" value={profile.relatedSummary.relatedListingsCount} href="/listings" />
+        <RelatedCard label="Documents" value={profile.relatedSummary.relatedDocumentsCount} href="/documents" />
+        <RelatedCard label="Verification reviews" value={profile.relatedSummary.relatedVerificationReviewsCount} href="/verification-reviews" />
+      </section>
 
+      <Card>
+        <CardHeader><CardTitle>Profile context</CardTitle></CardHeader>
         <CardContent>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-            {profileDetailSections.map((section) => (
-              <Button href={section.href} key={section.href} size="sm" variant="secondary">
-                {section.title}
-              </Button>
-            ))}
+          <div className="asancha-cluster">
+            <Badge tone="info">User: {profile.userPublicId}</Badge>
+            <Badge tone={profile.verificationStatus === 'approved' ? 'success' : 'warning'}>Verification: {profile.verificationStatus.replace(/_/g, ' ')}</Badge>
+            {profile.relatedSummary.relatedCompanyLabel ? <Badge tone="neutral">Company: {profile.relatedSummary.relatedCompanyLabel}</Badge> : null}
           </div>
         </CardContent>
       </Card>
+    </ManagementDetailPage>
+  );
+}
 
-      <section className="asancha-card-grid" style={{ marginTop: '1.5rem' }}>
-        {profileDetailSections.map((section) => (
-          <Card id={section.href.replace('#', '')} key={section.href}>
-            <CardHeader>
-              <div className="asancha-cluster-between">
-                <CardTitle>{section.title}</CardTitle>
-                <Badge tone={section.tone}>API connection pending</Badge>
-              </div>
-              <CardDescription>{section.description}</CardDescription>
-            </CardHeader>
-
-            <CardContent>
-              <p className="asancha-page-description">
-                Live data for profile {profilePublicId} will be connected through the profiles
-                feature layer. Backend permissions will decide which fields and actions are visible
-                to the current staff role.
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </section>
-    </PageShell>
+function RelatedCard({ label, value, href }: { label: string; value: number; href: string }) {
+  return (
+    <Card>
+      <CardHeader><CardTitle>{label}</CardTitle></CardHeader>
+      <CardContent><div className="asancha-cluster-between"><strong>{value}</strong><a href={href}>Open</a></div></CardContent>
+    </Card>
   );
 }

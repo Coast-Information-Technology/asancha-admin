@@ -29,6 +29,15 @@
 
 export type StaffNavigationRole = 'super_admin' | 'admin' | 'customer_care_rep';
 
+export type NavigationSection =
+  | 'overview'
+  | 'work'
+  | 'records'
+  | 'operations'
+  | 'status'
+  | 'communication'
+  | 'governance';
+
 export type NavigationBadgeKey =
   | 'reviewQueueCount'
   | 'messageUnreadCount'
@@ -58,29 +67,6 @@ export const ALL_STAFF_NAVIGATION_ROLES: readonly StaffNavigationRole[] = [
 
 export const ADMIN_TOP_BAR_NAVIGATION: readonly AdminNavigationItem[] = [
   {
-    label: 'Dashboard',
-    href: '/dashboard',
-    iconName: 'LayoutDashboard',
-    description: 'Open the correct dashboard for the current staff role.',
-    allowedRoles: ALL_STAFF_NAVIGATION_ROLES,
-  },
-  {
-    label: 'Review Queues',
-    href: '/review-queues',
-    iconName: 'ListChecks',
-    description: 'Open operational review queues.',
-    badgeKey: 'reviewQueueCount',
-    allowedRoles: ['super_admin', 'admin'],
-  },
-  {
-    label: 'Messages',
-    href: '/messages',
-    iconName: 'MessagesSquare',
-    description: 'Open staff messages and conversation threads.',
-    badgeKey: 'messageUnreadCount',
-    allowedRoles: ALL_STAFF_NAVIGATION_ROLES,
-  },
-  {
     label: 'Notifications',
     href: '/notifications',
     iconName: 'Bell',
@@ -88,15 +74,61 @@ export const ADMIN_TOP_BAR_NAVIGATION: readonly AdminNavigationItem[] = [
     badgeKey: 'notificationUnreadCount',
     allowedRoles: ALL_STAFF_NAVIGATION_ROLES,
   },
-  {
-    label: 'My Staff Account',
-    href: '/my-profile',
-    iconName: 'UserCircle',
-    description: 'Manage your staff profile, security, notifications, and activity.',
-    allowedRoles: ALL_STAFF_NAVIGATION_ROLES,
-  },
 ];
 
 export function getAdminTopBarNavigation(role: StaffNavigationRole): AdminNavigationItem[] {
   return ADMIN_TOP_BAR_NAVIGATION.filter((item) => item.allowedRoles.includes(role));
+}
+
+export function getNavigationSection(item: AdminNavigationItem): NavigationSection {
+  if (item.label === 'Dashboard') {
+    return 'overview';
+  }
+
+  if (item.label === 'Review Queues') {
+    return 'work';
+  }
+
+  if (
+    [
+      'Users',
+      'Staff',
+      'Profiles',
+      'Companies',
+      'Properties',
+      'Listings',
+      'Documents',
+      'Verification Reviews',
+    ].includes(item.label)
+  ) {
+    return 'records';
+  }
+
+  if (['Deal Reservations', 'Deal Activities', 'Payments', 'Bookings'].includes(item.label)) {
+    return 'operations';
+  }
+
+  if (item.label.endsWith('Status')) {
+    return 'status';
+  }
+
+  if (['Messages', 'Notifications'].includes(item.label)) {
+    return 'communication';
+  }
+
+  return 'governance';
+}
+
+export function getNavigationSectionLabel(section: NavigationSection): string {
+  const labels: Record<NavigationSection, string> = {
+    overview: 'Overview',
+    work: 'Work queues',
+    records: 'Records',
+    operations: 'Operations',
+    status: 'Status lookup',
+    communication: 'Communication',
+    governance: 'Governance',
+  };
+
+  return labels[section];
 }

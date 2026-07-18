@@ -51,7 +51,6 @@ const ALL_STAFF_ROLES: readonly StaffRole[] = ['super_admin', 'admin', 'customer
 const REVIEW_STAFF_ROLES: readonly StaffRole[] = ['super_admin', 'admin'];
 const SUPER_ADMIN_ONLY: readonly StaffRole[] = ['super_admin'];
 const ADMIN_AND_SUPER_ADMIN: readonly StaffRole[] = ['super_admin', 'admin'];
-const CUSTOMER_CARE_ONLY: readonly StaffRole[] = ['customer_care_rep'];
 
 export const ADMIN_ROUTE_PERMISSION_RULES: readonly RoutePermissionRule[] = [
   {

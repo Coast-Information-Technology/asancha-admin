@@ -25,7 +25,9 @@
  * raw cookies, JWTs, API keys, or webhook secrets. Backend auth remains final.
  */
 
+import { createApiErrorFromRawResponse } from '../../../lib/api/api-response';
 import { authGet, authPost } from '../../../lib/api/auth-fetch';
+import { parseApiEnvelope } from '../../../lib/api/api-response';
 
 import { AUTH_API_PATHS } from '../constants/auth.constants';
 import type {
@@ -39,30 +41,61 @@ import type {
   VerifyStaffInviteResponse,
 } from '../types/auth.types';
 
+async function requestLocalAuth<TData, TBody>(
+  path: string,
+  options: { method?: 'GET' | 'POST'; body?: TBody } = {},
+): Promise<TData> {
+  const method = options.method ?? 'POST';
+  let response: Response;
+
+  try {
+    response = await fetch(path, {
+      method,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: options.body === undefined ? undefined : JSON.stringify(options.body),
+      credentials: 'include',
+      cache: 'no-store',
+    });
+  } catch (error) {
+    throw createApiErrorFromRawResponse(error, 503, path);
+  }
+
+  const responseBody = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw createApiErrorFromRawResponse(responseBody, response.status, path);
+  }
+
+  const envelope = parseApiEnvelope<TData>(responseBody);
+
+  if (!envelope.success) {
+    throw createApiErrorFromRawResponse(envelope, response.status, path);
+  }
+
+  return envelope.data;
+}
+
 export async function signInStaff(
   payload: StaffSignInRequest,
 ): Promise<StaffAuthSessionResponse> {
-  const response = await authPost<StaffAuthSessionResponse, StaffSignInRequest>(
-    AUTH_API_PATHS.staffSignIn,
-    payload,
-  );
-
-  return response.data;
+  return requestLocalAuth<StaffAuthSessionResponse, StaffSignInRequest>('/api/auth/sign-in', {
+    body: payload,
+  });
 }
 
 export async function signOutStaff(): Promise<StaffSignOutResponse> {
-  const response = await authPost<StaffSignOutResponse, Record<string, never>>(
-    AUTH_API_PATHS.staffSignOut,
-    {},
-  );
-
-  return response.data;
+  return requestLocalAuth<StaffSignOutResponse, Record<string, never>>('/api/auth/sign-out', {
+    body: {},
+  });
 }
 
 export async function getCurrentStaffSession(): Promise<StaffAuthSessionResponse> {
-  const response = await authGet<StaffAuthSessionResponse>(AUTH_API_PATHS.currentStaffSession);
-
-  return response.data;
+  return requestLocalAuth<StaffAuthSessionResponse, Record<string, never>>('/api/auth/session', {
+    method: 'GET',
+  });
 }
 
 export async function requestStaffPasswordReset(

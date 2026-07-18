@@ -22,9 +22,16 @@
  */
 
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
+import { cookies } from 'next/headers';
 import type { ReactNode } from 'react';
 
 import { AppProviders } from './providers';
+import {
+  AdminShell,
+  type AdminShellStaff,
+} from '../src/components/layout/admin-shell/admin-shell';
+import type { StaffNavigationRole } from '../src/lib/navigation/admin-top-bar-navigation';
 
 import '../src/styles/globals.css';
 
@@ -52,11 +59,47 @@ export interface RootLayoutProps {
   children: ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+const STAFF_ROLE_COOKIE = 'asancha_admin_role';
+
+const THEME_INIT_SCRIPT = `(() => {
+  try {
+    const storedTheme = window.localStorage.getItem('asancha_admin_preferred_theme');
+    const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'system';
+    const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+  } catch {}
+})();`;
+
+function isStaffNavigationRole(value: string | undefined): value is StaffNavigationRole {
+  return value === 'super_admin' || value === 'admin' || value === 'customer_care_rep';
+}
+
+function getFallbackStaff(role: StaffNavigationRole): AdminShellStaff {
+  return {
+    displayName: 'Asancha Staff',
+    email: 'Current staff session',
+    role,
+  };
+}
+
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const cookieStore = await cookies();
+  const roleCookie = cookieStore.get(STAFF_ROLE_COOKIE)?.value;
+  const role: StaffNavigationRole = isStaffNavigationRole(roleCookie)
+    ? roleCookie
+    : 'customer_care_rep';
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <AppProviders>{children}</AppProviders>
+        <Script id="asancha-theme-init" strategy="beforeInteractive">
+          {THEME_INIT_SCRIPT}
+        </Script>
+        <AppProviders>
+          <AdminShell staff={getFallbackStaff(role)}>{children}</AdminShell>
+        </AppProviders>
       </body>
     </html>
   );

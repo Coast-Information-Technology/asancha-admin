@@ -25,6 +25,7 @@ import {
   type ApiResponseEnvelope,
 } from './api-response';
 import { createNetworkApiError, createUnknownApiError, isApiError } from './api-error';
+import { env } from '../env/env';
 
 export type ApiClientMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -53,7 +54,7 @@ function normaliseApiBaseUrl(value: string | undefined): string {
 }
 
 export function getApiBaseUrl(): string {
-  return normaliseApiBaseUrl(process.env.NEXT_PUBLIC_API_BASE_URL);
+  return normaliseApiBaseUrl(env.NEXT_PUBLIC_API_BASE_URL);
 }
 
 function isFormDataBody(value: unknown): value is FormData {
@@ -96,6 +97,10 @@ function createRequestUrl(path: string): string {
   }
 
   const normalisedPath = path.startsWith('/') ? path : `/${path}`;
+
+  if (typeof window !== 'undefined') {
+    return `/api/backend${normalisedPath}`;
+  }
 
   if (!apiBaseUrl) {
     return normalisedPath;
