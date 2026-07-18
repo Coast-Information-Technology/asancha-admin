@@ -1,0 +1,143 @@
+/*
+ * src/components/companies/companies.module.css
+ *
+ * File purpose:
+ * Provides CSS Module styles for Asancha Admin company components.
+ *
+ * Role in the project:
+ * These styles support company tables, company status badges, company member
+ * role badges, metadata rows, and empty states.
+ *
+ * Business relevance:
+ * Company screens must be clear, operationally useful, and safe for authorised
+ * staff reviewing company onboarding, documents, members, and verification.
+ *
+ * Security note:
+ * Styles do not enforce permissions. Backend authorization, redaction, company
+ * visibility, document access, member mutation rules, and audit logging remain
+ * final.
+ */
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 62rem;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--asancha-color-surface-subtle);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.companyTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.companyMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.badge {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 1.5rem;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1875rem 0.55rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: 999px;
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.badgeNeutral {
+  color: var(--asancha-color-text-muted);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.badgeInfo {
+  color: var(--asancha-color-brand);
+  background: color-mix(in srgb, var(--asancha-color-brand) 8%, var(--asancha-color-surface));
+}
+
+.badgeSuccess {
+  color: var(--asancha-color-success);
+  background: color-mix(in srgb, var(--asancha-color-success) 10%, var(--asancha-color-surface));
+}
+
+.badgeWarning {
+  color: var(--asancha-color-warning);
+  background: color-mix(in srgb, var(--asancha-color-warning) 10%, var(--asancha-color-surface));
+}
+
+.badgeDanger {
+  color: var(--asancha-color-danger);
+  background: color-mix(in srgb, var(--asancha-color-danger) 10%, var(--asancha-color-surface));
+}
+
+.emptyState {
+  display: grid;
+  gap: 0.5rem;
+  place-items: center;
+  padding: 2rem;
+  border: 1px dashed var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.emptyDescription {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}

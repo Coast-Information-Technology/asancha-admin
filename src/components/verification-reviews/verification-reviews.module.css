@@ -1,0 +1,269 @@
+/*
+ * src/components/verification-reviews/verification-reviews.module.css
+ *
+ * File purpose:
+ * Provides CSS Module styles for Asancha Admin verification review components.
+ *
+ * Role in the project:
+ * These styles support verification review tables, status badges, risk badges,
+ * review panels, target summaries, document/message/audit summaries, safe user
+ * message blocks, internal-note warnings, and empty states.
+ *
+ * Business relevance:
+ * Verification review screens must be clear, operationally useful, and safe for
+ * authorised staff reviewing KYC/AML readiness, profile approval, company
+ * approval, property approval, API partner readiness, and sensitive action
+ * unlocks.
+ *
+ * Security note:
+ * Styles do not enforce permissions. Backend authorization, document access,
+ * private KYC/risk redaction, internal note visibility, review decisions, and
+ * audit logging remain final.
+ */
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 76rem;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--asancha-color-surface-subtle);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.reviewTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.reviewMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.targetTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 750;
+}
+
+.targetMeta {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.badge {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 1.5rem;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1875rem 0.55rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: 999px;
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.badgeDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.badgeNeutral {
+  color: var(--asancha-color-text-muted);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.badgeInfo {
+  color: var(--asancha-color-brand);
+  background: color-mix(in srgb, var(--asancha-color-brand) 8%, var(--asancha-color-surface));
+}
+
+.badgeSuccess {
+  color: var(--asancha-color-success);
+  background: color-mix(in srgb, var(--asancha-color-success) 10%, var(--asancha-color-surface));
+}
+
+.badgeWarning {
+  color: var(--asancha-color-warning);
+  background: color-mix(in srgb, var(--asancha-color-warning) 10%, var(--asancha-color-surface));
+}
+
+.badgeDanger {
+  color: var(--asancha-color-danger);
+  background: color-mix(in srgb, var(--asancha-color-danger) 10%, var(--asancha-color-surface));
+}
+
+.panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.panelHeader {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.panelTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-lg);
+  font-weight: 900;
+}
+
+.panelDescription {
+  max-width: 54rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.75rem;
+}
+
+.summaryItem {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.875rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.summaryLabel {
+  margin: 0;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.summaryValue {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+}
+
+.metricItem {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.875rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface);
+}
+
+.metricValue {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-lg);
+  font-weight: 900;
+}
+
+.warningBox {
+  padding: 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--asancha-color-warning) 35%, var(--asancha-color-border));
+  border-radius: var(--asancha-radius-lg);
+  color: var(--asancha-color-text);
+  background: color-mix(in srgb, var(--asancha-color-warning) 10%, var(--asancha-color-surface));
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.dangerBox {
+  padding: 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--asancha-color-danger) 35%, var(--asancha-color-border));
+  border-radius: var(--asancha-radius-lg);
+  color: var(--asancha-color-text);
+  background: color-mix(in srgb, var(--asancha-color-danger) 10%, var(--asancha-color-surface));
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.actionList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.emptyState {
+  display: grid;
+  gap: 0.5rem;
+  place-items: center;
+  padding: 2rem;
+  border: 1px dashed var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.emptyDescription {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}

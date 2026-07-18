@@ -1,0 +1,27 @@
+/** Styles the compact light/dark theme toggle. */
+
+.toggle {
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-md);
+  background: var(--asancha-color-surface);
+  color: var(--asancha-color-text-muted);
+  transition:
+    background-color var(--asancha-transition-fast),
+    border-color var(--asancha-transition-fast),
+    color var(--asancha-transition-fast);
+}
+
+.toggle:hover {
+  background: var(--asancha-color-surface-muted);
+  color: var(--asancha-color-text);
+}
+
+.toggle:focus-visible {
+  outline: 3px solid var(--asancha-color-focus-ring);
+  outline-offset: 2px;
+}
