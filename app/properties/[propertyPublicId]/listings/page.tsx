@@ -11,12 +11,18 @@ export interface PropertyListingsPageProps {
 export default async function PropertyListingsPage({ params }: PropertyListingsPageProps) {
   const { propertyPublicId } = await params;
   const property = getDemoProperty(propertyPublicId);
-  const listings = DEMO_LISTINGS.filter((listing) => listing.propertyPublicId === property.propertyPublicId);
+  const listings = DEMO_LISTINGS.filter(
+    (listing) => listing.propertyPublicId === property.propertyPublicId,
+  );
 
   return (
     <ManagementDetailPage
       description="Listings connected to this property with lifecycle, review, visibility, and reservation state."
-      links={[{ label: 'Property overview', href: `/properties/${property.propertyPublicId}` }, { label: 'Documents', href: `/properties/${property.propertyPublicId}/documents` }, { label: 'All listings', href: '/listings' }]}
+      links={[
+        { label: 'Property overview', href: `/properties/${property.propertyPublicId}` },
+        { label: 'Documents', href: `/properties/${property.propertyPublicId}/documents` },
+        { label: 'All listings', href: '/listings' },
+      ]}
       publicId={property.propertyPublicId}
       recordLabel="Property listings"
       recordName={property.title}

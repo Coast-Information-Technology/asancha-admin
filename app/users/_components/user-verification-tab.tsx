@@ -48,7 +48,8 @@ export function UserVerificationTab({ userPublicId }: UserVerificationTabProps) 
 
         <CardContent>
           <p className="asancha-page-description">
-            Verification status will appear here after the verification review endpoint is connected.
+            Verification status will appear here after the verification review endpoint is
+            connected.
           </p>
         </CardContent>
       </Card>

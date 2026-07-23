@@ -18,9 +18,8 @@ async function forwardRequest(request: Request, context: BackendRouteContext): P
 
   const { path } = await context.params;
   const decodedPath = path.map((segment) => decodeURIComponent(segment));
-  const backendPath = decodedPath[0] === 'api' && decodedPath[1] === 'v1'
-    ? decodedPath.slice(2)
-    : decodedPath;
+  const backendPath =
+    decodedPath[0] === 'api' && decodedPath[1] === 'v1' ? decodedPath.slice(2) : decodedPath;
   const backendUrl = new URL(
     `${env.NEXT_PUBLIC_API_BASE_URL}/${backendPath.map((segment) => encodeURIComponent(segment)).join('/')}`,
   );
@@ -39,9 +38,8 @@ async function forwardRequest(request: Request, context: BackendRouteContext): P
     headers.set('Authorization', `Bearer ${accessToken}`);
   }
 
-  const body = request.method === 'GET' || request.method === 'HEAD'
-    ? undefined
-    : await request.arrayBuffer();
+  const body =
+    request.method === 'GET' || request.method === 'HEAD' ? undefined : await request.arrayBuffer();
 
   try {
     const backendResponse = await fetch(backendUrl, {

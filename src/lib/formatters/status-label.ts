@@ -28,13 +28,7 @@
  */
 
 export type StatusTone =
-  | 'neutral'
-  | 'info'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'pending'
-  | 'muted';
+  'neutral' | 'info' | 'success' | 'warning' | 'danger' | 'pending' | 'muted';
 
 export interface StatusDisplay {
   label: string;

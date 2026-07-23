@@ -31,7 +31,12 @@ export function ToastViewport({ toasts, onDismiss }: ToastViewportProps) {
             <strong className={styles.title}>{toast.title}</strong>
             {toast.description ? <p className={styles.description}>{toast.description}</p> : null}
           </div>
-          <button aria-label="Dismiss notification" className={styles.closeButton} onClick={() => onDismiss(toast.id)} type="button">
+          <button
+            aria-label="Dismiss notification"
+            className={styles.closeButton}
+            onClick={() => onDismiss(toast.id)}
+            type="button"
+          >
             ×
           </button>
         </article>

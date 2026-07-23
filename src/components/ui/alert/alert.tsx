@@ -29,7 +29,11 @@ export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
 
 export function Alert({ title, children, tone = 'info', className, ...props }: AlertProps) {
   return (
-    <div className={cn(styles.alert, styles[tone], className)} role={tone === 'danger' ? 'alert' : 'status'} {...props}>
+    <div
+      className={cn(styles.alert, styles[tone], className)}
+      role={tone === 'danger' ? 'alert' : 'status'}
+      {...props}
+    >
       <strong className={styles.title}>{title}</strong>
       {children ? <div className={styles.body}>{children}</div> : null}
     </div>

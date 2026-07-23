@@ -61,12 +61,7 @@ export const verificationRiskRatingSchema = z.enum([
   'critical',
 ]);
 
-export const verificationReviewPrioritySchema = z.enum([
-  'low',
-  'normal',
-  'high',
-  'critical',
-]);
+export const verificationReviewPrioritySchema = z.enum(['low', 'normal', 'high', 'critical']);
 
 export const verificationReviewsQuerySchema = z.object({
   status: verificationReviewStatusSchema.optional(),
@@ -84,10 +79,6 @@ export const verificationReviewsQuerySchema = z.object({
   pageSize: z.coerce.number().int().min(1).max(100).default(20),
 });
 
-export type VerificationReviewsQuerySchemaInput = z.input<
-  typeof verificationReviewsQuerySchema
->;
+export type VerificationReviewsQuerySchemaInput = z.input<typeof verificationReviewsQuerySchema>;
 
-export type VerificationReviewsQuerySchemaOutput = z.output<
-  typeof verificationReviewsQuerySchema
->;
+export type VerificationReviewsQuerySchemaOutput = z.output<typeof verificationReviewsQuerySchema>;

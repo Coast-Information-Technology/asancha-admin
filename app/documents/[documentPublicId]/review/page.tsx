@@ -62,8 +62,7 @@ const reviewSections = [
   },
   {
     title: 'Internal note',
-    description:
-      'Restricted internal staff note area that must never be exposed to public users.',
+    description: 'Restricted internal staff note area that must never be exposed to public users.',
     href: '#internal-note',
     tone: 'danger',
   },

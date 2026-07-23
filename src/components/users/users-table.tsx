@@ -23,10 +23,7 @@
 import { Badge } from '../ui/badge/badge';
 import { Button } from '../ui/button/button';
 
-import type {
-  UserListItem,
-  UserVerificationStatus,
-} from '../../features/users/types/users.types';
+import type { UserListItem, UserVerificationStatus } from '../../features/users/types/users.types';
 
 import { UserRoleBadge } from './user-role-badge';
 import { UserStatusBadge } from './user-status-badge';

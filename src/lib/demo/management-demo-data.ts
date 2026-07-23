@@ -11,14 +11,8 @@ import type {
   DocumentDetail,
   DocumentListItem,
 } from '../../features/documents/types/documents.types';
-import type {
-  ListingDetail,
-  ListingListItem,
-} from '../../features/listings/types/listings.types';
-import type {
-  ProfileDetail,
-  ProfileListItem,
-} from '../../features/profiles/types/profiles.types';
+import type { ListingDetail, ListingListItem } from '../../features/listings/types/listings.types';
+import type { ProfileDetail, ProfileListItem } from '../../features/profiles/types/profiles.types';
 import type {
   PropertyDetail,
   PropertyListItem,
@@ -27,10 +21,7 @@ import type {
   VerificationReviewDetail,
   VerificationReviewListItem,
 } from '../../features/verification-reviews/types/verification-reviews.types';
-import type {
-  UserDetail,
-  UserListItem,
-} from '../../features/users/types/users.types';
+import type { UserDetail, UserListItem } from '../../features/users/types/users.types';
 import type { StaffListItem } from '../../features/staff/types/staff.types';
 
 export const DEMO_COMPANIES: readonly CompanyListItem[] = [
@@ -571,7 +562,8 @@ export const DEMO_VERIFICATION_REVIEWS: readonly VerificationReviewListItem[] = 
 ];
 
 export function getDemoCompany(companyPublicId: string): CompanyDetail {
-  const company = DEMO_COMPANIES.find((item) => item.companyPublicId === companyPublicId) ?? DEMO_COMPANIES[0];
+  const company =
+    DEMO_COMPANIES.find((item) => item.companyPublicId === companyPublicId) ?? DEMO_COMPANIES[0];
 
   return {
     companyPublicId: companyPublicId || company.companyPublicId,
@@ -621,7 +613,9 @@ export function getDemoCompany(companyPublicId: string): CompanyDetail {
 }
 
 export function getDemoProperty(propertyPublicId: string): PropertyDetail {
-  const property = DEMO_PROPERTIES.find((item) => item.propertyPublicId === propertyPublicId) ?? DEMO_PROPERTIES[0];
+  const property =
+    DEMO_PROPERTIES.find((item) => item.propertyPublicId === propertyPublicId) ??
+    DEMO_PROPERTIES[0];
 
   return {
     propertyPublicId: propertyPublicId || property.propertyPublicId,
@@ -668,7 +662,8 @@ export function getDemoProperty(propertyPublicId: string): PropertyDetail {
 }
 
 export function getDemoProfile(profilePublicId: string): ProfileDetail {
-  const profile = DEMO_PROFILES.find((item) => item.profilePublicId === profilePublicId) ?? DEMO_PROFILES[0];
+  const profile =
+    DEMO_PROFILES.find((item) => item.profilePublicId === profilePublicId) ?? DEMO_PROFILES[0];
 
   return {
     profilePublicId: profilePublicId || profile.profilePublicId,
@@ -693,7 +688,8 @@ export function getDemoProfile(profilePublicId: string): ProfileDetail {
 }
 
 export function getDemoDocument(documentPublicId: string): DocumentDetail {
-  const document = DEMO_DOCUMENTS.find((item) => item.documentPublicId === documentPublicId) ?? DEMO_DOCUMENTS[0];
+  const document =
+    DEMO_DOCUMENTS.find((item) => item.documentPublicId === documentPublicId) ?? DEMO_DOCUMENTS[0];
 
   return {
     ...document,
@@ -721,7 +717,10 @@ export function getDemoDocument(documentPublicId: string): DocumentDetail {
       {
         historyPublicId: `doc_history_${document.documentPublicId}_002`,
         status: document.status,
-        eventLabel: document.status === 'replacement_required' ? 'Replacement requested' : 'Review status updated',
+        eventLabel:
+          document.status === 'replacement_required'
+            ? 'Replacement requested'
+            : 'Review status updated',
         actorLabel: 'Demo Admin',
         createdAtLabel: document.updatedAtLabel ?? document.submittedAtLabel,
         safeSummary: 'Demo document workflow status was updated.',
@@ -731,7 +730,8 @@ export function getDemoDocument(documentPublicId: string): DocumentDetail {
 }
 
 export function getDemoListing(listingPublicId: string): ListingDetail {
-  const listing = DEMO_LISTINGS.find((item) => item.listingPublicId === listingPublicId) ?? DEMO_LISTINGS[0];
+  const listing =
+    DEMO_LISTINGS.find((item) => item.listingPublicId === listingPublicId) ?? DEMO_LISTINGS[0];
 
   return {
     ...listing,
@@ -747,7 +747,10 @@ export function getDemoListing(listingPublicId: string): ListingDetail {
       reviewStatus: listing.reviewStatus,
       reviewedByLabel: listing.reviewStatus === 'approved' ? 'Demo Admin' : undefined,
       reviewedAtLabel: listing.reviewStatus === 'approved' ? '17 Jul 2026, 16:35' : undefined,
-      latestReviewNoteLabel: listing.reviewStatus === 'pending' ? 'Check property title register before publication.' : 'Demo review checks complete.',
+      latestReviewNoteLabel:
+        listing.reviewStatus === 'pending'
+          ? 'Check property title register before publication.'
+          : 'Demo review checks complete.',
     },
     visibilitySummary: {
       visibilityStatus: listing.visibilityStatus,
@@ -797,8 +800,7 @@ export function getDemoVerificationReview(
 
   return {
     ...review,
-    verificationReviewPublicId:
-      verificationReviewPublicId || review.verificationReviewPublicId,
+    verificationReviewPublicId: verificationReviewPublicId || review.verificationReviewPublicId,
     safeSummary: `${review.title} is a demo verification record. Restricted risk payloads and private KYC notes are intentionally excluded from this preview.`,
     latestSafeUserMessage:
       review.status === 'correction_required'

@@ -11,12 +11,18 @@ export interface PropertyDocumentsPageProps {
 export default async function PropertyDocumentsPage({ params }: PropertyDocumentsPageProps) {
   const { propertyPublicId } = await params;
   const property = getDemoProperty(propertyPublicId);
-  const documents = DEMO_DOCUMENTS.filter((document) => document.ownerSummary.ownerPublicId === property.propertyPublicId);
+  const documents = DEMO_DOCUMENTS.filter(
+    (document) => document.ownerSummary.ownerPublicId === property.propertyPublicId,
+  );
 
   return (
     <ManagementDetailPage
       description="Property-owned document records with review and replacement context."
-      links={[{ label: 'Property overview', href: `/properties/${property.propertyPublicId}` }, { label: 'Listings', href: `/properties/${property.propertyPublicId}/listings` }, { label: 'All documents', href: '/documents' }]}
+      links={[
+        { label: 'Property overview', href: `/properties/${property.propertyPublicId}` },
+        { label: 'Listings', href: `/properties/${property.propertyPublicId}/listings` },
+        { label: 'All documents', href: '/documents' },
+      ]}
       publicId={property.propertyPublicId}
       recordLabel="Property documents"
       recordName={property.title}

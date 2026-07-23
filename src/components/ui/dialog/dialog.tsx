@@ -44,9 +44,8 @@ export function Dialog({
       return;
     }
 
-    previousFocusRef.current = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
     const focusFrame = window.requestAnimationFrame(() => {
       const firstFocusable = dialogRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
@@ -108,18 +107,30 @@ export function Dialog({
       className={styles.overlay}
       role="dialog"
     >
-      <button aria-label="Close dialog" className={styles.backdrop} onClick={onClose} type="button" />
-      <section
-        className={cn(styles.dialog, className)}
-        ref={dialogRef}
-        tabIndex={-1}
-      >
+      <button
+        aria-label="Close dialog"
+        className={styles.backdrop}
+        onClick={onClose}
+        type="button"
+      />
+      <section className={cn(styles.dialog, className)} ref={dialogRef} tabIndex={-1}>
         <header className={styles.header}>
           <div>
-            <h2 className={styles.title} id={labelledById}>{title}</h2>
-            {description ? <p className={styles.description} id={descriptionId}>{description}</p> : null}
+            <h2 className={styles.title} id={labelledById}>
+              {title}
+            </h2>
+            {description ? (
+              <p className={styles.description} id={descriptionId}>
+                {description}
+              </p>
+            ) : null}
           </div>
-          <button aria-label="Close dialog" className={styles.closeButton} onClick={onClose} type="button">
+          <button
+            aria-label="Close dialog"
+            className={styles.closeButton}
+            onClick={onClose}
+            type="button"
+          >
             ×
           </button>
         </header>

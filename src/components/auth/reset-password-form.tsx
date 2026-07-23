@@ -53,7 +53,8 @@ export function ResetPasswordForm({
 }: ResetPasswordFormProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const passwordsDoNotMatch = password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
+  const passwordsDoNotMatch =
+    password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();

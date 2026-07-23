@@ -31,21 +31,10 @@
  */
 
 export type CompanyStatus =
-  | 'draft'
-  | 'pending'
-  | 'under_review'
-  | 'on_hold'
-  | 'approved'
-  | 'rejected'
-  | 'suspended';
+  'draft' | 'pending' | 'under_review' | 'on_hold' | 'approved' | 'rejected' | 'suspended';
 
 export type CompanyVerificationStatus =
-  | 'not_started'
-  | 'pending'
-  | 'in_review'
-  | 'approved'
-  | 'rejected'
-  | 'flagged';
+  'not_started' | 'pending' | 'in_review' | 'approved' | 'rejected' | 'flagged';
 
 export type CompanyMemberRole =
   | 'owner'
@@ -57,11 +46,7 @@ export type CompanyMemberRole =
   | 'api_contact'
   | 'member';
 
-export type CompanyMemberStatus =
-  | 'invited'
-  | 'active'
-  | 'removed'
-  | 'suspended';
+export type CompanyMemberStatus = 'invited' | 'active' | 'removed' | 'suspended';
 
 export type CompanyActionType =
   | 'approve'

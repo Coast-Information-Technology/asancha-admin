@@ -41,9 +41,7 @@ export function UserDocumentsTab({ userPublicId }: UserDocumentsTabProps) {
             <CardTitle>Documents</CardTitle>
             <Badge tone="neutral">0 documents</Badge>
           </div>
-          <CardDescription>
-            Document records connected to user {userPublicId}.
-          </CardDescription>
+          <CardDescription>Document records connected to user {userPublicId}.</CardDescription>
         </CardHeader>
 
         <CardContent>

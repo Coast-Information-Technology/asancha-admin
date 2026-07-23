@@ -27,10 +27,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { submitPropertyAction } from '../api/properties.api';
 import { propertiesActionSchema } from '../schemas/properties-action.schema';
-import type {
-  PropertyActionInput,
-  PropertyMutationResponse,
-} from '../types/properties.types';
+import type { PropertyActionInput, PropertyMutationResponse } from '../types/properties.types';
 
 export interface UsePropertiesActionOptions {
   onSuccess?: (message: string) => void;

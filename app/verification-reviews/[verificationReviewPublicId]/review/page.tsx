@@ -63,15 +63,13 @@ const reviewSections = [
   },
   {
     title: 'Safe user message',
-    description:
-      'User-facing correction or review message separated from internal staff notes.',
+    description: 'User-facing correction or review message separated from internal staff notes.',
     href: '#safe-user-message',
     tone: 'success',
   },
   {
     title: 'Internal note',
-    description:
-      'Restricted staff-only note area that must never be exposed to public users.',
+    description: 'Restricted staff-only note area that must never be exposed to public users.',
     href: '#internal-note',
     tone: 'danger',
   },

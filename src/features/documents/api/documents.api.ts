@@ -422,17 +422,17 @@ async function sendJsonToApi(path: string, body: unknown): Promise<unknown> {
   return response.json() as Promise<unknown>;
 }
 
-export async function getDocumentsList(
-  query: DocumentsQuery = {},
-): Promise<DocumentsListResponse> {
+export async function getDocumentsList(query: DocumentsQuery = {}): Promise<DocumentsListResponse> {
   const payload = await getJsonFromApi(DOCUMENTS_API_PATHS.list, createDocumentsQuery(query));
   const parsed = parseDocumentsListResponse(unwrapEnvelopeData(payload));
 
-  return parsed ?? {
-    ...FALLBACK_DOCUMENTS_LIST_RESPONSE,
-    page: query.page ?? 1,
-    pageSize: query.pageSize ?? 20,
-  };
+  return (
+    parsed ?? {
+      ...FALLBACK_DOCUMENTS_LIST_RESPONSE,
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 20,
+    }
+  );
 }
 
 export async function getDocumentDetail(documentPublicId: string): Promise<DocumentDetail> {

@@ -44,7 +44,8 @@ const allowedCreationRules = [
   {
     actor: 'super_admin',
     allowed: 'customer_care_rep',
-    description: 'Super admins may invite/create customer care staff where backend permission allows.',
+    description:
+      'Super admins may invite/create customer care staff where backend permission allows.',
   },
   {
     actor: 'admin',

@@ -41,9 +41,7 @@ export function UserMessagesTab({ userPublicId }: UserMessagesTabProps) {
             <CardTitle>Messages</CardTitle>
             <Badge tone="neutral">0 conversations</Badge>
           </div>
-          <CardDescription>
-            Message conversations connected to user {userPublicId}.
-          </CardDescription>
+          <CardDescription>Message conversations connected to user {userPublicId}.</CardDescription>
         </CardHeader>
 
         <CardContent>

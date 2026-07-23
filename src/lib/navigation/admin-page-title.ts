@@ -2,10 +2,7 @@
 
 /** Resolves the visible page title used in the authenticated admin top bars. */
 
-import type {
-  AdminNavigationItem,
-  StaffNavigationRole,
-} from './admin-top-bar-navigation';
+import type { AdminNavigationItem, StaffNavigationRole } from './admin-top-bar-navigation';
 import { getAdminSidebarNavigation } from './admin-sidebar-navigation';
 import { getCustomerCareSidebarNavigation } from './customer-care-sidebar-navigation';
 import { getSuperAdminSidebarNavigation } from './super-admin-sidebar-navigation';
@@ -57,13 +54,14 @@ function getSidebarNavigation(role: StaffNavigationRole): AdminNavigationItem[] 
 }
 
 function flattenNavigation(items: readonly AdminNavigationItem[]): AdminNavigationItem[] {
-  return items.flatMap((item) => [item, ...(item.children ? flattenNavigation(item.children) : [])]);
+  return items.flatMap((item) => [
+    item,
+    ...(item.children ? flattenNavigation(item.children) : []),
+  ]);
 }
 
 function humanisePathSegment(path: string): string {
   const segment = path.split('/').filter(Boolean).pop() ?? 'dashboard';
 
-  return segment
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, (character) => character.toUpperCase());
+  return segment.replace(/[-_]/g, ' ').replace(/\b\w/g, (character) => character.toUpperCase());
 }

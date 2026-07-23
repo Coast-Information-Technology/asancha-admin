@@ -26,10 +26,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getReviewQueueSummary } from '../api/dashboard.api';
-import {
-  DASHBOARD_QUERY_KEYS,
-  DASHBOARD_STALE_TIME_MS,
-} from '../constants/dashboard.constants';
+import { DASHBOARD_QUERY_KEYS, DASHBOARD_STALE_TIME_MS } from '../constants/dashboard.constants';
 import type { DashboardStaffRole, ReviewQueueSummaryItem } from '../types/dashboard.types';
 
 export function useReviewQueueSummary(role: DashboardStaffRole) {

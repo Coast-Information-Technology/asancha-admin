@@ -54,18 +54,9 @@ export type VerificationReviewTargetType =
   | 'payment'
   | 'api_client';
 
-export type VerificationRiskRating =
-  | 'unknown'
-  | 'low'
-  | 'medium'
-  | 'high'
-  | 'critical';
+export type VerificationRiskRating = 'unknown' | 'low' | 'medium' | 'high' | 'critical';
 
-export type VerificationReviewPriority =
-  | 'low'
-  | 'normal'
-  | 'high'
-  | 'critical';
+export type VerificationReviewPriority = 'low' | 'normal' | 'high' | 'critical';
 
 export type VerificationReviewActionType =
   | 'mark_in_review'

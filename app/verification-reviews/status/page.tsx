@@ -36,8 +36,7 @@ import {
 const supportStatusSections = [
   {
     title: 'Pending verification',
-    description:
-      'Support-safe explanation for verification reviews waiting for staff assessment.',
+    description: 'Support-safe explanation for verification reviews waiting for staff assessment.',
     href: '?status=pending',
     tone: 'warning',
   },
@@ -69,8 +68,7 @@ const supportStatusSections = [
   },
   {
     title: 'On hold',
-    description:
-      'Support-safe explanation for verification reviews paused for additional checks.',
+    description: 'Support-safe explanation for verification reviews paused for additional checks.',
     href: '?status=on_hold',
     tone: 'neutral',
   },

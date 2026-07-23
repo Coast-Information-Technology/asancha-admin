@@ -41,11 +41,14 @@ export async function GET() {
   const backendPayload = await backendResponse.json().catch(() => null);
 
   if (!backendResponse.ok) {
-    return NextResponse.json(backendPayload ?? {
-      success: false,
-      message: 'The staff session is no longer valid.',
-      data: null,
-    }, { status: backendResponse.status });
+    return NextResponse.json(
+      backendPayload ?? {
+        success: false,
+        message: 'The staff session is no longer valid.',
+        data: null,
+      },
+      { status: backendResponse.status },
+    );
   }
 
   const authResult = normaliseBackendStaffAuth(backendPayload, { requireAccessToken: false });

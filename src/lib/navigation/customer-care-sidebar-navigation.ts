@@ -40,20 +40,6 @@ export const CUSTOMER_CARE_SIDEBAR_NAVIGATION: readonly AdminNavigationItem[] = 
     iconName: 'Users',
     description: 'Safe support view for user lookup and assistance.',
     allowedRoles: ['customer_care_rep'],
-    children: [
-      {
-        label: 'Safe User Support',
-        href: '/users',
-        iconName: 'Users',
-        allowedRoles: ['customer_care_rep'],
-      },
-      {
-        label: 'Search Users',
-        href: '/users/search',
-        iconName: 'Search',
-        allowedRoles: ['customer_care_rep'],
-      },
-    ],
   },
   {
     label: 'Bookings',

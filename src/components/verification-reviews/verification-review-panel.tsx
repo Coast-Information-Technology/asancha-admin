@@ -140,9 +140,7 @@ export function VerificationReviewPanel({
 
         <div className={styles.metricItem}>
           <p className={styles.summaryLabel}>Replacement required</p>
-          <span className={styles.metricValue}>
-            {review.documentSummary.replacementRequired}
-          </span>
+          <span className={styles.metricValue}>{review.documentSummary.replacementRequired}</span>
           <p className={styles.panelDescription}>Documents needing replacement or correction.</p>
         </div>
 
@@ -156,9 +154,7 @@ export function VerificationReviewPanel({
 
         <div className={styles.metricItem}>
           <p className={styles.summaryLabel}>High-impact audit actions</p>
-          <span className={styles.metricValue}>
-            {review.auditSummary.highImpactActionsCount}
-          </span>
+          <span className={styles.metricValue}>{review.auditSummary.highImpactActionsCount}</span>
           <p className={styles.panelDescription}>Restricted audit context only.</p>
         </div>
       </div>

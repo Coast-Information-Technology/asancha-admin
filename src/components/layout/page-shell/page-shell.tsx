@@ -52,7 +52,11 @@ export function PageShell({
           <ol>
             {breadcrumbs.map((item, index) => (
               <li key={`${item.label}-${index}`}>
-                {item.href && !item.current ? <Link href={item.href}>{item.label}</Link> : <span>{item.label}</span>}
+                {item.href && !item.current ? (
+                  <Link href={item.href}>{item.label}</Link>
+                ) : (
+                  <span>{item.label}</span>
+                )}
               </li>
             ))}
           </ol>

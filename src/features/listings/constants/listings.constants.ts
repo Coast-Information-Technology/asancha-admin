@@ -38,7 +38,8 @@ import type {
 
 export const LISTINGS_API_PATHS = {
   list: '/api/v1/admin/listings',
-  detail: (listingPublicId: string) => `/api/v1/admin/listings/${encodeURIComponent(listingPublicId)}`,
+  detail: (listingPublicId: string) =>
+    `/api/v1/admin/listings/${encodeURIComponent(listingPublicId)}`,
   action: (listingPublicId: string) =>
     `/api/v1/admin/listings/${encodeURIComponent(listingPublicId)}/actions`,
 } as const;

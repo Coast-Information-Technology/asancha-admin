@@ -46,13 +46,7 @@ export const documentOwnerTypeSchema = z.enum([
   'api_partner',
 ]);
 
-export const documentReviewRiskSchema = z.enum([
-  'none',
-  'low',
-  'medium',
-  'high',
-  'flagged',
-]);
+export const documentReviewRiskSchema = z.enum(['none', 'low', 'medium', 'high', 'flagged']);
 
 export const documentsQuerySchema = z.object({
   status: documentStatusSchema.optional(),

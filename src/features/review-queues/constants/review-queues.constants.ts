@@ -42,7 +42,8 @@ export const REVIEW_QUEUES_API_PATHS = {
 
 export const REVIEW_QUEUES_QUERY_KEYS = {
   all: ['review-queues'] as const,
-  summaries: (role?: ReviewQueueStaffRole) => ['review-queues', 'summaries', role ?? 'all'] as const,
+  summaries: (role?: ReviewQueueStaffRole) =>
+    ['review-queues', 'summaries', role ?? 'all'] as const,
   items: (query: ReviewQueueQuery) =>
     [
       'review-queues',
@@ -210,7 +211,8 @@ export const FALLBACK_REVIEW_QUEUE_SUMMARIES: readonly ReviewQueueSummary[] = [
   {
     queueType: 'api_partners',
     label: 'API partners',
-    description: 'API partner application, client, plan, subscription, webhook, and billing review.',
+    description:
+      'API partner application, client, plan, subscription, webhook, and billing review.',
     href: REVIEW_QUEUE_ROUTE_BY_TYPE.api_partners,
     pendingCount: 0,
     urgentCount: 0,

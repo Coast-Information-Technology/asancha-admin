@@ -103,7 +103,6 @@ export function isPublicUserRole(value: unknown): value is PublicUserRole {
 
 export function isBusinessProfileRole(value: unknown): value is BusinessProfileRole {
   return (
-    typeof value === 'string' &&
-    BUSINESS_PROFILE_ROLE_VALUES.includes(value as BusinessProfileRole)
+    typeof value === 'string' && BUSINESS_PROFILE_ROLE_VALUES.includes(value as BusinessProfileRole)
   );
 }

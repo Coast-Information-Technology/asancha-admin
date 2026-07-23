@@ -10,12 +10,26 @@ export default function PropertySourcerProfilesPage() {
   return (
     <ManagementListPage
       description="Property sourcer profiles with sourcing readiness, submission, and verification context."
-      filters={[{ label: 'All profiles', href: '/profiles' }, { label: 'Pending', href: '/profiles/property-sourcers?status=pending' }, { label: 'Approved', href: '/profiles/property-sourcers?status=approved' }]}
+      filters={[
+        { label: 'All profiles', href: '/profiles' },
+        { label: 'Pending', href: '/profiles/property-sourcers?status=pending' },
+        { label: 'Approved', href: '/profiles/property-sourcers?status=approved' },
+      ]}
       metrics={[
-        { label: 'Sourcer profiles', value: String(profiles.length), detail: 'Demo property sourcer records', tone: 'info' },
+        {
+          label: 'Sourcer profiles',
+          value: String(profiles.length),
+          detail: 'Demo property sourcer records',
+          tone: 'info',
+        },
         { label: 'Approved', value: '0', detail: 'Ready for sourcing workflows', tone: 'success' },
         { label: 'Pending', value: '1', detail: 'Onboarding review active', tone: 'warning' },
-        { label: 'Submitted deals', value: '1', detail: 'Related property context exists', tone: 'neutral' },
+        {
+          label: 'Submitted deals',
+          value: '1',
+          detail: 'Related property context exists',
+          tone: 'neutral',
+        },
       ]}
       title="Property sourcer profiles"
       totalLabel={`${profiles.length} property sourcer profile${profiles.length === 1 ? '' : 's'}`}

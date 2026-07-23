@@ -16,9 +16,10 @@
  *
  * Business relevance:
  * asancha-admin must not include public signup, public onboarding, marketplace,
- * or public user dashboard routes. Detail pages are valid pages but must not be
- * placed in sidebar menus. Frontend routes must use public IDs, not MongoDB
- * ObjectIds.
+ * or public user dashboard routes. The protected /onboarding route is an
+ * internal staff review workspace, not a public onboarding flow. Detail pages
+ * are valid pages but must not be placed in sidebar menus. Frontend routes must
+ * use public IDs, not MongoDB ObjectIds.
  *
  * Security note:
  * Route constants do not authorize access. Backend authentication,
@@ -63,6 +64,12 @@ export const ADMIN_ROUTES = {
     bookings: '/review-queues/bookings',
     apiPartners: '/review-queues/api-partners',
     ai: '/review-queues/ai',
+  },
+
+  onboarding: {
+    root: '/onboarding',
+    inProgress: '/onboarding?status=in_progress',
+    submitted: '/onboarding?status=submitted',
   },
 
   users: {
@@ -291,10 +298,7 @@ export const ADMIN_ROUTE_BUILDERS = {
     )}/audit`,
 
   dealReservationDetail: (reservationPublicId: string) =>
-    `/deal-reservations/${createPublicIdRouteSegment(
-      reservationPublicId,
-      'reservationPublicId',
-    )}`,
+    `/deal-reservations/${createPublicIdRouteSegment(reservationPublicId, 'reservationPublicId')}`,
 
   dealReservationPayment: (reservationPublicId: string) =>
     `/deal-reservations/${createPublicIdRouteSegment(
@@ -315,10 +319,7 @@ export const ADMIN_ROUTE_BUILDERS = {
     )}/activities`,
 
   dealActivityDetail: (dealActivityPublicId: string) =>
-    `/deal-activities/${createPublicIdRouteSegment(
-      dealActivityPublicId,
-      'dealActivityPublicId',
-    )}`,
+    `/deal-activities/${createPublicIdRouteSegment(dealActivityPublicId, 'dealActivityPublicId')}`,
 
   paymentReferenceDetail: (paymentReference: string) =>
     `/payments/references/${createPublicIdRouteSegment(paymentReference, 'paymentReference')}`,
@@ -380,7 +381,7 @@ export const ADMIN_ROUTE_BUILDERS = {
 
 export const DISALLOWED_ADMIN_FRONTEND_ROUTES = [
   '/auth/sign-up',
-  '/onboarding',
+  '/public/onboarding',
   '/marketplace',
   '/api-partner/apply',
   '/public-dashboard',

@@ -10,9 +10,18 @@ export default function PropertyAgentProfilesPage() {
   return (
     <ManagementListPage
       description="Property agent profiles with agency relationship, listing, and verification context."
-      filters={[{ label: 'All profiles', href: '/profiles' }, { label: 'Approved', href: '/profiles/property-agents?status=approved' }, { label: 'Company linked', href: '/profiles/property-agents?companyLinked=true' }]}
+      filters={[
+        { label: 'All profiles', href: '/profiles' },
+        { label: 'Approved', href: '/profiles/property-agents?status=approved' },
+        { label: 'Company linked', href: '/profiles/property-agents?companyLinked=true' },
+      ]}
       metrics={[
-        { label: 'Agent profiles', value: String(profiles.length), detail: 'Demo property agent records', tone: 'info' },
+        {
+          label: 'Agent profiles',
+          value: String(profiles.length),
+          detail: 'Demo property agent records',
+          tone: 'info',
+        },
         { label: 'Approved', value: '1', detail: 'Ready for listing workflows', tone: 'success' },
         { label: 'In review', value: '0', detail: 'Awaiting staff assessment', tone: 'warning' },
         { label: 'Company linked', value: '1', detail: 'Connected to an agency', tone: 'neutral' },

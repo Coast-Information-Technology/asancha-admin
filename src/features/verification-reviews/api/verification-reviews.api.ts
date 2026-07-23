@@ -139,12 +139,7 @@ function isVerificationRiskRating(value: unknown): value is VerificationRiskRati
 }
 
 function isVerificationReviewPriority(value: unknown): value is VerificationReviewPriority {
-  return (
-    value === 'low' ||
-    value === 'normal' ||
-    value === 'high' ||
-    value === 'critical'
-  );
+  return value === 'low' || value === 'normal' || value === 'high' || value === 'critical';
 }
 
 function getApiBaseUrl(): string | null {
@@ -221,9 +216,7 @@ function parseTargetSummary(value: unknown): VerificationReviewTargetSummary | n
   }
 
   const targetPublicId = getString(value.targetPublicId);
-  const targetType = isVerificationReviewTargetType(value.targetType)
-    ? value.targetType
-    : null;
+  const targetType = isVerificationReviewTargetType(value.targetType) ? value.targetType : null;
   const targetLabel = getString(value.targetLabel);
 
   if (!targetPublicId || !targetType || !targetLabel) {
@@ -491,11 +484,13 @@ export async function getVerificationReviewsList(
   );
   const parsed = parseVerificationReviewsListResponse(unwrapEnvelopeData(payload));
 
-  return parsed ?? {
-    ...FALLBACK_VERIFICATION_REVIEWS_LIST_RESPONSE,
-    page: query.page ?? 1,
-    pageSize: query.pageSize ?? 20,
-  };
+  return (
+    parsed ?? {
+      ...FALLBACK_VERIFICATION_REVIEWS_LIST_RESPONSE,
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 20,
+    }
+  );
 }
 
 export async function getVerificationReviewDetail(

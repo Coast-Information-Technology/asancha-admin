@@ -20,13 +20,22 @@ export default async function DocumentDetailPage({ params }: DocumentDetailPageP
         { label: 'Review', href: `/documents/${document.documentPublicId}/review` },
         { label: 'History', href: `/documents/${document.documentPublicId}/history` },
         { label: 'All documents', href: '/documents' },
-        { label: 'Owner record', href: `/users/${document.ownerSummary.relatedUserLabel ?? 'usr_demo_001'}` },
+        {
+          label: 'Owner record',
+          href: `/users/${document.ownerSummary.relatedUserLabel ?? 'usr_demo_001'}`,
+        },
       ]}
       publicId={document.documentPublicId}
       recordLabel={document.documentTypeLabel}
       recordName={document.documentLabel}
       status={document.status.replace(/_/g, ' ')}
-      statusTone={document.status === 'approved' ? 'success' : document.status === 'rejected' ? 'danger' : 'warning'}
+      statusTone={
+        document.status === 'approved'
+          ? 'success'
+          : document.status === 'rejected'
+            ? 'danger'
+            : 'warning'
+      }
       summary={document.summary}
       title="Document detail"
     >
@@ -34,11 +43,16 @@ export default async function DocumentDetailPage({ params }: DocumentDetailPageP
         <MetaCard label="Owner" value={document.ownerSummary.ownerLabel} />
         <MetaCard label="Owner public ID" value={document.ownerSummary.ownerPublicId} />
         <MetaCard label="Review risk" value={document.reviewRisk.replace(/_/g, ' ')} />
-        <MetaCard label="Replacement" value={document.replacementRequired ? 'Required' : 'Not required'} />
+        <MetaCard
+          label="Replacement"
+          value={document.replacementRequired ? 'Required' : 'Not required'}
+        />
       </section>
 
       <Card>
-        <CardHeader><CardTitle>Review history</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Review history</CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="asancha-stack-md">
             {document.history.map((item) => (
@@ -47,7 +61,9 @@ export default async function DocumentDetailPage({ params }: DocumentDetailPageP
                   <strong>{item.eventLabel}</strong>
                   <p className="asancha-page-description">{item.safeSummary}</p>
                 </div>
-                <Badge tone={item.status === 'approved' ? 'success' : 'warning'}>{item.createdAtLabel}</Badge>
+                <Badge tone={item.status === 'approved' ? 'success' : 'warning'}>
+                  {item.createdAtLabel}
+                </Badge>
               </div>
             ))}
           </div>
@@ -58,5 +74,14 @@ export default async function DocumentDetailPage({ params }: DocumentDetailPageP
 }
 
 function MetaCard({ label, value }: { label: string; value: string }) {
-  return <Card><CardHeader><CardTitle>{label}</CardTitle></CardHeader><CardContent><strong>{value}</strong></CardContent></Card>;
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{label}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <strong>{value}</strong>
+      </CardContent>
+    </Card>
+  );
 }

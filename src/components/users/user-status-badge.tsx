@@ -45,7 +45,12 @@ function getStatusClassName(status: UserAccountStatus): string {
     return `${styles.badge} ${styles.badgeSuccess}`;
   }
 
-  if (status === 'suspended' || status === 'restricted' || status === 'locked' || status === 'disabled') {
+  if (
+    status === 'suspended' ||
+    status === 'restricted' ||
+    status === 'locked' ||
+    status === 'disabled'
+  ) {
     return `${styles.badge} ${styles.badgeDanger}`;
   }
 

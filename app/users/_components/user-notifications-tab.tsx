@@ -40,9 +40,7 @@ export function UserNotificationsTab({ userPublicId }: UserNotificationsTabProps
             <CardTitle>Notifications</CardTitle>
             <Badge tone="neutral">0 notifications</Badge>
           </div>
-          <CardDescription>
-            Notification records connected to user {userPublicId}.
-          </CardDescription>
+          <CardDescription>Notification records connected to user {userPublicId}.</CardDescription>
         </CardHeader>
 
         <CardContent>

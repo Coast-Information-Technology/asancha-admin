@@ -61,9 +61,7 @@ export const isTestEnv = env.NEXT_PUBLIC_ENVIRONMENT === 'test';
 export const isStagingEnv = env.NEXT_PUBLIC_ENVIRONMENT === 'staging';
 
 export type PublicEnvUrlKey =
-  | 'NEXT_PUBLIC_APP_URL'
-  | 'NEXT_PUBLIC_API_BASE_URL'
-  | 'NEXT_PUBLIC_PUBLIC_APP_URL';
+  'NEXT_PUBLIC_APP_URL' | 'NEXT_PUBLIC_API_BASE_URL' | 'NEXT_PUBLIC_PUBLIC_APP_URL';
 
 export function getRequiredPublicEnvUrl(key: PublicEnvUrlKey): string {
   const value = env[key];

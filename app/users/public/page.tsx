@@ -18,7 +18,12 @@ export default function PublicUsersPage() {
         { label: 'Public users', value: '6', detail: 'All demo public user records', tone: 'info' },
         { label: 'Verified', value: '2', detail: 'Verification approved', tone: 'success' },
         { label: 'Onboarding review', value: '2', detail: 'Pending or in review', tone: 'warning' },
-        { label: 'Restricted', value: '2', detail: 'Suspended or restricted accounts', tone: 'danger' },
+        {
+          label: 'Restricted',
+          value: '2',
+          detail: 'Suspended or restricted accounts',
+          tone: 'danger',
+        },
       ]}
       title="Public users"
       totalLabel="6 public users"

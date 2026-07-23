@@ -35,7 +35,8 @@ export type PublicIdValidationResult =
     }
   | {
       valid: false;
-      reason: 'empty' | 'not_string' | 'object_id_like' | 'unsafe_characters' | 'too_short' | 'too_long';
+      reason:
+        'empty' | 'not_string' | 'object_id_like' | 'unsafe_characters' | 'too_short' | 'too_long';
     };
 
 const MONGO_OBJECT_ID_PATTERN = /^[a-f\d]{24}$/i;
@@ -122,7 +123,10 @@ export function assertSafePublicId(value: unknown, label = 'publicId'): string {
   return result.value;
 }
 
-export function maskPublicId(value: unknown, options: { visibleStart?: number; visibleEnd?: number } = {}): string {
+export function maskPublicId(
+  value: unknown,
+  options: { visibleStart?: number; visibleEnd?: number } = {},
+): string {
   const publicId = normalisePublicId(value);
 
   if (!publicId) {

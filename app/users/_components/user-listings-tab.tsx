@@ -41,9 +41,7 @@ export function UserListingsTab({ userPublicId }: UserListingsTabProps) {
             <CardTitle>Listings</CardTitle>
             <Badge tone="neutral">0 listings</Badge>
           </div>
-          <CardDescription>
-            Listings connected to user {userPublicId}.
-          </CardDescription>
+          <CardDescription>Listings connected to user {userPublicId}.</CardDescription>
         </CardHeader>
 
         <CardContent>

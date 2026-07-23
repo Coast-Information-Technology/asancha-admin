@@ -39,21 +39,45 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
       title="Company detail"
     >
       <section aria-label="Company related records" className="asancha-card-grid">
-        <RelatedCard label="Members" value={company.relatedSummary.membersCount} href={`/companies/${company.companyPublicId}/members`} />
-        <RelatedCard label="Properties" value={company.relatedSummary.propertiesCount} href={`/properties?companyPublicId=${company.companyPublicId}`} />
-        <RelatedCard label="Listings" value={company.relatedSummary.listingsCount} href={`/listings?companyPublicId=${company.companyPublicId}`} />
-        <RelatedCard label="Documents" value={company.relatedSummary.documentsCount} href={`/companies/${company.companyPublicId}/documents`} />
-        <RelatedCard label="Verification reviews" value={company.relatedSummary.verificationReviewsCount} href={`/companies/${company.companyPublicId}/verification`} />
+        <RelatedCard
+          label="Members"
+          value={company.relatedSummary.membersCount}
+          href={`/companies/${company.companyPublicId}/members`}
+        />
+        <RelatedCard
+          label="Properties"
+          value={company.relatedSummary.propertiesCount}
+          href={`/properties?companyPublicId=${company.companyPublicId}`}
+        />
+        <RelatedCard
+          label="Listings"
+          value={company.relatedSummary.listingsCount}
+          href={`/listings?companyPublicId=${company.companyPublicId}`}
+        />
+        <RelatedCard
+          label="Documents"
+          value={company.relatedSummary.documentsCount}
+          href={`/companies/${company.companyPublicId}/documents`}
+        />
+        <RelatedCard
+          label="Verification reviews"
+          value={company.relatedSummary.verificationReviewsCount}
+          href={`/companies/${company.companyPublicId}/verification`}
+        />
       </section>
 
       <Card>
-        <CardHeader><CardTitle>Document readiness</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Document readiness</CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="asancha-cluster">
             <Badge tone="neutral">{company.documentSummary.total} total</Badge>
             <Badge tone="warning">{company.documentSummary.pending} pending</Badge>
             <Badge tone="success">{company.documentSummary.approved} approved</Badge>
-            <Badge tone="danger">{company.documentSummary.replacementRequired} replacement required</Badge>
+            <Badge tone="danger">
+              {company.documentSummary.replacementRequired} replacement required
+            </Badge>
           </div>
         </CardContent>
       </Card>
@@ -64,7 +88,9 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
 function RelatedCard({ label, value, href }: { label: string; value: number; href: string }) {
   return (
     <Card>
-      <CardHeader><CardTitle>{label}</CardTitle></CardHeader>
+      <CardHeader>
+        <CardTitle>{label}</CardTitle>
+      </CardHeader>
       <CardContent>
         <div className="asancha-cluster-between">
           <strong>{value}</strong>

@@ -27,6 +27,7 @@ export interface ManagementListFilter {
 export interface ManagementListPageProps {
   title: string;
   description: string;
+  actions?: ReactNode;
   totalLabel: string;
   metrics: readonly ManagementListMetric[];
   filters?: readonly ManagementListFilter[];
@@ -36,13 +37,14 @@ export interface ManagementListPageProps {
 export function ManagementListPage({
   title,
   description,
+  actions,
   totalLabel,
   metrics,
   filters = [],
   children,
 }: ManagementListPageProps) {
   return (
-    <PageShell description={description} title={title}>
+    <PageShell actions={actions} description={description} title={title}>
       <Alert className={styles.notice} title="Demo records loaded" tone="info">
         This list uses clearly labelled records shaped like the expected backend response. Select a
         row to open its detail page and related workflows.

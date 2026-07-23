@@ -70,6 +70,15 @@ function mergeNavigationItems(
   const seenHrefs = new Set<string>();
   const mergedItems: AdminNavigationItem[] = [];
 
+  const markNestedHrefs = (item: AdminNavigationItem) => {
+    item.children?.forEach((child) => {
+      seenHrefs.add(child.href);
+      markNestedHrefs(child);
+    });
+  };
+
+  primaryItems.forEach(markNestedHrefs);
+
   [...primaryItems, ...secondaryItems].forEach((item) => {
     if (seenHrefs.has(item.href)) {
       return;

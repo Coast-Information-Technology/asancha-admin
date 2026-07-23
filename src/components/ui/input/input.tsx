@@ -64,8 +64,16 @@ export function Input({
         {rightIcon ? <span className={styles.icon}>{rightIcon}</span> : null}
       </span>
 
-      {helperText ? <span className={styles.helper} id={descriptionId}>{helperText}</span> : null}
-      {errorText ? <span className={styles.error} id={errorId}>{errorText}</span> : null}
+      {helperText ? (
+        <span className={styles.helper} id={descriptionId}>
+          {helperText}
+        </span>
+      ) : null}
+      {errorText ? (
+        <span className={styles.error} id={errorId}>
+          {errorText}
+        </span>
+      ) : null}
     </label>
   );
 }

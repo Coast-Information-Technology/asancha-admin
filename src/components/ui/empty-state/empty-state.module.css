@@ -1,0 +1,41 @@
+/** Styles the shared empty-state component. */
+
+.emptyState {
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  gap: 0.5rem;
+  border: 1px dashed var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface-muted);
+  padding: 2rem;
+  text-align: center;
+}
+
+.icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-radius: var(--asancha-radius-full);
+  background: var(--asancha-color-info-muted);
+  color: var(--asancha-color-info);
+}
+
+.title {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-base);
+}
+
+.description {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.action {
+  margin-top: 0.5rem;
+}

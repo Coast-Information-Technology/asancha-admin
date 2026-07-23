@@ -163,7 +163,8 @@ export const FALLBACK_SUPER_ADMIN_DASHBOARD_STATE: SuperAdminDashboardState = {
       key: 'review_queues',
       label: 'Review queues',
       value: 0,
-      description: 'Profiles, companies, properties, listings, documents, payments, and API partners.',
+      description:
+        'Profiles, companies, properties, listings, documents, payments, and API partners.',
       href: '/review-queues',
       tone: 'info',
     },

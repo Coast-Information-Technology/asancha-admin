@@ -284,13 +284,7 @@ export const API_ROUTES = {
   apiAccess: {
     applications: buildApiRoute(API_VERSION_PREFIX, 'admin', 'api-access', 'applications'),
     applicationDetail: (applicationPublicId: PublicId) =>
-      buildApiRoute(
-        API_VERSION_PREFIX,
-        'admin',
-        'api-access',
-        'applications',
-        applicationPublicId,
-      ),
+      buildApiRoute(API_VERSION_PREFIX, 'admin', 'api-access', 'applications', applicationPublicId),
     clients: buildApiRoute(API_VERSION_PREFIX, 'admin', 'api-access', 'clients'),
     clientDetail: (apiClientPublicId: PublicId) =>
       buildApiRoute(API_VERSION_PREFIX, 'admin', 'api-access', 'clients', apiClientPublicId),

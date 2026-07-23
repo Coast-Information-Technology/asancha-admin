@@ -25,9 +25,7 @@
 import { Badge } from '../ui/badge/badge';
 import { Button } from '../ui/button/button';
 
-import {
-  COMPANY_VERIFICATION_STATUS_LABELS,
-} from '../../features/companies/constants/companies.constants';
+import { COMPANY_VERIFICATION_STATUS_LABELS } from '../../features/companies/constants/companies.constants';
 import type {
   CompanyListItem,
   CompanyVerificationStatus,

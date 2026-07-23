@@ -10,7 +10,12 @@ import { DEMO_PROFILES } from '../../src/lib/demo/management-demo-data';
 const metrics: readonly ManagementListMetric[] = [
   { label: 'All profiles', value: '5', detail: 'One demo business profile per role', tone: 'info' },
   { label: 'Approved', value: '2', detail: 'Ready for permitted user workflows', tone: 'success' },
-  { label: 'Pending or review', value: '2', detail: 'Onboarding or verification active', tone: 'warning' },
+  {
+    label: 'Pending or review',
+    value: '2',
+    detail: 'Onboarding or verification active',
+    tone: 'warning',
+  },
   { label: 'Flagged', value: '1', detail: 'Requires authorised attention', tone: 'danger' },
 ];
 

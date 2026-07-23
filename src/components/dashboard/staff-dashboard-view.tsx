@@ -53,10 +53,7 @@ export function StaffDashboardView({ role, title, description }: StaffDashboardV
   const isCustomerCare = data.role === 'customer_care_rep';
 
   return (
-    <PageShell
-      description={description}
-      title={title}
-    >
+    <PageShell description={description} title={title}>
       <Alert className={styles.previewNotice} title="Demo dashboard data" tone="info">
         This dashboard currently uses clearly labelled dummy data for UI development. The data
         source is isolated in the dashboard mock constants and can be replaced with the backend

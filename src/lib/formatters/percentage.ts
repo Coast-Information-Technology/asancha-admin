@@ -59,10 +59,7 @@ function normalisePercentageValue(value: unknown): number | null {
   return null;
 }
 
-export function formatPercentage(
-  value: unknown,
-  options: FormatPercentageOptions = {},
-): string {
+export function formatPercentage(value: unknown, options: FormatPercentageOptions = {}): string {
   const parsedValue = normalisePercentageValue(value);
 
   if (parsedValue === null) {

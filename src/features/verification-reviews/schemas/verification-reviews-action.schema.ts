@@ -67,9 +67,7 @@ export const verificationReviewsActionSchema = z.object({
   riskRating: verificationRiskRatingSchema.optional(),
 });
 
-export type VerificationReviewsActionSchemaInput = z.input<
-  typeof verificationReviewsActionSchema
->;
+export type VerificationReviewsActionSchemaInput = z.input<typeof verificationReviewsActionSchema>;
 
 export type VerificationReviewsActionSchemaOutput = z.output<
   typeof verificationReviewsActionSchema

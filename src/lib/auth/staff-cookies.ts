@@ -116,7 +116,9 @@ export function createStaffCookieSnapshotFromValues(values: {
   accountStatus?: string;
 }): StaffCookieSnapshot {
   const role = isStaffRole(values.role) ? values.role : null;
-  const accountStatus = isStaffAccountStatus(values.accountStatus) ? values.accountStatus : 'unknown';
+  const accountStatus = isStaffAccountStatus(values.accountStatus)
+    ? values.accountStatus
+    : 'unknown';
 
   return {
     hasAccessToken: Boolean(values.accessToken),

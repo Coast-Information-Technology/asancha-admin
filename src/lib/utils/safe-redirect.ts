@@ -122,10 +122,7 @@ export function isSafeInternalRedirectPath(
   });
 }
 
-export function getSafeRedirectPath(
-  value: unknown,
-  options: SafeRedirectOptions = {},
-): string {
+export function getSafeRedirectPath(value: unknown, options: SafeRedirectOptions = {}): string {
   const fallbackPath = options.fallbackPath ?? DEFAULT_FALLBACK_PATH;
 
   if (!isSafeInternalRedirectPath(value, options)) {
@@ -148,7 +145,10 @@ export function createReturnToParam(pathname: string, search = ''): string {
   return encodeURIComponent(safePath);
 }
 
-export function resolvePostAuthRedirect(returnTo: unknown, fallbackPath = DEFAULT_FALLBACK_PATH): string {
+export function resolvePostAuthRedirect(
+  returnTo: unknown,
+  fallbackPath = DEFAULT_FALLBACK_PATH,
+): string {
   return getSafeRedirectPath(returnTo, {
     fallbackPath,
   });

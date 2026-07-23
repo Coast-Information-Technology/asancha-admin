@@ -41,7 +41,8 @@ export interface StaffSecurityPageProps {
 const securityItems = [
   {
     title: 'Account status',
-    description: 'Live account status and lock state will be displayed safely after API connection.',
+    description:
+      'Live account status and lock state will be displayed safely after API connection.',
     tone: 'info',
   },
   {

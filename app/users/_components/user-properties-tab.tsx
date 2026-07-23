@@ -41,9 +41,7 @@ export function UserPropertiesTab({ userPublicId }: UserPropertiesTabProps) {
             <CardTitle>Properties</CardTitle>
             <Badge tone="neutral">0 properties</Badge>
           </div>
-          <CardDescription>
-            Property records connected to user {userPublicId}.
-          </CardDescription>
+          <CardDescription>Property records connected to user {userPublicId}.</CardDescription>
         </CardHeader>
 
         <CardContent>

@@ -125,10 +125,7 @@ export function getStaffRoleShortLabel(role: StaffRole): string {
   return STAFF_ROLE_SHORT_LABELS[role];
 }
 
-export function canStaffRoleCreateTargetRole(
-  actorRole: StaffRole,
-  targetRole: StaffRole,
-): boolean {
+export function canStaffRoleCreateTargetRole(actorRole: StaffRole, targetRole: StaffRole): boolean {
   if (targetRole === 'super_admin') {
     return false;
   }

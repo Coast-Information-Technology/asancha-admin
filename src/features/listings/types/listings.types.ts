@@ -50,20 +50,10 @@ export type ListingReviewStatus =
   | 'on_hold';
 
 export type ListingVisibilityStatus =
-  | 'hidden'
-  | 'private'
-  | 'public'
-  | 'restricted'
-  | 'paused'
-  | 'archived';
+  'hidden' | 'private' | 'public' | 'restricted' | 'paused' | 'archived';
 
 export type ListingReservationStatus =
-  | 'not_reserved'
-  | 'reservation_pending'
-  | 'reserved'
-  | 'expired'
-  | 'cancelled'
-  | 'completed';
+  'not_reserved' | 'reservation_pending' | 'reserved' | 'expired' | 'cancelled' | 'completed';
 
 export type ListingActionType =
   | 'approve'

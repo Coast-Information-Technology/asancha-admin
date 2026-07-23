@@ -25,10 +25,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getCompaniesList } from '../api/companies.api';
-import {
-  COMPANIES_QUERY_KEYS,
-  COMPANIES_STALE_TIME_MS,
-} from '../constants/companies.constants';
+import { COMPANIES_QUERY_KEYS, COMPANIES_STALE_TIME_MS } from '../constants/companies.constants';
 import type { CompaniesListResponse, CompaniesQuery } from '../types/companies.types';
 
 export function useCompaniesList(query: CompaniesQuery = {}) {

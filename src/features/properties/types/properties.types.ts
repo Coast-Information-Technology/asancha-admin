@@ -47,20 +47,10 @@ export type PropertyDocumentStatus =
   | 'on_hold';
 
 export type PropertyListingStatus =
-  | 'not_listed'
-  | 'submitted'
-  | 'under_review'
-  | 'published'
-  | 'reserved'
-  | 'rejected'
-  | 'archived';
+  'not_listed' | 'submitted' | 'under_review' | 'published' | 'reserved' | 'rejected' | 'archived';
 
 export type PropertySourceType =
-  | 'property_owner'
-  | 'property_agent'
-  | 'property_sourcer'
-  | 'company'
-  | 'admin';
+  'property_owner' | 'property_agent' | 'property_sourcer' | 'company' | 'admin';
 
 export type PropertyActionType =
   | 'approve'

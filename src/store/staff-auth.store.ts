@@ -34,6 +34,8 @@ import type { StaffRole } from '../lib/auth/staff-role-guards';
 export interface StaffAuthUser {
   staffPublicId: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
   displayName: string;
   role: StaffRole;
   accountStatus: StaffAccountStatus;
@@ -60,6 +62,8 @@ interface SessionUserCandidate {
   staffPublicId?: unknown;
   publicId?: unknown;
   email?: unknown;
+  firstName?: unknown;
+  lastName?: unknown;
   displayName?: unknown;
   role?: unknown;
   accountStatus?: unknown;
@@ -123,6 +127,8 @@ function createUserFromSession(session: StaffSession | null): StaffAuthUser | nu
   const staffPublicId =
     getStringValue(candidate.staffPublicId) ?? getStringValue(candidate.publicId);
   const email = getStringValue(candidate.email);
+  const firstName = getStringValue(candidate.firstName) ?? undefined;
+  const lastName = getStringValue(candidate.lastName) ?? undefined;
   const displayName = getStringValue(candidate.displayName) ?? email;
   const role = candidate.role;
   const accountStatus = candidate.accountStatus;
@@ -141,6 +147,8 @@ function createUserFromSession(session: StaffSession | null): StaffAuthUser | nu
   return {
     staffPublicId,
     email,
+    firstName,
+    lastName,
     displayName,
     role,
     accountStatus,

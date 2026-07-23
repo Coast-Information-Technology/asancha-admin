@@ -6,7 +6,15 @@ import { Alert } from '../../ui/alert/alert';
 import { Badge } from '../../ui/badge/badge';
 import { Button } from '../../ui/button/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../ui/table/table';
+import type { ReactNode } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../ui/table/table';
 import { PageShell } from './page-shell';
 import { getRoutePreviewData } from './route-preview-page.data';
 
@@ -15,16 +23,18 @@ import styles from './route-preview-page.module.css';
 export interface RoutePreviewPageProps {
   title: string;
   description: string;
+  actions?: ReactNode;
 }
 
-export function RoutePreviewPage({ title, description }: RoutePreviewPageProps) {
+export function RoutePreviewPage({ title, description, actions }: RoutePreviewPageProps) {
   const preview = getRoutePreviewData(title);
 
   return (
-    <PageShell description={description} title={title}>
+    <PageShell actions={actions} description={description} title={title}>
       <Alert className={styles.notice} title="Demo preview data" tone="info">
         These clearly labelled records mirror the shape of data expected from the backend. They are
-        safe frontend-only examples and can be replaced with API query results when the endpoint is ready.
+        safe frontend-only examples and can be replaced with API query results when the endpoint is
+        ready.
       </Alert>
 
       <section aria-label="Summary metrics" className={styles.summaryGrid}>

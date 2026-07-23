@@ -39,7 +39,12 @@ const messagePreview: RoutePreviewData = {
   secondaryColumn: 'Latest message',
   ownerColumn: 'Assigned to',
   stats: [
-    { label: 'Total conversations', value: '24', detail: 'Demo records in this view', tone: 'info' },
+    {
+      label: 'Total conversations',
+      value: '24',
+      detail: 'Demo records in this view',
+      tone: 'info',
+    },
     { label: 'Open', value: '8', detail: 'Awaiting a staff reply', tone: 'warning' },
     { label: 'Assigned', value: '6', detail: 'Currently owned by staff', tone: 'neutral' },
     { label: 'Overdue', value: '2', detail: 'Past the response target', tone: 'danger' },
@@ -84,7 +89,12 @@ const auditPreview: RoutePreviewData = {
   secondaryColumn: 'Resource',
   ownerColumn: 'Actor',
   stats: [
-    { label: 'Total events', value: '112', detail: 'Demo events in the current period', tone: 'info' },
+    {
+      label: 'Total events',
+      value: '112',
+      detail: 'Demo events in the current period',
+      tone: 'info',
+    },
     { label: 'High risk', value: '3', detail: 'Require operational attention', tone: 'danger' },
     { label: 'Today', value: '26', detail: 'Events recorded today', tone: 'neutral' },
     { label: 'Staff actions', value: '18', detail: 'Actions by internal staff', tone: 'warning' },
@@ -129,7 +139,12 @@ const bookingPreview: RoutePreviewData = {
   secondaryColumn: 'Property and appointment',
   ownerColumn: 'Customer',
   stats: [
-    { label: 'Total bookings', value: '18', detail: 'Demo bookings in this workspace', tone: 'info' },
+    {
+      label: 'Total bookings',
+      value: '18',
+      detail: 'Demo bookings in this workspace',
+      tone: 'info',
+    },
     { label: 'Pending', value: '6', detail: 'Awaiting confirmation', tone: 'warning' },
     { label: 'Confirmed', value: '9', detail: 'Appointments scheduled', tone: 'success' },
     { label: 'Support cases', value: '3', detail: 'Need customer care follow-up', tone: 'danger' },
@@ -220,7 +235,12 @@ const reservationPreview: RoutePreviewData = {
   ownerColumn: 'Investor',
   stats: [
     { label: 'Total reservations', value: '12', detail: 'Demo reservation records', tone: 'info' },
-    { label: 'Pending payment', value: '3', detail: 'Payment action is outstanding', tone: 'warning' },
+    {
+      label: 'Pending payment',
+      value: '3',
+      detail: 'Payment action is outstanding',
+      tone: 'warning',
+    },
     { label: 'Active', value: '6', detail: 'Reservation workflow in progress', tone: 'success' },
     { label: 'Needs review', value: '2', detail: 'Requires staff attention', tone: 'danger' },
   ],
@@ -264,7 +284,12 @@ const notificationPreview: RoutePreviewData = {
   secondaryColumn: 'Context',
   ownerColumn: 'Recipient',
   stats: [
-    { label: 'Total notifications', value: '18', detail: 'Demo notifications in your feed', tone: 'info' },
+    {
+      label: 'Total notifications',
+      value: '18',
+      detail: 'Demo notifications in your feed',
+      tone: 'info',
+    },
     { label: 'Unread', value: '6', detail: 'Need acknowledgement', tone: 'warning' },
     { label: 'Critical', value: '1', detail: 'Requires immediate review', tone: 'danger' },
     { label: 'Today', value: '7', detail: 'Created since midnight', tone: 'neutral' },
@@ -362,7 +387,8 @@ export function getRoutePreviewData(title: string): RoutePreviewData {
   const normalizedTitle = title.toLowerCase();
 
   if (normalizedTitle.includes('message')) return previewDataByCategory.messages;
-  if (normalizedTitle.includes('audit') || normalizedTitle.includes('activity')) return previewDataByCategory.audit;
+  if (normalizedTitle.includes('audit') || normalizedTitle.includes('activity'))
+    return previewDataByCategory.audit;
   if (normalizedTitle.includes('booking')) return previewDataByCategory.bookings;
   if (normalizedTitle.includes('payment')) return previewDataByCategory.payments;
   if (normalizedTitle.includes('reservation')) return previewDataByCategory.reservations;

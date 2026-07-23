@@ -28,10 +28,7 @@
  */
 
 import type { StaffRole } from '../auth/staff-role-guards';
-import {
-  hasStaffRolePermission,
-  type StaffPermissionKey,
-} from './staff-role-permissions';
+import { hasStaffRolePermission, type StaffPermissionKey } from './staff-role-permissions';
 
 export type RouteAccessMode = 'public_auth' | 'staff_auth' | 'staff_protected';
 
@@ -143,6 +140,14 @@ export const ADMIN_ROUTE_PERMISSION_RULES: readonly RoutePermissionRule[] = [
   {
     pathPattern: '/review-queues',
     label: 'Review Queues',
+    accessMode: 'staff_protected',
+    allowedRoles: REVIEW_STAFF_ROLES,
+    requiredPermissions: ['review_queues:view'],
+    isSidebarEligible: true,
+  },
+  {
+    pathPattern: '/onboarding',
+    label: 'Onboarding',
     accessMode: 'staff_protected',
     allowedRoles: REVIEW_STAFF_ROLES,
     requiredPermissions: ['review_queues:view'],
@@ -526,9 +531,11 @@ export function findRoutePermissionRule(pathname: string): RoutePermissionRule |
     doesPathMatchRouteRule(normalisedPathname, rule),
   );
 
-  return matchingRules.sort((firstRule, secondRule) => {
-    return secondRule.pathPattern.length - firstRule.pathPattern.length;
-  })[0] ?? null;
+  return (
+    matchingRules.sort((firstRule, secondRule) => {
+      return secondRule.pathPattern.length - firstRule.pathPattern.length;
+    })[0] ?? null
+  );
 }
 
 export function canStaffRoleAccessRoute(
@@ -553,9 +560,7 @@ export function canStaffRoleAccessRoute(
     return true;
   }
 
-  return rule.requiredPermissions.every((permission) =>
-    hasStaffRolePermission(role, permission),
-  );
+  return rule.requiredPermissions.every((permission) => hasStaffRolePermission(role, permission));
 }
 
 export function isRouteSidebarEligible(pathname: string): boolean {

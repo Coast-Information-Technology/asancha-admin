@@ -10,10 +10,30 @@ export interface PropertyActivitiesPageProps {
 }
 
 const activities = [
-  ['Property submitted', 'Amelia Thompson', '18 Jul 2026, 09:04', 'Submission received for operational review.'],
-  ['Document uploaded', 'Amelia Thompson', '18 Jul 2026, 09:04', 'Title register metadata added to the property record.'],
-  ['Review assigned', 'Demo Operations Lead', '18 Jul 2026, 09:16', 'Property review assigned to the operations queue.'],
-  ['Listing draft created', 'Carter & Stone Estates', '18 Jul 2026, 09:22', 'A private listing draft was created from the approved property data.'],
+  [
+    'Property submitted',
+    'Amelia Thompson',
+    '18 Jul 2026, 09:04',
+    'Submission received for operational review.',
+  ],
+  [
+    'Document uploaded',
+    'Amelia Thompson',
+    '18 Jul 2026, 09:04',
+    'Title register metadata added to the property record.',
+  ],
+  [
+    'Review assigned',
+    'Demo Operations Lead',
+    '18 Jul 2026, 09:16',
+    'Property review assigned to the operations queue.',
+  ],
+  [
+    'Listing draft created',
+    'Carter & Stone Estates',
+    '18 Jul 2026, 09:22',
+    'A private listing draft was created from the approved property data.',
+  ],
 ] as const;
 
 export default async function PropertyActivitiesPage({ params }: PropertyActivitiesPageProps) {
@@ -23,7 +43,11 @@ export default async function PropertyActivitiesPage({ params }: PropertyActivit
   return (
     <ManagementDetailPage
       description="Business activity timeline for this property, separate from restricted audit logs."
-      links={[{ label: 'Property overview', href: `/properties/${property.propertyPublicId}` }, { label: 'Documents', href: `/properties/${property.propertyPublicId}/documents` }, { label: 'Listings', href: `/properties/${property.propertyPublicId}/listings` }]}
+      links={[
+        { label: 'Property overview', href: `/properties/${property.propertyPublicId}` },
+        { label: 'Documents', href: `/properties/${property.propertyPublicId}/documents` },
+        { label: 'Listings', href: `/properties/${property.propertyPublicId}/listings` },
+      ]}
       publicId={property.propertyPublicId}
       recordLabel="Property activities"
       recordName={property.title}
@@ -33,12 +57,19 @@ export default async function PropertyActivitiesPage({ params }: PropertyActivit
       title="Property activities"
     >
       <Card>
-        <CardHeader><CardTitle>Activity timeline</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Activity timeline</CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="asancha-stack-md">
             {activities.map(([label, actor, timestamp, summary]) => (
               <div className="asancha-cluster-between" key={`${label}-${timestamp}`}>
-                <div><strong>{label}</strong><p className="asancha-page-description">{summary} - {actor}</p></div>
+                <div>
+                  <strong>{label}</strong>
+                  <p className="asancha-page-description">
+                    {summary} - {actor}
+                  </p>
+                </div>
                 <Badge tone="neutral">{timestamp}</Badge>
               </div>
             ))}

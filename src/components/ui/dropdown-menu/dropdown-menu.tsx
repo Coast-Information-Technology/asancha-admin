@@ -37,7 +37,13 @@ export interface DropdownMenuProps {
   align?: 'left' | 'right';
 }
 
-export function DropdownMenu({ open, trigger, items, onOpenChange, align = 'right' }: DropdownMenuProps) {
+export function DropdownMenu({
+  open,
+  trigger,
+  items,
+  onOpenChange,
+  align = 'right',
+}: DropdownMenuProps) {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useClickOutside(ref, () => onOpenChange(false), {

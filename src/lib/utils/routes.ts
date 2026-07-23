@@ -112,7 +112,9 @@ export function appendSearchParams(path: string, params: RouteQueryParams = {}):
 
   const queryString = searchParams.toString();
 
-  return queryString.length > 0 ? `${normaliseRoutePath(pathname)}?${queryString}` : normaliseRoutePath(pathname);
+  return queryString.length > 0
+    ? `${normaliseRoutePath(pathname)}?${queryString}`
+    : normaliseRoutePath(pathname);
 }
 
 export function removeSearchParams(path: string, keys: readonly string[]): string {
@@ -123,7 +125,9 @@ export function removeSearchParams(path: string, keys: readonly string[]): strin
 
   const queryString = searchParams.toString();
 
-  return queryString.length > 0 ? `${normaliseRoutePath(pathname)}?${queryString}` : normaliseRoutePath(pathname);
+  return queryString.length > 0
+    ? `${normaliseRoutePath(pathname)}?${queryString}`
+    : normaliseRoutePath(pathname);
 }
 
 export function getRouteParent(path: string): string {

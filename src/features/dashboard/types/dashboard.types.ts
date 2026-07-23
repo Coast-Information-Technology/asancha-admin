@@ -152,6 +152,4 @@ export interface CustomerCareDashboardState extends BaseDashboardState {
 }
 
 export type StaffDashboardState =
-  | SuperAdminDashboardState
-  | AdminDashboardState
-  | CustomerCareDashboardState;
+  SuperAdminDashboardState | AdminDashboardState | CustomerCareDashboardState;

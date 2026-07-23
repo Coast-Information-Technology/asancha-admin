@@ -9,9 +9,19 @@ import { DEMO_PROPERTIES } from '../../src/lib/demo/management-demo-data';
 
 const metrics: readonly ManagementListMetric[] = [
   { label: 'All properties', value: '5', detail: 'Submitted demo property records', tone: 'info' },
-  { label: 'Ready or approved', value: '2', detail: 'Eligible for listing workflows', tone: 'success' },
+  {
+    label: 'Ready or approved',
+    value: '2',
+    detail: 'Eligible for listing workflows',
+    tone: 'success',
+  },
   { label: 'In review', value: '2', detail: 'Property or document review active', tone: 'warning' },
-  { label: 'Correction required', value: '1', detail: 'User or source action needed', tone: 'danger' },
+  {
+    label: 'Correction required',
+    value: '1',
+    detail: 'User or source action needed',
+    tone: 'danger',
+  },
 ];
 
 export default function PropertiesPage() {

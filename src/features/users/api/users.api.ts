@@ -42,7 +42,8 @@ const USERS_API_PATHS = {
   detail: (userPublicId: string) => `/api/v1/admin/users/${encodeURIComponent(userPublicId)}`,
   updateStatus: (userPublicId: string) =>
     `/api/v1/admin/users/${encodeURIComponent(userPublicId)}/status`,
-  updateRole: (userPublicId: string) => `/api/v1/admin/users/${encodeURIComponent(userPublicId)}/role`,
+  updateRole: (userPublicId: string) =>
+    `/api/v1/admin/users/${encodeURIComponent(userPublicId)}/role`,
 } as const;
 
 const FALLBACK_USERS_RESPONSE: UsersResponse = {
@@ -385,7 +386,11 @@ async function getJsonFromApi(path: string, query?: URLSearchParams): Promise<un
   return response.json() as Promise<unknown>;
 }
 
-async function sendJsonToApi(path: string, method: 'PATCH' | 'POST', body: unknown): Promise<unknown> {
+async function sendJsonToApi(
+  path: string,
+  method: 'PATCH' | 'POST',
+  body: unknown,
+): Promise<unknown> {
   const url = createApiUrl(path);
 
   if (!url) {
@@ -414,11 +419,13 @@ export async function getUsers(query: UserQuery = {}): Promise<UsersResponse> {
   const payload = await getJsonFromApi(USERS_API_PATHS.list, createUsersQuery(query));
   const parsed = parseUsersResponse(unwrapEnvelopeData(payload));
 
-  return parsed ?? {
-    ...FALLBACK_USERS_RESPONSE,
-    page: query.page ?? 1,
-    pageSize: query.pageSize ?? 20,
-  };
+  return (
+    parsed ?? {
+      ...FALLBACK_USERS_RESPONSE,
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 20,
+    }
+  );
 }
 
 export async function getUserDetail(userPublicId: string): Promise<UserDetail> {
@@ -429,14 +436,10 @@ export async function getUserDetail(userPublicId: string): Promise<UserDetail> {
 }
 
 export async function updateUserStatus(input: SetUserStatusInput): Promise<UserMutationResponse> {
-  const payload = await sendJsonToApi(
-    USERS_API_PATHS.updateStatus(input.userPublicId),
-    'PATCH',
-    {
-      status: input.status,
-      reason: input.reason,
-    },
-  );
+  const payload = await sendJsonToApi(USERS_API_PATHS.updateStatus(input.userPublicId), 'PATCH', {
+    status: input.status,
+    reason: input.reason,
+  });
 
   const data = unwrapEnvelopeData(payload);
 
@@ -454,14 +457,10 @@ export async function updateUserStatus(input: SetUserStatusInput): Promise<UserM
 }
 
 export async function updateUserRole(input: SetUserRoleInput): Promise<UserMutationResponse> {
-  const payload = await sendJsonToApi(
-    USERS_API_PATHS.updateRole(input.userPublicId),
-    'PATCH',
-    {
-      role: input.role,
-      reason: input.reason,
-    },
-  );
+  const payload = await sendJsonToApi(USERS_API_PATHS.updateRole(input.userPublicId), 'PATCH', {
+    role: input.role,
+    reason: input.reason,
+  });
 
   const data = unwrapEnvelopeData(payload);
 

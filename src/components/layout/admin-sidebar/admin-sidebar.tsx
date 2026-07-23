@@ -18,6 +18,7 @@ import {
 } from '../../../lib/navigation/admin-top-bar-navigation';
 import { getAdminSidebarNavigation } from '../../../lib/navigation/admin-sidebar-navigation';
 import { getCustomerCareSidebarNavigation } from '../../../lib/navigation/customer-care-sidebar-navigation';
+import { getNavigationBadgeCount } from '../../../lib/navigation/navigation-badges';
 import { getSuperAdminSidebarNavigation } from '../../../lib/navigation/super-admin-sidebar-navigation';
 import { isRouteActive } from '../../../lib/utils/routes';
 import { useAdminNavigationStore } from '../../../store/admin-navigation.store';
@@ -46,10 +47,6 @@ function getNavigationIcon(iconName: string): LucideIcon {
   const icon = (LucideIcons as unknown as Record<string, LucideIcon>)[iconName];
 
   return icon ?? LucideIcons.Circle;
-}
-
-function getBadgeCount(item: AdminNavigationItem, unreadNotifications: number): number {
-  return item.badgeKey === 'notificationUnreadCount' ? unreadNotifications : 0;
 }
 
 export function AdminSidebar({ role, collapsed = false }: AdminSidebarProps) {
@@ -92,16 +89,25 @@ export function AdminSidebar({ role, collapsed = false }: AdminSidebarProps) {
         {navigation.map((item, index) => {
           const hasChildren = Boolean(item.children?.length);
           const expanded = expandedGroups.includes(item.href);
-          const active = isRouteActive(pathname, item.href);
+          const childActive = Boolean(
+            item.children?.some((child) => isRouteActive(pathname, child.href)),
+          );
+          const active = isRouteActive(pathname, item.href) || childActive;
+          const renderAsSectionGroup = Boolean(item.renderAsSectionGroup);
           const section = getNavigationSection(item);
           const previousItem = index > 0 ? navigation[index - 1] : undefined;
           const previousSection = previousItem ? getNavigationSection(previousItem) : null;
           const Icon = getNavigationIcon(item.iconName);
-          const badgeCount = getBadgeCount(item, unreadNotifications);
+          const badgeCount = getNavigationBadgeCount(item, unreadNotifications);
 
           return (
-            <div className={styles.sectionGroup} key={item.href}>
-              {section !== previousSection && !collapsed ? (
+            <div
+              className={styles.sectionGroup}
+              data-section={section}
+              data-section-start={section !== previousSection}
+              key={item.href}
+            >
+              {section !== previousSection && !collapsed && !renderAsSectionGroup ? (
                 <p className={styles.sectionLabel}>{getNavigationSectionLabel(section)}</p>
               ) : null}
 
@@ -110,7 +116,9 @@ export function AdminSidebar({ role, collapsed = false }: AdminSidebarProps) {
                   <button
                     aria-expanded={expanded}
                     aria-label={collapsed ? item.label : undefined}
-                    className={styles.navItem}
+                    className={
+                      renderAsSectionGroup && !collapsed ? styles.sectionToggle : styles.navItem
+                    }
                     data-active={active}
                     onClick={() => {
                       if (collapsed) {
@@ -122,9 +130,11 @@ export function AdminSidebar({ role, collapsed = false }: AdminSidebarProps) {
                     title={collapsed ? item.label : undefined}
                     type="button"
                   >
-                    <span className={styles.iconBox}>
-                      <Icon aria-hidden size={17} strokeWidth={2} />
-                    </span>
+                    {!renderAsSectionGroup || collapsed ? (
+                      <span className={styles.iconBox}>
+                        <Icon aria-hidden size={17} strokeWidth={2} />
+                      </span>
+                    ) : null}
                     {!collapsed ? <span className={styles.navLabel}>{item.label}</span> : null}
                     {!collapsed ? (
                       <span className={styles.chevron}>
@@ -157,18 +167,22 @@ export function AdminSidebar({ role, collapsed = false }: AdminSidebarProps) {
                 {hasChildren && expanded && !collapsed ? (
                   <div className={styles.children}>
                     {item.children?.map((child) => {
-                      const childActive = isRouteActive(pathname, child.href, { exact: true });
-                      const childBadgeCount = getBadgeCount(child, unreadNotifications);
+                      const childActive = isRouteActive(pathname, child.href);
+                      const childBadgeCount = getNavigationBadgeCount(child, unreadNotifications);
+                      const ChildIcon = getNavigationIcon(child.iconName);
 
                       return (
                         <Link
                           aria-current={childActive ? 'page' : undefined}
-                          className={styles.childLink}
+                          className={styles.navItem}
                           data-active={childActive}
                           href={child.href}
                           key={child.href}
                         >
-                          <span>{child.label}</span>
+                          <span className={styles.iconBox}>
+                            <ChildIcon aria-hidden size={17} strokeWidth={2} />
+                          </span>
+                          <span className={styles.navLabel}>{child.label}</span>
                           {childBadgeCount > 0 ? (
                             <span className={styles.badge}>{childBadgeCount}</span>
                           ) : null}

@@ -78,9 +78,7 @@ async function requestLocalAuth<TData, TBody>(
   return envelope.data;
 }
 
-export async function signInStaff(
-  payload: StaffSignInRequest,
-): Promise<StaffAuthSessionResponse> {
+export async function signInStaff(payload: StaffSignInRequest): Promise<StaffAuthSessionResponse> {
   return requestLocalAuth<StaffAuthSessionResponse, StaffSignInRequest>('/api/auth/sign-in', {
     body: payload,
   });
@@ -131,9 +129,7 @@ export async function setInvitedStaffPassword(
   return response.data;
 }
 
-export async function verifyStaffInvite(
-  inviteToken: string,
-): Promise<VerifyStaffInviteResponse> {
+export async function verifyStaffInvite(inviteToken: string): Promise<VerifyStaffInviteResponse> {
   const searchParams = new URLSearchParams({
     inviteToken,
   });

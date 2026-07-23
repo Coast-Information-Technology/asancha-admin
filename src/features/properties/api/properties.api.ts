@@ -519,11 +519,13 @@ export async function getPropertiesList(
   const payload = await getJsonFromApi(PROPERTIES_API_PATHS.list, createPropertiesQuery(query));
   const parsed = parsePropertiesListResponse(unwrapEnvelopeData(payload));
 
-  return parsed ?? {
-    ...FALLBACK_PROPERTIES_LIST_RESPONSE,
-    page: query.page ?? 1,
-    pageSize: query.pageSize ?? 20,
-  };
+  return (
+    parsed ?? {
+      ...FALLBACK_PROPERTIES_LIST_RESPONSE,
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 20,
+    }
+  );
 }
 
 export async function getPropertyDetail(propertyPublicId: string): Promise<PropertyDetail> {

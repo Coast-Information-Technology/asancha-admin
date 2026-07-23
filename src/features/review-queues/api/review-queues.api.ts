@@ -259,7 +259,13 @@ function parseReviewQueueItemsResponse(value: unknown): ReviewQueueItemsResponse
   const pageSize = getNumber(value.pageSize);
   const hasNextPage = getBoolean(value.hasNextPage);
 
-  if (!Array.isArray(rawItems) || total === null || page === null || pageSize === null || hasNextPage === null) {
+  if (
+    !Array.isArray(rawItems) ||
+    total === null ||
+    page === null ||
+    pageSize === null ||
+    hasNextPage === null
+  ) {
     return null;
   }
 

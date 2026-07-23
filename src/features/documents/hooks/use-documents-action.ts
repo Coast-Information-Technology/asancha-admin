@@ -28,10 +28,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { submitDocumentAction } from '../api/documents.api';
 import { documentsActionSchema } from '../schemas/documents-action.schema';
-import type {
-  DocumentActionInput,
-  DocumentMutationResponse,
-} from '../types/documents.types';
+import type { DocumentActionInput, DocumentMutationResponse } from '../types/documents.types';
 
 export interface UseDocumentsActionOptions {
   onSuccess?: (message: string) => void;

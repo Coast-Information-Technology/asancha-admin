@@ -380,11 +380,13 @@ export async function getProfilesList(query: ProfilesQuery = {}): Promise<Profil
   const payload = await getJsonFromApi(PROFILES_API_PATHS.list, createProfilesQuery(query));
   const parsed = parseProfilesListResponse(unwrapEnvelopeData(payload));
 
-  return parsed ?? {
-    ...FALLBACK_PROFILES_LIST_RESPONSE,
-    page: query.page ?? 1,
-    pageSize: query.pageSize ?? 20,
-  };
+  return (
+    parsed ?? {
+      ...FALLBACK_PROFILES_LIST_RESPONSE,
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 20,
+    }
+  );
 }
 
 export async function getProfileDetail(profilePublicId: string): Promise<ProfileDetail> {

@@ -70,10 +70,7 @@ function shouldRedactKey(key: string): boolean {
   return SENSITIVE_KEY_PATTERNS.some((pattern) => pattern.test(key));
 }
 
-export function redactValue(
-  value: RedactablePrimitive,
-  options: RedactionOptions = {},
-): string {
+export function redactValue(value: RedactablePrimitive, options: RedactionOptions = {}): string {
   const displayValue = toDisplayString(value);
 
   if (displayValue === '—') {
@@ -158,21 +155,24 @@ export function redactObject<TValue extends RedactableValue>(value: TValue): Red
   }
 
   if (value && typeof value === 'object') {
-    return Object.entries(value).reduce<Record<string, RedactableValue>>((redactedObject, [key, item]) => {
-      if (shouldRedactKey(key)) {
-        redactedObject[key] = redactValue(
-          typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'
-            ? item
-            : '[redacted]',
-        );
+    return Object.entries(value).reduce<Record<string, RedactableValue>>(
+      (redactedObject, [key, item]) => {
+        if (shouldRedactKey(key)) {
+          redactedObject[key] = redactValue(
+            typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'
+              ? item
+              : '[redacted]',
+          );
+
+          return redactedObject;
+        }
+
+        redactedObject[key] = redactObject(item);
 
         return redactedObject;
-      }
-
-      redactedObject[key] = redactObject(item);
-
-      return redactedObject;
-    }, {});
+      },
+      {},
+    );
   }
 
   return value;

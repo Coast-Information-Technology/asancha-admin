@@ -1,0 +1,42 @@
+/** Styles the shared permission-blocked state. */
+
+.blocked {
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--asancha-color-warning-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-warning-muted);
+  padding: 2rem;
+  text-align: center;
+}
+
+.icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 2px solid currentColor;
+  border-radius: var(--asancha-radius-full);
+  color: var(--asancha-color-warning);
+  font-weight: 800;
+}
+
+.title {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-lg);
+}
+
+.description {
+  max-width: 38rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.action {
+  margin-top: 0.5rem;
+}

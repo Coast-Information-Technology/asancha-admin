@@ -27,10 +27,7 @@ import { cookies } from 'next/headers';
 import type { ReactNode } from 'react';
 
 import { AppProviders } from './providers';
-import {
-  AdminShell,
-  type AdminShellStaff,
-} from '../src/components/layout/admin-shell/admin-shell';
+import { AdminShell, type AdminShellStaff } from '../src/components/layout/admin-shell/admin-shell';
 import type { StaffNavigationRole } from '../src/lib/navigation/admin-top-bar-navigation';
 
 import '../src/styles/globals.css';

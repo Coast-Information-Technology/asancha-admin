@@ -11,12 +11,19 @@ export interface CompanyDocumentsPageProps {
 export default async function CompanyDocumentsPage({ params }: CompanyDocumentsPageProps) {
   const { companyPublicId } = await params;
   const company = getDemoCompany(companyPublicId);
-  const documents = DEMO_DOCUMENTS.filter((document) => document.ownerSummary.ownerPublicId === company.companyPublicId);
+  const documents = DEMO_DOCUMENTS.filter(
+    (document) => document.ownerSummary.ownerPublicId === company.companyPublicId,
+  );
 
   return (
     <ManagementDetailPage
       description="Company-owned document records with review, risk, and replacement context."
-      links={[{ label: 'Company overview', href: `/companies/${company.companyPublicId}` }, { label: 'Members', href: `/companies/${company.companyPublicId}/members` }, { label: 'Verification', href: `/companies/${company.companyPublicId}/verification` }, { label: 'All documents', href: '/documents' }]}
+      links={[
+        { label: 'Company overview', href: `/companies/${company.companyPublicId}` },
+        { label: 'Members', href: `/companies/${company.companyPublicId}/members` },
+        { label: 'Verification', href: `/companies/${company.companyPublicId}/verification` },
+        { label: 'All documents', href: '/documents' },
+      ]}
       publicId={company.companyPublicId}
       recordLabel="Company documents"
       recordName={company.companyName}

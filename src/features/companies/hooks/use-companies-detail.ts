@@ -24,10 +24,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getCompanyDetail } from '../api/companies.api';
-import {
-  COMPANIES_QUERY_KEYS,
-  COMPANIES_STALE_TIME_MS,
-} from '../constants/companies.constants';
+import { COMPANIES_QUERY_KEYS, COMPANIES_STALE_TIME_MS } from '../constants/companies.constants';
 import type { CompanyDetail } from '../types/companies.types';
 
 export function useCompaniesDetail(companyPublicId: string) {

@@ -114,12 +114,7 @@ export function Button(props: ButtonComponentProps) {
   const { disabled, type = 'button', ...buttonProps } = rest;
 
   return (
-    <button
-      className={buttonClassName}
-      disabled={disabled || loading}
-      type={type}
-      {...buttonProps}
-    >
+    <button className={buttonClassName} disabled={disabled || loading} type={type} {...buttonProps}>
       {content}
     </button>
   );

@@ -55,7 +55,8 @@ export function SetPasswordForm({
 }: SetPasswordFormProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const passwordsDoNotMatch = password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
+  const passwordsDoNotMatch =
+    password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -72,8 +73,8 @@ export function SetPasswordForm({
       <div className={styles.formHeader}>
         <h1 className={styles.title}>Set your staff password</h1>
         <p className={styles.description}>
-          Complete your invited staff account setup. This page is only for authorised Asancha
-          staff invitations.
+          Complete your invited staff account setup. This page is only for authorised Asancha staff
+          invitations.
         </p>
       </div>
 

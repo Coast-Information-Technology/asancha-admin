@@ -23,29 +23,29 @@ The purpose of `asancha-admin` is to provide a secure internal operations interf
 
 It supports:
 
-* staff authentication
-* admin dashboards
-* customer care dashboard
-* super admin dashboard
-* review queues
-* user management
-* staff management
-* profile reviews
-* company reviews
-* property reviews
-* listing reviews
-* document reviews
-* verification reviews
-* payment reviews
-* deal reservation oversight
-* deal activity oversight
-* booking management
-* messages and support oversight
-* notifications
-* API access management
-* AI/admin insight screens
-* audit log views
-* operational settings where allowed
+- staff authentication
+- admin dashboards
+- customer care dashboard
+- super admin dashboard
+- review queues
+- user management
+- staff management
+- profile reviews
+- company reviews
+- property reviews
+- listing reviews
+- document reviews
+- verification reviews
+- payment reviews
+- deal reservation oversight
+- deal activity oversight
+- booking management
+- messages and support oversight
+- notifications
+- API access management
+- AI/admin insight screens
+- audit log views
+- operational settings where allowed
 
 ## What This Application Is Not
 
@@ -55,17 +55,17 @@ Do not add public-user flows to this repository.
 
 The following do not belong in `asancha-admin`:
 
-* public signup
-* public onboarding
-* public marketplace
-* public listing discovery
-* public user dashboards
-* public API partner application flow
-* investor dashboard
-* property owner dashboard
-* property agent dashboard
-* property sourcer dashboard
-* service provider dashboard
+- public signup
+- public onboarding
+- public marketplace
+- public listing discovery
+- public user dashboards
+- public API partner application flow
+- investor dashboard
+- property owner dashboard
+- property agent dashboard
+- property sourcer dashboard
+- service provider dashboard
 
 Those belong in the separate public/user frontend repository.
 
@@ -73,21 +73,21 @@ Those belong in the separate public/user frontend repository.
 
 The admin frontend supports only internal staff users:
 
-* `super_admin`
-* `admin`
-* `customer_care_rep`
+- `super_admin`
+- `admin`
+- `customer_care_rep`
 
 ## Disallowed Users
 
 The following users must not access the admin frontend as normal users:
 
-* `guest`
-* `investor`
-* `property_owner`
-* `property_agent`
-* `property_sourcer`
-* `service_provider`
-* `api_partner`
+- `guest`
+- `investor`
+- `property_owner`
+- `property_agent`
+- `property_sourcer`
+- `service_provider`
+- `api_partner`
 
 Public users must not be given admin/staff frontend access.
 
@@ -97,32 +97,32 @@ Public users must not be given admin/staff frontend access.
 
 A `super_admin` may access:
 
-* dashboard
-* review queues
-* users
-* staff
-* profiles
-* companies
-* properties
-* listings
-* documents
-* verification reviews
-* deal reservations
-* deal activities
-* payments
-* bookings
-* messages
-* notifications
-* API access
-* AI/admin insights
-* audit logs
-* settings
-* my staff account
+- dashboard
+- review queues
+- users
+- staff
+- profiles
+- companies
+- properties
+- listings
+- documents
+- verification reviews
+- deal reservations
+- deal activities
+- payments
+- bookings
+- messages
+- notifications
+- API access
+- AI/admin insights
+- audit logs
+- settings
+- my staff account
 
 A `super_admin` may create:
 
-* `admin`
-* `customer_care_rep`
+- `admin`
+- `customer_care_rep`
 
 A `super_admin` must not create another `super_admin` from the frontend.
 
@@ -132,12 +132,12 @@ An `admin` may access broad operational and review areas where allowed.
 
 An `admin` may create:
 
-* `customer_care_rep`
+- `customer_care_rep`
 
 An `admin` must not create:
 
-* `admin`
-* `super_admin`
+- `admin`
+- `super_admin`
 
 ### Customer Care Representative
 
@@ -145,28 +145,28 @@ A `customer_care_rep` should only access safe support views.
 
 Recommended access:
 
-* dashboard
-* safe user support view
-* bookings support view
-* messages
-* document status
-* verification status
-* payment status
-* notifications
-* my staff account
+- dashboard
+- safe user support view
+- bookings support view
+- messages
+- document status
+- verification status
+- payment status
+- notifications
+- my staff account
 
 A `customer_care_rep` must not access:
 
-* staff management
-* staff creation
-* audit logs
-* settings
-* API access approval
-* payment approval controls
-* document approval controls
-* verification approval controls
-* listing approval controls
-* super admin controls
+- staff management
+- staff creation
+- audit logs
+- settings
+- API access approval
+- payment approval controls
+- document approval controls
+- verification approval controls
+- listing approval controls
+- super admin controls
 
 ## Super Admin Creation Rule
 
@@ -178,31 +178,31 @@ The first `super_admin` must be created only through backend seed/bootstrap logi
 
 The frontend may:
 
-* display data
-* guide staff actions
-* hide inaccessible menu items
-* disable restricted buttons
-* show safe error messages
-* show permission-aware UI
-* route users to allowed screens
-* request backend actions
+- display data
+- guide staff actions
+- hide inaccessible menu items
+- disable restricted buttons
+- show safe error messages
+- show permission-aware UI
+- route users to allowed screens
+- request backend actions
 
 The frontend must not be treated as the final security authority.
 
 The backend API remains responsible for enforcing:
 
-* authentication
-* authorization
-* staff permissions
-* account status
-* resource visibility
-* review permissions
-* payment decisions
-* document review decisions
-* verification review decisions
-* API access decisions
-* staff creation restrictions
-* audit logging
+- authentication
+- authorization
+- staff permissions
+- account status
+- resource visibility
+- review permissions
+- payment decisions
+- document review decisions
+- verification review decisions
+- API access decisions
+- staff creation restrictions
+- audit logging
 
 No important business rule should exist only in the frontend.
 
@@ -214,11 +214,11 @@ Sidebar navigation should show only index, list, queue, or workspace pages.
 
 Detail pages should be reached from:
 
-* table rows
-* list items
-* review queue items
-* search results
-* related-resource links
+- table rows
+- list items
+- review queue items
+- search results
+- related-resource links
 
 Examples:
 
@@ -298,20 +298,20 @@ Frontend routes must use public-facing identifiers.
 
 Use:
 
-* `userPublicId`
-* `staffPublicId`
-* `profilePublicId`
-* `companyPublicId`
-* `propertyPublicId`
-* `listingPublicId`
-* `documentPublicId`
-* `verificationReviewPublicId`
-* `paymentPublicId`
-* `reservationPublicId`
-* `bookingPublicId`
-* `conversationPublicId`
-* `apiClientPublicId`
-* `auditLogPublicId`
+- `userPublicId`
+- `staffPublicId`
+- `profilePublicId`
+- `companyPublicId`
+- `propertyPublicId`
+- `listingPublicId`
+- `documentPublicId`
+- `verificationReviewPublicId`
+- `paymentPublicId`
+- `reservationPublicId`
+- `bookingPublicId`
+- `conversationPublicId`
+- `apiClientPublicId`
+- `auditLogPublicId`
 
 Do not expose MongoDB ObjectIds in frontend routes, UI, logs, or public responses.
 
@@ -319,22 +319,22 @@ Do not expose MongoDB ObjectIds in frontend routes, UI, logs, or public response
 
 The frontend must not expose:
 
-* JWT secrets
-* database URLs
-* secret keys
-* webhook secrets
-* API key hashes
-* admin bootstrap secrets
-* mail provider secrets
-* storage secrets
-* full API keys
-* private document URLs
-* private KYC notes
-* internal admin notes
-* audit-sensitive secrets
-* MongoDB ObjectIds
-* internal service URLs
-* private operational URLs
+- JWT secrets
+- database URLs
+- secret keys
+- webhook secrets
+- API key hashes
+- admin bootstrap secrets
+- mail provider secrets
+- storage secrets
+- full API keys
+- private document URLs
+- private KYC notes
+- internal admin notes
+- audit-sensitive secrets
+- MongoDB ObjectIds
+- internal service URLs
+- private operational URLs
 
 Only browser-safe environment variables may use `NEXT_PUBLIC_*`.
 
@@ -344,14 +344,14 @@ This is the internal Asancha admin/staff frontend.
 
 For security reasons, this README must not expose sensitive operational URLs such as:
 
-* backend API base URL
-* internal API routes
-* public app URL
-* private service URLs
-* secret keys
-* webhook URLs
-* document storage URLs
-* admin bootstrap details
+- backend API base URL
+- internal API routes
+- public app URL
+- private service URLs
+- secret keys
+- webhook URLs
+- document storage URLs
+- admin bootstrap details
 
 All environment-specific URLs should be configured privately through environment variables and deployment settings.
 
@@ -473,24 +473,24 @@ npm install zustand
 
 Use Tailwind CSS for:
 
-* layout
-* spacing
-* grids
-* responsive behaviour
-* typography utilities
-* common UI utilities
+- layout
+- spacing
+- grids
+- responsive behaviour
+- typography utilities
+- common UI utilities
 
 Use CSS Modules for:
 
-* complex admin layouts
-* sidebars
-* mobile drawers
-* dashboards
-* tables
-* modals
-* drawers
-* command menus
-* transition-heavy UI
+- complex admin layouts
+- sidebars
+- mobile drawers
+- dashboards
+- tables
+- modals
+- drawers
+- command menus
+- transition-heavy UI
 
 ## Validation Rule
 
@@ -604,19 +604,25 @@ The implementation should proceed step by step:
 31. testing and QA
 32. deployment preparation
 
-## Manual Implementation Rule
+## Implementation Documentation
 
-This repository does not require AI project-state control files.
-
-Do not create:
+The repository keeps implementation state and working rules in versioned
+documentation. These files record the current frontend state without replacing
+the approved business, database, API, onboarding, UX, permission, or security
+source documents.
 
 ```txt
-docs/ai/PROJECT_STATE.md
+docs/implementation/PROJECT_STATE.md
 docs/implementation/IMPLEMENTATION_RULES.md
 docs/implementation/IMPLEMENTATION_PRIORITY.md
+docs/standards/admin-route-navigation-map.md
+docs/standards/asancha_admin_frontend_project_structure_documentation.md
+docs/standards/asancha_admin_self_implementation_roadmap.md
 ```
 
-Implementation priority, state, and rules are controlled manually by the project owner.
+Update `PROJECT_STATE.md` when a roadmap block materially changes, update
+`IMPLEMENTATION_PRIORITY.md` when sequencing changes, and update
+`IMPLEMENTATION_RULES.md` only when the approved project rules change.
 
 ## Deployment
 
@@ -638,11 +644,18 @@ Every sensitive action must be enforced by the backend API.
 
 This README follows the approved Asancha planning documents, including:
 
-* Asancha Frontend Functional Business Rules
-* Asancha Admin Route & Navigation Map
-* Asancha Admin Frontend Project Structure
-* Asancha Frontend Screen Behaviour
-* Asancha UX Business Rules
-* Asancha Backend API Endpoint Rules
-* Asancha Engineering Code Standards
-* Asancha Admin Staff Ops decisions
+- Asancha Frontend Functional Business Rules
+- Asancha Admin Route & Navigation Map
+- Asancha Admin Frontend Project Structure
+- Asancha Frontend Screen Behaviour
+- Asancha UX Business Rules
+- Asancha Backend API Endpoint Rules
+- Asancha Engineering Code Standards
+- Asancha Admin Staff Ops decisions
+
+Repository references:
+
+- [Implementation state](docs/implementation/PROJECT_STATE.md)
+- [Implementation rules](docs/implementation/IMPLEMENTATION_RULES.md)
+- [Implementation priority](docs/implementation/IMPLEMENTATION_PRIORITY.md)
+- [Route and navigation map](docs/standards/admin-route-navigation-map.md)

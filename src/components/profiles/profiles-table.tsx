@@ -25,9 +25,7 @@
 import { Badge } from '../ui/badge/badge';
 import { Button } from '../ui/button/button';
 
-import {
-  PROFILE_VERIFICATION_STATUS_LABELS,
-} from '../../features/profiles/constants/profiles.constants';
+import { PROFILE_VERIFICATION_STATUS_LABELS } from '../../features/profiles/constants/profiles.constants';
 import type {
   ProfileListItem,
   ProfileVerificationStatus,

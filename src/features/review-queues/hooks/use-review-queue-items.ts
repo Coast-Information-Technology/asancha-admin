@@ -29,10 +29,7 @@ import {
   REVIEW_QUEUES_QUERY_KEYS,
   REVIEW_QUEUES_STALE_TIME_MS,
 } from '../constants/review-queues.constants';
-import type {
-  ReviewQueueItemsResponse,
-  ReviewQueueQuery,
-} from '../types/review-queues.types';
+import type { ReviewQueueItemsResponse, ReviewQueueQuery } from '../types/review-queues.types';
 
 export function useReviewQueueItems(query: ReviewQueueQuery = {}) {
   return useQuery<ReviewQueueItemsResponse>({

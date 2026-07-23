@@ -25,18 +25,15 @@
 
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { canStaffRoleAccessRoute, findRoutePermissionRule } from './src/lib/permissions/route-permissions';
+import {
+  canStaffRoleAccessRoute,
+  findRoutePermissionRule,
+} from './src/lib/permissions/route-permissions';
 
 type StaffRole = 'super_admin' | 'admin' | 'customer_care_rep';
 
 type StaffAccountStatus =
-  | 'active'
-  | 'pending'
-  | 'invited'
-  | 'locked'
-  | 'suspended'
-  | 'disabled'
-  | 'unknown';
+  'active' | 'pending' | 'invited' | 'locked' | 'suspended' | 'disabled' | 'unknown';
 
 const STAFF_COOKIE_NAMES = {
   accessToken: 'asancha_admin_access_token',
@@ -56,11 +53,7 @@ const AUTH_ROUTES = [
 
 const STAFF_ROLES: readonly StaffRole[] = ['super_admin', 'admin', 'customer_care_rep'];
 
-const LOCKED_ACCOUNT_STATUSES: readonly StaffAccountStatus[] = [
-  'locked',
-  'suspended',
-  'disabled',
-];
+const LOCKED_ACCOUNT_STATUSES: readonly StaffAccountStatus[] = ['locked', 'suspended', 'disabled'];
 
 function isStaffRole(value: string | undefined): value is StaffRole {
   return STAFF_ROLES.includes(value as StaffRole);

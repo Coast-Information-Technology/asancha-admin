@@ -92,9 +92,7 @@ function isAllowedValue(value: string, allowedValues?: readonly string[]): boole
   return allowedValues.includes(value);
 }
 
-export function createDefaultTableQueryState(
-  options: TableQueryOptions = {},
-): TableQueryState {
+export function createDefaultTableQueryState(options: TableQueryOptions = {}): TableQueryState {
   return {
     page: options.defaultPage ?? DEFAULT_PAGE,
     limit: options.defaultLimit ?? DEFAULT_LIMIT,
@@ -189,7 +187,8 @@ export function normaliseTableQuery(
   const defaultState = createDefaultTableQueryState(options);
   const maxLimit = options.maxLimit ?? DEFAULT_MAX_LIMIT;
 
-  const page = Number.isFinite(query.page) && query.page && query.page > 0 ? query.page : defaultState.page;
+  const page =
+    Number.isFinite(query.page) && query.page && query.page > 0 ? query.page : defaultState.page;
   const limit =
     Number.isFinite(query.limit) && query.limit && query.limit > 0
       ? normaliseLimit(query.limit, maxLimit)

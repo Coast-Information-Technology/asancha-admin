@@ -167,7 +167,9 @@ export async function getCustomerCareDashboardState(): Promise<CustomerCareDashb
   return FALLBACK_CUSTOMER_CARE_DASHBOARD_STATE;
 }
 
-export async function getStaffDashboardState(role: DashboardStaffRole): Promise<StaffDashboardState> {
+export async function getStaffDashboardState(
+  role: DashboardStaffRole,
+): Promise<StaffDashboardState> {
   if (role === 'super_admin') {
     return getSuperAdminDashboardState();
   }

@@ -24,7 +24,14 @@ export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
   rounded?: boolean;
 }
 
-export function Skeleton({ width, height, rounded = false, className, style, ...props }: SkeletonProps) {
+export function Skeleton({
+  width,
+  height,
+  rounded = false,
+  className,
+  style,
+  ...props
+}: SkeletonProps) {
   return (
     <div
       aria-hidden="true"

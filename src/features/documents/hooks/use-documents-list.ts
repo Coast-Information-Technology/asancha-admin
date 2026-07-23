@@ -25,10 +25,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getDocumentsList } from '../api/documents.api';
-import {
-  DOCUMENTS_QUERY_KEYS,
-  DOCUMENTS_STALE_TIME_MS,
-} from '../constants/documents.constants';
+import { DOCUMENTS_QUERY_KEYS, DOCUMENTS_STALE_TIME_MS } from '../constants/documents.constants';
 import type { DocumentsListResponse, DocumentsQuery } from '../types/documents.types';
 
 export function useDocumentsList(query: DocumentsQuery = {}) {

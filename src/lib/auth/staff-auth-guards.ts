@@ -26,21 +26,12 @@
  * visibility, review decisions, staff creation, and audit-sensitive actions.
  */
 
-import {
-  hasStaffSession,
-  isLockedStaffAccountStatus,
-  type StaffSession,
-} from './staff-session';
+import { hasStaffSession, isLockedStaffAccountStatus, type StaffSession } from './staff-session';
 
 export interface StaffAuthGuardResult {
   allowed: boolean;
   redirectTo: string | null;
-  reason:
-    | 'allowed'
-    | 'unauthenticated'
-    | 'locked_account'
-    | 'missing_staff_role'
-    | 'unauthorized';
+  reason: 'allowed' | 'unauthenticated' | 'locked_account' | 'missing_staff_role' | 'unauthorized';
 }
 
 export class StaffAuthGuardError extends Error {
@@ -59,9 +50,9 @@ export class StaffAuthGuardError extends Error {
 export function canAccessAdminFrontend(session: StaffSession | null | undefined): boolean {
   return Boolean(
     hasStaffSession(session) &&
-      session.role &&
-      session.user &&
-      !isLockedStaffAccountStatus(session.accountStatus),
+    session.role &&
+    session.user &&
+    !isLockedStaffAccountStatus(session.accountStatus),
   );
 }
 
@@ -107,13 +98,13 @@ export function getStaffAuthGuardResult(
   };
 }
 
-export function getStaffAuthRedirectPath(
-  session: StaffSession | null | undefined,
-): string | null {
+export function getStaffAuthRedirectPath(session: StaffSession | null | undefined): string | null {
   return getStaffAuthGuardResult(session).redirectTo;
 }
 
-export function assertStaffSession(session: StaffSession | null | undefined): asserts session is StaffSession {
+export function assertStaffSession(
+  session: StaffSession | null | undefined,
+): asserts session is StaffSession {
   const result = getStaffAuthGuardResult(session);
 
   if (!result.allowed) {

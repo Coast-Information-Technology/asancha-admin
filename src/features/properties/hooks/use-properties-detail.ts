@@ -24,10 +24,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getPropertyDetail } from '../api/properties.api';
-import {
-  PROPERTIES_QUERY_KEYS,
-  PROPERTIES_STALE_TIME_MS,
-} from '../constants/properties.constants';
+import { PROPERTIES_QUERY_KEYS, PROPERTIES_STALE_TIME_MS } from '../constants/properties.constants';
 import type { PropertyDetail } from '../types/properties.types';
 
 export function usePropertiesDetail(propertyPublicId: string) {

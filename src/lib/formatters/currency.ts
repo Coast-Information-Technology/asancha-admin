@@ -74,10 +74,7 @@ export function normaliseCurrencyAmount(value: unknown): number | null {
   return null;
 }
 
-export function formatCurrency(
-  value: unknown,
-  options: FormatCurrencyOptions = {},
-): string {
+export function formatCurrency(value: unknown, options: FormatCurrencyOptions = {}): string {
   const amount = normaliseCurrencyAmount(value);
 
   if (amount === null) {
@@ -123,10 +120,7 @@ export function formatCurrencyRange(
   return `${formatCurrency(minAmount, options)}${separator}${formatCurrency(maxAmount, options)}`;
 }
 
-export function formatCompactCurrency(
-  value: unknown,
-  options: FormatCurrencyOptions = {},
-): string {
+export function formatCompactCurrency(value: unknown, options: FormatCurrencyOptions = {}): string {
   return formatCurrency(value, {
     ...options,
     compact: true,
@@ -134,10 +128,7 @@ export function formatCompactCurrency(
   });
 }
 
-export function formatSignedCurrency(
-  value: unknown,
-  options: FormatCurrencyOptions = {},
-): string {
+export function formatSignedCurrency(value: unknown, options: FormatCurrencyOptions = {}): string {
   return formatCurrency(value, {
     ...options,
     showPositiveSign: true,

@@ -44,9 +44,8 @@ export function Drawer({
       return;
     }
 
-    previousFocusRef.current = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
     const focusFrame = window.requestAnimationFrame(() => {
       const firstFocusable = drawerRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
@@ -102,15 +101,23 @@ export function Drawer({
 
   return (
     <div aria-labelledby={titleId} aria-modal="true" className={styles.overlay} role="dialog">
-      <button aria-label="Close drawer" className={styles.backdrop} onClick={onClose} type="button" />
-      <aside
-        className={cn(styles.drawer, styles[side], className)}
-        ref={drawerRef}
-        tabIndex={-1}
-      >
+      <button
+        aria-label="Close drawer"
+        className={styles.backdrop}
+        onClick={onClose}
+        type="button"
+      />
+      <aside className={cn(styles.drawer, styles[side], className)} ref={drawerRef} tabIndex={-1}>
         <header className={styles.header}>
-          <h2 className={styles.title} id={titleId}>{title}</h2>
-          <button aria-label="Close drawer" className={styles.closeButton} onClick={onClose} type="button">
+          <h2 className={styles.title} id={titleId}>
+            {title}
+          </h2>
+          <button
+            aria-label="Close drawer"
+            className={styles.closeButton}
+            onClick={onClose}
+            type="button"
+          >
             ×
           </button>
         </header>

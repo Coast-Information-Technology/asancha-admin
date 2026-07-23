@@ -126,12 +126,13 @@ export function normaliseBackendStaffAuth(
 
   const firstName = getFirstString(user.firstName, user.first_name);
   const lastName = getFirstString(user.lastName, user.last_name);
-  const displayName = getFirstString(
-    user.displayName,
-    user.name,
-    [firstName, lastName].filter(Boolean).join(' '),
-    email,
-  ) ?? email;
+  const displayName =
+    getFirstString(
+      user.displayName,
+      user.name,
+      [firstName, lastName].filter(Boolean).join(' '),
+      email,
+    ) ?? email;
   const accountStatus = getAccountStatus(user, source);
   const session: StaffSession = {
     isAuthenticated: true,

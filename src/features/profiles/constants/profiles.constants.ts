@@ -36,7 +36,8 @@ import type {
 
 export const PROFILES_API_PATHS = {
   list: '/api/v1/admin/profiles',
-  detail: (profilePublicId: string) => `/api/v1/admin/profiles/${encodeURIComponent(profilePublicId)}`,
+  detail: (profilePublicId: string) =>
+    `/api/v1/admin/profiles/${encodeURIComponent(profilePublicId)}`,
   action: (profilePublicId: string) =>
     `/api/v1/admin/profiles/${encodeURIComponent(profilePublicId)}/actions`,
 } as const;

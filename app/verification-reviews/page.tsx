@@ -8,10 +8,25 @@ import {
 import { DEMO_VERIFICATION_REVIEWS } from '../../src/lib/demo/management-demo-data';
 
 const metrics: readonly ManagementListMetric[] = [
-  { label: 'All reviews', value: '4', detail: 'Profile, company, property, and provider reviews', tone: 'info' },
-  { label: 'Pending or in review', value: '2', detail: 'Awaiting or receiving staff assessment', tone: 'warning' },
+  {
+    label: 'All reviews',
+    value: '4',
+    detail: 'Profile, company, property, and provider reviews',
+    tone: 'info',
+  },
+  {
+    label: 'Pending or in review',
+    value: '2',
+    detail: 'Awaiting or receiving staff assessment',
+    tone: 'warning',
+  },
   { label: 'Approved', value: '1', detail: 'Verification workflow completed', tone: 'success' },
-  { label: 'High risk or critical', value: '1', detail: 'Requires priority operational attention', tone: 'danger' },
+  {
+    label: 'High risk or critical',
+    value: '1',
+    detail: 'Requires priority operational attention',
+    tone: 'danger',
+  },
 ];
 
 export default function VerificationReviewsPage() {

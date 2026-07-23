@@ -17,7 +17,10 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
     <ManagementDetailPage
       description="Listing lifecycle detail with connected property, review, visibility, reservation, activities, and audit workflows."
       links={[
-        { label: 'Connected property', href: `/properties/${listing.propertySummary.propertyPublicId}` },
+        {
+          label: 'Connected property',
+          href: `/properties/${listing.propertySummary.propertyPublicId}`,
+        },
         { label: 'Review', href: `/listings/${listing.listingPublicId}/review` },
         { label: 'Visibility', href: `/listings/${listing.listingPublicId}/visibility` },
         { label: 'Activities', href: `/listings/${listing.listingPublicId}/activities` },
@@ -28,7 +31,13 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
       recordLabel={listing.propertySummary.locationLabel}
       recordName={listing.title}
       status={listing.status.replace(/_/g, ' ')}
-      statusTone={listing.status === 'published' ? 'success' : listing.status === 'reserved' ? 'danger' : 'warning'}
+      statusTone={
+        listing.status === 'published'
+          ? 'success'
+          : listing.status === 'reserved'
+            ? 'danger'
+            : 'warning'
+      }
       summary={listing.summary}
       title="Listing detail"
     >
@@ -41,13 +50,21 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
       </section>
 
       <Card>
-        <CardHeader><CardTitle>Publication readiness</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Publication readiness</CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="asancha-cluster">
-            <Badge tone={listing.reviewStatus === 'approved' ? 'success' : 'warning'}>Review: {listing.reviewStatus.replace(/_/g, ' ')}</Badge>
-            <Badge tone={listing.visibilitySummary.isPubliclyVisible ? 'success' : 'neutral'}>Publicly visible: {listing.visibilitySummary.isPubliclyVisible ? 'Yes' : 'No'}</Badge>
+            <Badge tone={listing.reviewStatus === 'approved' ? 'success' : 'warning'}>
+              Review: {listing.reviewStatus.replace(/_/g, ' ')}
+            </Badge>
+            <Badge tone={listing.visibilitySummary.isPubliclyVisible ? 'success' : 'neutral'}>
+              Publicly visible: {listing.visibilitySummary.isPubliclyVisible ? 'Yes' : 'No'}
+            </Badge>
             <Badge tone="info">{listing.activitySummary.total} activity events</Badge>
-            <Badge tone="danger">{listing.auditSummary.highRiskActionsCount} high-impact actions</Badge>
+            <Badge tone="danger">
+              {listing.auditSummary.highRiskActionsCount} high-impact actions
+            </Badge>
           </div>
         </CardContent>
       </Card>
@@ -56,5 +73,14 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
 }
 
 function MetaCard({ label, value }: { label: string; value: string }) {
-  return <Card><CardHeader><CardTitle>{label}</CardTitle></CardHeader><CardContent><strong>{value}</strong></CardContent></Card>;
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{label}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <strong>{value}</strong>
+      </CardContent>
+    </Card>
+  );
 }

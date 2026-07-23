@@ -38,11 +38,7 @@ function getPropertyStatusClassName(status: PropertyStatus): string {
     return `${styles.badge} ${styles.badgeDanger}`;
   }
 
-  if (
-    status === 'submitted' ||
-    status === 'under_review' ||
-    status === 'correction_requested'
-  ) {
+  if (status === 'submitted' || status === 'under_review' || status === 'correction_requested') {
     return `${styles.badge} ${styles.badgeWarning}`;
   }
 

@@ -75,7 +75,10 @@ export default function LockedPage() {
       >
         This page is for staff access status only. Public user support is not handled from the admin
         auth area.{' '}
-        <Link href="/auth/unauthorized" style={{ color: 'var(--asancha-color-brand)', fontWeight: 750 }}>
+        <Link
+          href="/auth/unauthorized"
+          style={{ color: 'var(--asancha-color-brand)', fontWeight: 750 }}
+        >
           Learn about access restrictions
         </Link>
         .

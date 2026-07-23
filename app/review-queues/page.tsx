@@ -46,7 +46,8 @@ import {
 const queueCards = [
   {
     title: 'Profiles',
-    description: 'Investor, property owner, property agent, property sourcer, and service provider profile reviews.',
+    description:
+      'Investor, property owner, property agent, property sourcer, and service provider profile reviews.',
     href: '/review-queues/profiles',
     count: DEMO_PROFILES.filter((item) => item.status !== 'approved').length,
     tone: 'info',
@@ -67,7 +68,8 @@ const queueCards = [
   },
   {
     title: 'Listings',
-    description: 'Listing submissions, publication readiness, visibility checks, and lifecycle review.',
+    description:
+      'Listing submissions, publication readiness, visibility checks, and lifecycle review.',
     href: '/review-queues/listings',
     count: DEMO_LISTINGS.filter((item) => item.status !== 'published').length,
     tone: 'warning',
@@ -95,14 +97,16 @@ const queueCards = [
   },
   {
     title: 'Deal reservations',
-    description: 'Reservation lifecycle review across listings, payments, messages, and activities.',
+    description:
+      'Reservation lifecycle review across listings, payments, messages, and activities.',
     href: '/review-queues/deal-reservations',
     count: 3,
     tone: 'info',
   },
   {
     title: 'Bookings',
-    description: 'Operational and support booking queue for upcoming, pending, and support bookings.',
+    description:
+      'Operational and support booking queue for upcoming, pending, and support bookings.',
     href: '/review-queues/bookings',
     count: 4,
     tone: 'neutral',
@@ -116,7 +120,8 @@ const queueCards = [
   },
   {
     title: 'AI review',
-    description: 'AI recommendations, matching signals, review flags, and feedback requiring staff attention.',
+    description:
+      'AI recommendations, matching signals, review flags, and feedback requiring staff attention.',
     href: '/review-queues/ai',
     count: 0,
     tone: 'neutral',

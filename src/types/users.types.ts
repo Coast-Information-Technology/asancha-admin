@@ -36,12 +36,7 @@ export type PublicUserRole =
   | 'api_partner';
 
 export type PublicUserStatus =
-  | 'active'
-  | 'pending'
-  | 'suspended'
-  | 'disabled'
-  | 'locked'
-  | 'unknown';
+  'active' | 'pending' | 'suspended' | 'disabled' | 'locked' | 'unknown';
 
 export interface PublicUserRecord extends ApiTimestampedResource {
   userPublicId: string;

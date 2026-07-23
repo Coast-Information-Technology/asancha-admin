@@ -50,9 +50,7 @@ function getVerificationReviewStatusClassName(status: VerificationReviewStatus):
   return `${styles.badge} ${styles.badgeNeutral}`;
 }
 
-export function VerificationReviewStatusBadge({
-  status,
-}: VerificationReviewStatusBadgeProps) {
+export function VerificationReviewStatusBadge({ status }: VerificationReviewStatusBadgeProps) {
   return (
     <span className={getVerificationReviewStatusClassName(status)}>
       <span aria-hidden="true" className={styles.badgeDot} />

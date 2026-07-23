@@ -92,6 +92,32 @@
   text-transform: uppercase;
 }
 
+.sectionToggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.55rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--asancha-color-text-subtle);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  margin: 0.8rem 0 0.25rem;
+  padding: 0;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.sectionToggle:hover {
+  color: var(--asancha-color-brand);
+}
+
+.sectionToggle[data-active='true'] {
+  color: var(--asancha-color-text-subtle);
+}
+
 .navItem {
   display: flex;
   width: 100%;
@@ -139,22 +165,7 @@
 
 .children {
   display: grid;
-  gap: 0.15rem;
-  margin-left: 2.4rem;
-  padding: 0.25rem 0 0.5rem;
-}
-
-.childLink {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  border-radius: var(--asancha-radius-md);
-  color: var(--asancha-color-text-muted);
-  font-size: var(--asancha-font-size-sm);
-  font-weight: 650;
-  padding: 0.45rem 0.65rem;
-  text-decoration: none;
+  gap: 0.2rem;
 }
 
 .badge {
@@ -167,10 +178,4 @@
   color: #ffffff;
   font-size: 0.65rem;
   font-weight: 850;
-}
-
-.childLink:hover,
-.childLink[data-active='true'] {
-  background: var(--asancha-color-surface-muted);
-  color: var(--asancha-color-text);
 }

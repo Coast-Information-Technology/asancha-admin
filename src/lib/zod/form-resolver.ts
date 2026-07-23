@@ -64,7 +64,9 @@ export function createZodFormResolver<TFieldValues extends FieldValues>(
     applyAsanchaZodErrorMap();
   }
 
-  return zodResolver(schema as z.ZodType<unknown, FieldValues>) as unknown as Resolver<TFieldValues>;
+  return zodResolver(
+    schema as z.ZodType<unknown, FieldValues>,
+  ) as unknown as Resolver<TFieldValues>;
 }
 
 export function createDefaultFormMode(): AdminFormValidationMode {

@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { AUTH_API_PATHS } from '../../../../src/features/auth/constants/auth.constants';
-import {
-  STAFF_COOKIE_NAMES,
-} from '../../../../src/lib/auth/staff-cookies';
+import { STAFF_COOKIE_NAMES } from '../../../../src/lib/auth/staff-cookies';
 import { normaliseBackendStaffAuth } from '../../../../src/lib/auth/normalise-backend-staff-session';
 import { env } from '../../../../src/lib/env/env';
 
@@ -97,11 +95,14 @@ export async function POST(request: Request) {
   const backendPayload = await readResponseBody(backendResponse);
 
   if (!backendResponse.ok) {
-    return NextResponse.json(backendPayload ?? {
-      success: false,
-      message: 'Sign in failed.',
-      data: null,
-    }, { status: backendResponse.status });
+    return NextResponse.json(
+      backendPayload ?? {
+        success: false,
+        message: 'Sign in failed.',
+        data: null,
+      },
+      { status: backendResponse.status },
+    );
   }
 
   const authResult = normaliseBackendStaffAuth(backendPayload);

@@ -47,7 +47,8 @@ const STAFF_API_PATHS = {
   create: '/api/v1/admin/staff',
   updateStatus: (staffPublicId: string) =>
     `/api/v1/admin/staff/${encodeURIComponent(staffPublicId)}/status`,
-  updateRole: (staffPublicId: string) => `/api/v1/admin/staff/${encodeURIComponent(staffPublicId)}/role`,
+  updateRole: (staffPublicId: string) =>
+    `/api/v1/admin/staff/${encodeURIComponent(staffPublicId)}/role`,
 } as const;
 
 const FALLBACK_STAFF_LIST_RESPONSE: StaffListResponse = {
@@ -183,7 +184,15 @@ function parseStaffListItem(value: unknown): StaffListItem | null {
   const createdAtLabel = getString(value.createdAtLabel);
   const href = getString(value.href);
 
-  if (!staffPublicId || !displayName || !emailLabel || !role || !status || !createdAtLabel || !href) {
+  if (
+    !staffPublicId ||
+    !displayName ||
+    !emailLabel ||
+    !role ||
+    !status ||
+    !createdAtLabel ||
+    !href
+  ) {
     return null;
   }
 
@@ -281,7 +290,15 @@ function parseStaffDetail(value: unknown): StaffDetail | null {
   const createdAtLabel = getString(value.createdAtLabel);
   const permissionSummary = parsePermissionSummary(value.permissionSummary);
 
-  if (!staffPublicId || !displayName || !emailLabel || !role || !status || !createdAtLabel || !permissionSummary) {
+  if (
+    !staffPublicId ||
+    !displayName ||
+    !emailLabel ||
+    !role ||
+    !status ||
+    !createdAtLabel ||
+    !permissionSummary
+  ) {
     return null;
   }
 
@@ -320,7 +337,11 @@ async function getJsonFromApi(path: string, query?: URLSearchParams): Promise<un
   return response.json() as Promise<unknown>;
 }
 
-async function sendJsonToApi(path: string, method: 'PATCH' | 'POST', body: unknown): Promise<unknown> {
+async function sendJsonToApi(
+  path: string,
+  method: 'PATCH' | 'POST',
+  body: unknown,
+): Promise<unknown> {
   const url = createApiUrl(path);
 
   if (!url) {
@@ -345,7 +366,11 @@ async function sendJsonToApi(path: string, method: 'PATCH' | 'POST', body: unkno
   return response.json() as Promise<unknown>;
 }
 
-function parseMutationResponse(value: unknown, fallbackPublicId: string, fallbackMessage: string): StaffMutationResponse {
+function parseMutationResponse(
+  value: unknown,
+  fallbackPublicId: string,
+  fallbackMessage: string,
+): StaffMutationResponse {
   const data = unwrapEnvelopeData(value);
 
   if (!isRecord(data)) {
@@ -365,11 +390,13 @@ export async function getStaffList(query: StaffQuery = {}): Promise<StaffListRes
   const payload = await getJsonFromApi(STAFF_API_PATHS.list, createStaffQuery(query));
   const parsed = parseStaffListResponse(unwrapEnvelopeData(payload));
 
-  return parsed ?? {
-    ...FALLBACK_STAFF_LIST_RESPONSE,
-    page: query.page ?? 1,
-    pageSize: query.pageSize ?? 20,
-  };
+  return (
+    parsed ?? {
+      ...FALLBACK_STAFF_LIST_RESPONSE,
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 20,
+    }
+  );
 }
 
 export async function getStaffDetail(staffPublicId: string): Promise<StaffDetail> {
@@ -385,28 +412,22 @@ export async function createStaff(input: CreateStaffInput): Promise<StaffMutatio
   return parseMutationResponse(payload, 'pending_staff_invite', 'Staff invite submitted.');
 }
 
-export async function updateStaffStatus(input: UpdateStaffStatusInput): Promise<StaffMutationResponse> {
-  const payload = await sendJsonToApi(
-    STAFF_API_PATHS.updateStatus(input.staffPublicId),
-    'PATCH',
-    {
-      status: input.status,
-      reason: input.reason,
-    },
-  );
+export async function updateStaffStatus(
+  input: UpdateStaffStatusInput,
+): Promise<StaffMutationResponse> {
+  const payload = await sendJsonToApi(STAFF_API_PATHS.updateStatus(input.staffPublicId), 'PATCH', {
+    status: input.status,
+    reason: input.reason,
+  });
 
   return parseMutationResponse(payload, input.staffPublicId, 'Staff status update submitted.');
 }
 
 export async function updateStaffRole(input: UpdateStaffRoleInput): Promise<StaffMutationResponse> {
-  const payload = await sendJsonToApi(
-    STAFF_API_PATHS.updateRole(input.staffPublicId),
-    'PATCH',
-    {
-      role: input.role,
-      reason: input.reason,
-    },
-  );
+  const payload = await sendJsonToApi(STAFF_API_PATHS.updateRole(input.staffPublicId), 'PATCH', {
+    role: input.role,
+    reason: input.reason,
+  });
 
   return parseMutationResponse(payload, input.staffPublicId, 'Staff role update submitted.');
 }

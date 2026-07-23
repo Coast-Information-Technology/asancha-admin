@@ -93,10 +93,7 @@ export function usePagination(options: UsePaginationOptions = {}): UsePagination
 
   const setLimit = useCallback(
     (nextLimitValue: number) => {
-      const safeLimit = Math.min(
-        clampPositiveInteger(nextLimitValue, DEFAULT_LIMIT),
-        maxLimit,
-      );
+      const safeLimit = Math.min(clampPositiveInteger(nextLimitValue, DEFAULT_LIMIT), maxLimit);
 
       setLimitState(safeLimit);
       setPageState(DEFAULT_PAGE);

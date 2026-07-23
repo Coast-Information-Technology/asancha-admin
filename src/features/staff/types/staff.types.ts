@@ -34,12 +34,7 @@ export type StaffRole = 'super_admin' | 'admin' | 'customer_care_rep';
 export type CreateStaffRole = Exclude<StaffRole, 'super_admin'>;
 
 export type StaffAccountStatus =
-  | 'invited'
-  | 'pending'
-  | 'active'
-  | 'locked'
-  | 'suspended'
-  | 'disabled';
+  'invited' | 'pending' | 'active' | 'locked' | 'suspended' | 'disabled';
 
 export interface StaffListItem {
   staffPublicId: string;

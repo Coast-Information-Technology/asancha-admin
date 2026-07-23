@@ -28,10 +28,7 @@
  */
 
 import type { StaffRole } from '../auth/staff-role-guards';
-import {
-  canCreateStaffRole,
-  canViewSuperAdminAccounts,
-} from '../auth/staff-role-guards';
+import { canCreateStaffRole, canViewSuperAdminAccounts } from '../auth/staff-role-guards';
 import type { StaffPermissionKey } from './staff-role-permissions';
 import { hasStaffRolePermission } from './staff-role-permissions';
 
@@ -235,7 +232,9 @@ export function canPerformPermissionAction(input: PermissionActionInput): boolea
   }
 
   if (action === 'create_staff') {
-    return targetRole ? canCreateStaffRole(role, targetRole) : role === 'super_admin' || role === 'admin';
+    return targetRole
+      ? canCreateStaffRole(role, targetRole)
+      : role === 'super_admin' || role === 'admin';
   }
 
   if (action === 'create_admin') {
@@ -280,10 +279,7 @@ export function getPermissionActionDeniedMessage(action: AdminPermissionAction):
     return 'You do not have permission to perform document review actions.';
   }
 
-  if (
-    action === 'review_verification_reviews' ||
-    action === 'request_verification_correction'
-  ) {
+  if (action === 'review_verification_reviews' || action === 'request_verification_correction') {
     return 'You do not have permission to perform verification review actions.';
   }
 

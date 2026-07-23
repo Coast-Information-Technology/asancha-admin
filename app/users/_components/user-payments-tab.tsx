@@ -41,9 +41,7 @@ export function UserPaymentsTab({ userPublicId }: UserPaymentsTabProps) {
             <CardTitle>Payments</CardTitle>
             <Badge tone="neutral">0 payments</Badge>
           </div>
-          <CardDescription>
-            Payment records connected to user {userPublicId}.
-          </CardDescription>
+          <CardDescription>Payment records connected to user {userPublicId}.</CardDescription>
         </CardHeader>
 
         <CardContent>

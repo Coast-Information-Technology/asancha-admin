@@ -39,20 +39,9 @@ export type DocumentStatus =
   | 'archived';
 
 export type DocumentOwnerType =
-  | 'user'
-  | 'profile'
-  | 'company'
-  | 'property'
-  | 'listing'
-  | 'verification_review'
-  | 'api_partner';
+  'user' | 'profile' | 'company' | 'property' | 'listing' | 'verification_review' | 'api_partner';
 
-export type DocumentReviewRisk =
-  | 'none'
-  | 'low'
-  | 'medium'
-  | 'high'
-  | 'flagged';
+export type DocumentReviewRisk = 'none' | 'low' | 'medium' | 'high' | 'flagged';
 
 export type DocumentActionType =
   | 'approve'

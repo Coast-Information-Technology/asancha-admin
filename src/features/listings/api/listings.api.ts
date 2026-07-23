@@ -502,11 +502,13 @@ export async function getListingsList(query: ListingsQuery = {}): Promise<Listin
   const payload = await getJsonFromApi(LISTINGS_API_PATHS.list, createListingsQuery(query));
   const parsed = parseListingsListResponse(unwrapEnvelopeData(payload));
 
-  return parsed ?? {
-    ...FALLBACK_LISTINGS_LIST_RESPONSE,
-    page: query.page ?? 1,
-    pageSize: query.pageSize ?? 20,
-  };
+  return (
+    parsed ?? {
+      ...FALLBACK_LISTINGS_LIST_RESPONSE,
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 20,
+    }
+  );
 }
 
 export async function getListingDetail(listingPublicId: string): Promise<ListingDetail> {

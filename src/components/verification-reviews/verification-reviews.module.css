@@ -218,7 +218,8 @@
 
 .warningBox {
   padding: 0.875rem;
-  border: 1px solid color-mix(in srgb, var(--asancha-color-warning) 35%, var(--asancha-color-border));
+  border: 1px solid
+    color-mix(in srgb, var(--asancha-color-warning) 35%, var(--asancha-color-border));
   border-radius: var(--asancha-radius-lg);
   color: var(--asancha-color-text);
   background: color-mix(in srgb, var(--asancha-color-warning) 10%, var(--asancha-color-surface));

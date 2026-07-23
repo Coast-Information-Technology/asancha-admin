@@ -12,7 +12,8 @@ export interface ProfileDetailPageProps {
 function getStatusTone(status: string) {
   if (status === 'approved') return 'success';
   if (status === 'rejected' || status === 'suspended') return 'danger';
-  if (status === 'pending' || status === 'under_review' || status === 'correction_requested') return 'warning';
+  if (status === 'pending' || status === 'under_review' || status === 'correction_requested')
+    return 'warning';
   return 'neutral';
 }
 
@@ -38,19 +39,41 @@ export default async function ProfileDetailPage({ params }: ProfileDetailPagePro
       title="Profile detail"
     >
       <section aria-label="Profile related records" className="asancha-card-grid">
-        <RelatedCard label="Properties" value={profile.relatedSummary.relatedPropertiesCount} href="/properties" />
-        <RelatedCard label="Listings" value={profile.relatedSummary.relatedListingsCount} href="/listings" />
-        <RelatedCard label="Documents" value={profile.relatedSummary.relatedDocumentsCount} href="/documents" />
-        <RelatedCard label="Verification reviews" value={profile.relatedSummary.relatedVerificationReviewsCount} href="/verification-reviews" />
+        <RelatedCard
+          label="Properties"
+          value={profile.relatedSummary.relatedPropertiesCount}
+          href="/properties"
+        />
+        <RelatedCard
+          label="Listings"
+          value={profile.relatedSummary.relatedListingsCount}
+          href="/listings"
+        />
+        <RelatedCard
+          label="Documents"
+          value={profile.relatedSummary.relatedDocumentsCount}
+          href="/documents"
+        />
+        <RelatedCard
+          label="Verification reviews"
+          value={profile.relatedSummary.relatedVerificationReviewsCount}
+          href="/verification-reviews"
+        />
       </section>
 
       <Card>
-        <CardHeader><CardTitle>Profile context</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Profile context</CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="asancha-cluster">
             <Badge tone="info">User: {profile.userPublicId}</Badge>
-            <Badge tone={profile.verificationStatus === 'approved' ? 'success' : 'warning'}>Verification: {profile.verificationStatus.replace(/_/g, ' ')}</Badge>
-            {profile.relatedSummary.relatedCompanyLabel ? <Badge tone="neutral">Company: {profile.relatedSummary.relatedCompanyLabel}</Badge> : null}
+            <Badge tone={profile.verificationStatus === 'approved' ? 'success' : 'warning'}>
+              Verification: {profile.verificationStatus.replace(/_/g, ' ')}
+            </Badge>
+            {profile.relatedSummary.relatedCompanyLabel ? (
+              <Badge tone="neutral">Company: {profile.relatedSummary.relatedCompanyLabel}</Badge>
+            ) : null}
           </div>
         </CardContent>
       </Card>
@@ -61,8 +84,15 @@ export default async function ProfileDetailPage({ params }: ProfileDetailPagePro
 function RelatedCard({ label, value, href }: { label: string; value: number; href: string }) {
   return (
     <Card>
-      <CardHeader><CardTitle>{label}</CardTitle></CardHeader>
-      <CardContent><div className="asancha-cluster-between"><strong>{value}</strong><a href={href}>Open</a></div></CardContent>
+      <CardHeader>
+        <CardTitle>{label}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="asancha-cluster-between">
+          <strong>{value}</strong>
+          <a href={href}>Open</a>
+        </div>
+      </CardContent>
     </Card>
   );
 }

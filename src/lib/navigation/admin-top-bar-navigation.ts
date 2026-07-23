@@ -30,16 +30,11 @@
 export type StaffNavigationRole = 'super_admin' | 'admin' | 'customer_care_rep';
 
 export type NavigationSection =
-  | 'overview'
-  | 'work'
-  | 'records'
-  | 'operations'
-  | 'status'
-  | 'communication'
-  | 'governance';
+  'overview' | 'work' | 'records' | 'operations' | 'status' | 'communication' | 'governance';
 
 export type NavigationBadgeKey =
   | 'reviewQueueCount'
+  | 'onboardingReviewCount'
   | 'messageUnreadCount'
   | 'notificationUnreadCount'
   | 'paymentReviewCount'
@@ -57,6 +52,7 @@ export interface AdminNavigationItem {
   badgeKey?: NavigationBadgeKey;
   allowedRoles: readonly StaffNavigationRole[];
   children?: readonly AdminNavigationItem[];
+  renderAsSectionGroup?: boolean;
 }
 
 export const ALL_STAFF_NAVIGATION_ROLES: readonly StaffNavigationRole[] = [
@@ -85,7 +81,7 @@ export function getNavigationSection(item: AdminNavigationItem): NavigationSecti
     return 'overview';
   }
 
-  if (item.label === 'Review Queues') {
+  if (['Review Queues', 'Onboarding'].includes(item.label)) {
     return 'work';
   }
 
@@ -99,12 +95,17 @@ export function getNavigationSection(item: AdminNavigationItem): NavigationSecti
       'Listings',
       'Documents',
       'Verification Reviews',
+      'Records',
     ].includes(item.label)
   ) {
     return 'records';
   }
 
-  if (['Deal Reservations', 'Deal Activities', 'Payments', 'Bookings'].includes(item.label)) {
+  if (
+    ['Operations', 'Deal Reservations', 'Deal Activities', 'Payments', 'Bookings'].includes(
+      item.label,
+    )
+  ) {
     return 'operations';
   }
 
@@ -112,8 +113,12 @@ export function getNavigationSection(item: AdminNavigationItem): NavigationSecti
     return 'status';
   }
 
-  if (['Messages', 'Notifications'].includes(item.label)) {
+  if (['Communication', 'Messages', 'Notifications'].includes(item.label)) {
     return 'communication';
+  }
+
+  if (['Governance'].includes(item.label)) {
+    return 'governance';
   }
 
   return 'governance';

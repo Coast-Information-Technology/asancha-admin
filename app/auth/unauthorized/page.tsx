@@ -67,9 +67,7 @@ export default function UnauthorizedPage() {
           Return to sign in
         </Button>
 
-        <Button href="/dashboard">
-          Go to dashboard
-        </Button>
+        <Button href="/dashboard">Go to dashboard</Button>
       </div>
 
       <p

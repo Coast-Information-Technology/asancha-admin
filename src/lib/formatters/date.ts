@@ -103,10 +103,7 @@ export function formatLongDate(value: DateInput, options: FormatDateOptions = {}
   });
 }
 
-export function formatDateTime(
-  value: DateInput,
-  options: FormatDateTimeOptions = {},
-): string {
+export function formatDateTime(value: DateInput, options: FormatDateTimeOptions = {}): string {
   const date = parseDateInput(value);
 
   if (!date) {
@@ -133,7 +130,10 @@ export function formatTime(value: DateInput, options: FormatDateTimeOptions = {}
   }).format(date);
 }
 
-function getRelativeTimeUnit(diffInMs: number): { value: number; unit: Intl.RelativeTimeFormatUnit } {
+function getRelativeTimeUnit(diffInMs: number): {
+  value: number;
+  unit: Intl.RelativeTimeFormatUnit;
+} {
   const absoluteDiff = Math.abs(diffInMs);
 
   if (absoluteDiff < MINUTE_IN_MS) {

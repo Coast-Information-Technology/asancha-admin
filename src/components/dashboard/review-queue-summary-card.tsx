@@ -23,13 +23,7 @@
 
 import { Badge } from '../ui/badge/badge';
 import { Button } from '../ui/button/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '../ui/card/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card/card';
 
 import type { ReviewQueueSummaryItem } from '../../features/dashboard/types/dashboard.types';
 

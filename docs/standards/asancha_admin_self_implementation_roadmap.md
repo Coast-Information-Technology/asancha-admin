@@ -11,78 +11,88 @@ Excluded Audience: guest, investor, property_owner, property_agent, property_sou
 Implementation Owner: Toluwalope Coast / Asancha project owner
 Usage: This roadmap is written for manual, step-by-step implementation, not automated Codex execution.
 ---
+
 1. Purpose
-This document defines the implementation roadmap for building the Asancha admin/staff frontend application manually by the project owner/developer.
-This roadmap is for:
-asancha-admin
-It is not for:
-asancha-web asancha-api asancha-worker
-The purpose is to guide you as the implementing developer through a controlled frontend build order so that the admin/staff frontend is implemented cleanly, safely, and in alignment with the approved Admin Route & Navigation Map, Admin Frontend Project Structure, backend endpoint rules, frontend functional rules, and staff permission model.
-The frontend may display and guide staff actions, but the backend remains the final enforcement authority for authentication, authorization, staff permissions, resource visibility, audit logging, review decisions, payment decisions, document review, verification review, API access, and staff creation.
+   This document defines the implementation roadmap for building the Asancha admin/staff frontend application manually by the project owner/developer.
+   This roadmap is for:
+   asancha-admin
+   It is not for:
+   asancha-web asancha-api asancha-worker
+   The purpose is to guide you as the implementing developer through a controlled frontend build order so that the admin/staff frontend is implemented cleanly, safely, and in alignment with the approved Admin Route & Navigation Map, Admin Frontend Project Structure, backend endpoint rules, frontend functional rules, and staff permission model.
+   The frontend may display and guide staff actions, but the backend remains the final enforcement authority for authentication, authorization, staff permissions, resource visibility, audit logging, review decisions, payment decisions, document review, verification review, API access, and staff creation.
+
 ---
+
 2. Source-of-Truth Rule for Implementation
-You must follow this order when documents conflict:
+   You must follow this order when documents conflict:
 1. Functional Business Rules Master Document
-2. Database Schema Rules
-3. API Endpoint Rules
-4. Onboarding Rules
-5. UX Business Rules
-6. Frontend Screen Behaviour
-7. Engineering Code Standards
-8. Email Templates
-9. Notification Events and Templates
-10. Event and Background Jobs
-11. Audit Log and Compliance Traceability
-12. Revised Project Structure
-13. Admin Route & Navigation Map
-14. Admin Frontend Project Structure
-15. This Admin/Staff Frontend Implementation Roadmap
-This roadmap explains the execution order.
-It does not override the approved business rules.
+1. Database Schema Rules
+1. API Endpoint Rules
+1. Onboarding Rules
+1. UX Business Rules
+1. Frontend Screen Behaviour
+1. Engineering Code Standards
+1. Email Templates
+1. Notification Events and Templates
+1. Event and Background Jobs
+1. Audit Log and Compliance Traceability
+1. Revised Project Structure
+1. Admin Route & Navigation Map
+1. Admin Frontend Project Structure
+1. This Admin/Staff Frontend Implementation Roadmap
+   This roadmap explains the execution order.
+   It does not override the approved business rules.
+
 ---
+
 3. Implementation Philosophy
-You must build asancha-admin as a serious internal operations frontend, not as a public dashboard.
-The implementation must follow these principles:
+   You must build asancha-admin as a serious internal operations frontend, not as a public dashboard.
+   The implementation must follow these principles:
 1. Build the foundation first.
-2. Keep asancha-admin separate from asancha-web.
-3. Do not create public signup, public onboarding, marketplace, or public user dashboard routes in asancha-admin.
-4. Do not create admin/staff routes inside asancha-web.
-5. Do not create a super_admin from any frontend route, form, modal, or action.
-6. Staff users are only super_admin, admin, and customer_care_rep.
-7. Customer care must only see safe support views.
-8. Detail pages must not appear as sidebar menu items.
-9. Detail pages must be reached from list/table rows, queues, search results, or related-resource links.
-10. Use Messages as the frontend menu label.
-11. Keep backend conversations as the thread/container concept.
-12. Use public IDs in frontend routes.
-13. Do not expose MongoDB ObjectIds.
-14. Do not expose secrets, API key hashes, webhook secrets, private KYC notes, internal admin notes, or restricted document URLs.
-15. Frontend route protection guides UX only; backend enforcement remains final.
-The approved Admin Frontend Project Structure confirms that asancha-admin must not contain public signup, public onboarding, marketplace, or public user dashboard routes, and that detail pages must not be placed in sidebar menus.
+1. Keep asancha-admin separate from asancha-web.
+1. Do not create public signup, public onboarding, marketplace, or public user dashboard routes in asancha-admin.
+1. Do not create admin/staff routes inside asancha-web.
+1. Do not create a super_admin from any frontend route, form, modal, or action.
+1. Staff users are only super_admin, admin, and customer_care_rep.
+1. Customer care must only see safe support views.
+1. Detail pages must not appear as sidebar menu items.
+1. Detail pages must be reached from list/table rows, queues, search results, or related-resource links.
+1. Use Messages as the frontend menu label.
+1. Keep backend conversations as the thread/container concept.
+1. Use public IDs in frontend routes.
+1. Do not expose MongoDB ObjectIds.
+1. Do not expose secrets, API key hashes, webhook secrets, private KYC notes, internal admin notes, or restricted document URLs.
+1. Frontend route protection guides UX only; backend enforcement remains final.
+   The approved Admin Frontend Project Structure confirms that asancha-admin must not contain public signup, public onboarding, marketplace, or public user dashboard routes, and that detail pages must not be placed in sidebar menus.
+
 ---
+
 4. High-Level Implementation Order
-You should implement the admin/staff frontend in this order:
-0. Repository preparation and implementation documentation 1. Frontend foundation and configuration 2. Shared UI primitives and admin styling foundation 3. API client, staff auth session, route guards, and permission helpers 4. Admin auth screens 5. Admin shell, top bar, sidebar, mobile drawer, and navigation 6. Dashboard resolver and role dashboards 7. Review queues 8. Users module 9. Staff module 10. Profiles module 11. Companies module 12. Properties module 13. Listings module 14. Documents module 15. Verification reviews module 16. Deal reservations module 17. Deal activities module 18. Payments module 19. Bookings module 20. Messages module 21. Notifications module 22. API access module 23. AI/admin insights module 24. Audit logs module 25. Settings module 26. My staff account module 27. System status, safe error states, empty states, loading states, accessibility 28. Testing and QA 29. Vercel deployment preparation
+   You should implement the admin/staff frontend in this order:
+5. Repository preparation and implementation documentation 1. Frontend foundation and configuration 2. Shared UI primitives and admin styling foundation 3. API client, staff auth session, route guards, and permission helpers 4. Admin auth screens 5. Admin shell, top bar, sidebar, mobile drawer, and navigation 6. Dashboard resolver and role dashboards 7. Review queues 8. Users module 9. Staff module 10. Profiles module 11. Companies module 12. Properties module 13. Listings module 14. Documents module 15. Verification reviews module 16. Deal reservations module 17. Deal activities module 18. Payments module 19. Bookings module 20. Messages module 21. Notifications module 22. API access module 23. AI/admin insights module 24. Audit logs module 25. Settings module 26. My staff account module 27. System status, safe error states, empty states, loading states, accessibility 28. Testing and QA 29. Vercel deployment preparation
+
 ---
+
 5. Implementation Block 0 — Repository Preparation and developer Documentation
-Goal
-Prepare the asancha-admin repository so you have a clear record of the approved admin/staff direction before writing code.
-Tasks
+   Goal
+   Prepare the asancha-admin repository so you have a clear record of the approved admin/staff direction before writing code.
+   Tasks
 1. Create or confirm the asancha-admin repository.
-2. Add README.md with project purpose.
-3. Add docs/ folder.
-4. Add docs/implementation/PROJECT_STATE.md.
-5. Add docs/implementation/IMPLEMENTATION_RULES.md.
-6. Add docs/implementation/IMPLEMENTATION_PRIORITY.md.
-7. Add docs/standards/ for admin frontend rules and route maps.
-8. Add the approved Admin Route & Navigation Map.
-9. Add the approved Admin Frontend Project Structure.
-10. Add note that public/user routes must never be created in asancha-admin.
-11. Add note that super_admin cannot be created from frontend.
-12. Add note that detail pages are pages, not sidebar items.
-Files/Folders
-asancha-admin/ ├─ docs/ │  ├─ ai/ │  │  ├─ PROJECT_STATE.md │  │  ├─ IMPLEMENTATION_RULES.md │  │  └─ IMPLEMENTATION_PRIORITY.md │  └─ standards/ │     ├─ frontend-functional-business-rules.md │     ├─ admin-route-navigation-map.md │     ├─ admin-screen-behaviour.md │     └─ admin-frontend-project-structure.md
-Developer Checkpoint
+1. Add README.md with project purpose.
+1. Add docs/ folder.
+1. Add docs/implementation/PROJECT_STATE.md.
+1. Add docs/implementation/IMPLEMENTATION_RULES.md.
+1. Add docs/implementation/IMPLEMENTATION_PRIORITY.md.
+1. Add docs/standards/ for admin frontend rules and route maps.
+1. Add the approved Admin Route & Navigation Map.
+1. Add the approved Admin Frontend Project Structure.
+1. Add note that public/user routes must never be created in asancha-admin.
+1. Add note that super_admin cannot be created from frontend.
+1. Add note that detail pages are pages, not sidebar items.
+   Files/Folders
+   asancha-admin/ ├─ docs/ │ ├─ ai/ │ │ ├─ PROJECT_STATE.md │ │ ├─ IMPLEMENTATION_RULES.md │ │ └─ IMPLEMENTATION_PRIORITY.md │ └─ standards/ │ ├─ frontend-functional-business-rules.md │ ├─ admin-route-navigation-map.md │ ├─ admin-screen-behaviour.md │ └─ admin-frontend-project-structure.md
+   Developer Checkpoint
+
 - asancha-admin exists as a separate repo.
 - README.md states this is the admin/staff frontend.
 - docs/implementation/PROJECT_STATE.md exists.
@@ -91,91 +101,99 @@ Developer Checkpoint
 - No public onboarding route exists.
 - No marketplace route exists.
 - No frontend super_admin creation path exists.
+
 ---
+
 6. Implementation Block 1 — Frontend Foundation and Configuration
-Goal
-Create the Next.js project foundation with TypeScript, Tailwind, CSS Modules, Zod, React Hook Form, and npm.
-Tasks
+   Goal
+   Create the Next.js project foundation with TypeScript, Tailwind, CSS Modules, Zod, React Hook Form, and npm.
+   Tasks
 1. Initialise Next.js App Router project.
-2. Configure TypeScript.
-3. Configure Tailwind CSS.
-4. Configure CSS Modules usage.
-5. Configure ESLint and Prettier.
-6. Add Zod.
-7. Add React Hook Form.
-8. Add @hookform/resolvers.
-9. Add clsx and tailwind-merge.
-10. Add lucide-react.
-11. Add date-fns.
-12. Add optional TanStack Query or selected request-state tool.
-13. Add optional Zustand if global admin UI state is needed.
-14. Add environment variable validation.
-15. Add root error/loading/not-found/global-error files.
-Required Dependencies
-npm install zod react-hook-form @hookform/resolvers npm install clsx tailwind-merge npm install lucide-react npm install date-fns
-Optional:
-npm install @tanstack/react-query npm install zustand
-Root Files
-asancha-admin/ ├─ app/ ├─ src/ ├─ public/ ├─ .env.example ├─ .gitignore ├─ .eslintrc.cjs ├─ .prettierrc ├─ next.config.ts ├─ package.json ├─ package-lock.json ├─ postcss.config.mjs ├─ tailwind.config.ts ├─ tsconfig.json ├─ README.md └─ middleware.ts
-Environment Variables
-NEXT_PUBLIC_APP_NAME=Asancha Admin NEXT_PUBLIC_APP_URL=https://admin.asancha.co.uk NEXT_PUBLIC_API_BASE_URL=https://api.asancha.co.uk/api/v1 NEXT_PUBLIC_PUBLIC_APP_URL=https://asancha.co.uk NEXT_PUBLIC_ENVIRONMENT=production
-Safety Rule
-Never expose secrets through NEXT_PUBLIC_*.
-The admin frontend must not expose JWT secrets, database URLs, Stripe secret keys, webhook secrets, API key hashes, admin bootstrap secrets, mail provider secrets, storage secrets, full API keys, private document URLs, private KYC notes, or audit-sensitive secrets.
+1. Configure TypeScript.
+1. Configure Tailwind CSS.
+1. Configure CSS Modules usage.
+1. Configure ESLint and Prettier.
+1. Add Zod.
+1. Add React Hook Form.
+1. Add @hookform/resolvers.
+1. Add clsx and tailwind-merge.
+1. Add lucide-react.
+1. Add date-fns.
+1. Add optional TanStack Query or selected request-state tool.
+1. Add optional Zustand if global admin UI state is needed.
+1. Add environment variable validation.
+1. Add root error/loading/not-found/global-error files.
+   Required Dependencies
+   npm install zod react-hook-form @hookform/resolvers npm install clsx tailwind-merge npm install lucide-react npm install date-fns
+   Optional:
+   npm install @tanstack/react-query npm install zustand
+   Root Files
+   asancha-admin/ ├─ app/ ├─ src/ ├─ public/ ├─ .env.example ├─ .gitignore ├─ .eslintrc.cjs ├─ .prettierrc ├─ next.config.ts ├─ package.json ├─ package-lock.json ├─ postcss.config.mjs ├─ tailwind.config.ts ├─ tsconfig.json ├─ README.md └─ middleware.ts
+   Environment Variables
+   NEXT_PUBLIC_APP_NAME=Asancha Admin NEXT_PUBLIC_APP_URL=https://admin.asancha.co.uk NEXT_PUBLIC_API_BASE_URL=https://api.asancha.co.uk/api/v1 NEXT_PUBLIC_PUBLIC_APP_URL=https://asancha.co.uk NEXT_PUBLIC_ENVIRONMENT=production
+   Safety Rule
+   Never expose secrets through NEXT_PUBLIC_*.
+   The admin frontend must not expose JWT secrets, database URLs, Stripe secret keys, webhook secrets, API key hashes, admin bootstrap secrets, mail provider secrets, storage secrets, full API keys, private document URLs, private KYC notes, or audit-sensitive secrets.
+
 ---
+
 7. Implementation Block 2 — Shared UI Primitives and Admin Styling Foundation
-Goal
-Build the reusable admin UI layer before building admin screens.
-Tasks
+   Goal
+   Build the reusable admin UI layer before building admin screens.
+   Tasks
 1. Create shared UI components.
-2. Create admin shell components.
-3. Create admin table components.
-4. Create filter/search components.
-5. Create form components.
-6. Create review/action panels.
-7. Create confirmation modal component.
-8. Create status badges.
-9. Create priority/risk badges.
-10. Create loading/skeleton components.
-11. Create empty-state and error-state components.
-12. Create permission-blocked component.
-13. Create audit-aware action confirmation component.
-Files/Folders
-src/components/ui/ ├─ button/ ├─ input/ ├─ select/ ├─ checkbox/ ├─ textarea/ ├─ dialog/ ├─ drawer/ ├─ modal/ ├─ table/ ├─ data-table/ ├─ badge/ ├─ card/ ├─ tabs/ ├─ toast/ ├─ dropdown-menu/ ├─ command-menu/ ├─ alert/ ├─ skeleton/ ├─ empty-state/ ├─ error-state/ └─ permission-blocked/
-Styling Rule
-Use Tailwind for:
-layout spacing grid flex responsive behaviour common utilities simple visual states
-Use CSS Modules for:
-admin shell layout sidebar transitions mobile drawer behaviour dense data tables modals review panels confirmation dialogs audit detail screens transition-heavy UI
-Developer Checkpoint
+1. Create admin shell components.
+1. Create admin table components.
+1. Create filter/search components.
+1. Create form components.
+1. Create review/action panels.
+1. Create confirmation modal component.
+1. Create status badges.
+1. Create priority/risk badges.
+1. Create loading/skeleton components.
+1. Create empty-state and error-state components.
+1. Create permission-blocked component.
+1. Create audit-aware action confirmation component.
+   Files/Folders
+   src/components/ui/ ├─ button/ ├─ input/ ├─ select/ ├─ checkbox/ ├─ textarea/ ├─ dialog/ ├─ drawer/ ├─ modal/ ├─ table/ ├─ data-table/ ├─ badge/ ├─ card/ ├─ tabs/ ├─ toast/ ├─ dropdown-menu/ ├─ command-menu/ ├─ alert/ ├─ skeleton/ ├─ empty-state/ ├─ error-state/ └─ permission-blocked/
+   Styling Rule
+   Use Tailwind for:
+   layout spacing grid flex responsive behaviour common utilities simple visual states
+   Use CSS Modules for:
+   admin shell layout sidebar transitions mobile drawer behaviour dense data tables modals review panels confirmation dialogs audit detail screens transition-heavy UI
+   Developer Checkpoint
+
 - Shared UI components exist before feature screens.
 - Data table component supports sorting/filtering/pagination state.
 - Confirmation modal exists for sensitive actions.
 - Permission blocked state exists.
 - Empty and error state components exist.
 - Status badges do not rely on colour alone.
+
 ---
+
 8. Implementation Block 3 — API Client, Staff Auth Session, Route Guards, and Permissions
-Goal
-Create a safe admin frontend API layer before connecting screens.
-Tasks
+   Goal
+   Create a safe admin frontend API layer before connecting screens.
+   Tasks
 1. Create api-client.ts.
-2. Create admin-fetch.ts.
-3. Create auth-fetch.ts.
-4. Create api-error.ts.
-5. Create api-response.ts.
-6. Create route constants.
-7. Create staff session helpers.
-8. Create staff auth guards.
-9. Create staff role guards.
-10. Create staff permission helpers.
-11. Create route permission map.
-12. Create menu visibility helpers.
-13. Create action permission helpers.
-14. Create redaction utility.
-15. Create safe redirect helper.
-Files/Folders
-```txt id=“bx7rjc” src/lib/api/ ├─ api-client.ts ├─ api-error.ts ├─ api-response.ts ├─ api-routes.ts ├─ admin-fetch.ts └─ auth-fetch.ts
+1. Create admin-fetch.ts.
+1. Create auth-fetch.ts.
+1. Create api-error.ts.
+1. Create api-response.ts.
+1. Create route constants.
+1. Create staff session helpers.
+1. Create staff auth guards.
+1. Create staff role guards.
+1. Create staff permission helpers.
+1. Create route permission map.
+1. Create menu visibility helpers.
+1. Create action permission helpers.
+1. Create redaction utility.
+1. Create safe redirect helper.
+   Files/Folders
+
+````txt id=“bx7rjc” src/lib/api/ ├─ api-client.ts ├─ api-error.ts ├─ api-response.ts ├─ api-routes.ts ├─ admin-fetch.ts └─ auth-fetch.ts
 src/lib/auth/ ├─ staff-session.ts ├─ staff-cookies.ts ├─ staff-auth-guards.ts ├─ staff-role-guards.ts └─ staff-permission-guards.ts
 src/lib/permissions/ ├─ staff-role-permissions.ts ├─ route-permissions.ts ├─ menu-visibility.ts └─ action-permissions.ts
 src/lib/utils/ ├─ routes.ts ├─ safe-redirect.ts ├─ public-id.ts ├─ table-query.ts └─ redaction.ts
@@ -733,3 +751,4 @@ Before the admin/staff frontend is considered implementation-ready:
 37. Final Implementation Sequence Summary
 0. Repository preparation and implementation documentation 1. Frontend foundation and configuration 2. Shared UI primitives and admin styling foundation 3. API client, staff auth session, route guards, and permission helpers 4. Admin auth screens 5. Admin shell, top bar, sidebar, mobile drawer, and navigation 6. Dashboard resolver and role dashboards 7. Review queues 8. Users module 9. Staff module 10. Profiles module 11. Companies module 12. Properties module 13. Listings module 14. Documents module 15. Verification reviews module 16. Deal reservations module 17. Deal activities module 18. Payments module 19. Bookings module 20. Messages module 21. Notifications module 22. API access module 23. AI/admin insights module 24. Audit logs module 25. Settings module 26. My staff account module 27. System status, safe error states, empty states, loading states, accessibility 28. Testing and QA 29. Vercel deployment preparation
 This is the approved working direction for Asancha Admin/Staff Frontend Implementation Roadmap for Self-Implementation v1.0.
+````

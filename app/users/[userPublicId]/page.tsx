@@ -38,13 +38,41 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
       title="User detail"
     >
       <section aria-label="User related records" className="asancha-card-grid">
-        <RelatedCard label="Profiles" value={user.relatedCounts.profiles} href={`/profiles?userPublicId=${user.userPublicId}`} />
-        <RelatedCard label="Companies" value={user.relatedCounts.companies} href={`/companies?userPublicId=${user.userPublicId}`} />
-        <RelatedCard label="Properties" value={user.relatedCounts.properties} href={`/properties?userPublicId=${user.userPublicId}`} />
-        <RelatedCard label="Listings" value={user.relatedCounts.listings} href={`/listings?userPublicId=${user.userPublicId}`} />
-        <RelatedCard label="Documents" value={user.relatedCounts.documents} href={`/documents?userPublicId=${user.userPublicId}`} />
-        <RelatedCard label="Verification reviews" value={user.relatedCounts.verificationReviews} href="/verification-reviews" />
-        <RelatedCard label="Deal reservations" value={user.relatedCounts.dealReservations} href="/deal-reservations" />
+        <RelatedCard
+          label="Profiles"
+          value={user.relatedCounts.profiles}
+          href={`/profiles?userPublicId=${user.userPublicId}`}
+        />
+        <RelatedCard
+          label="Companies"
+          value={user.relatedCounts.companies}
+          href={`/companies?userPublicId=${user.userPublicId}`}
+        />
+        <RelatedCard
+          label="Properties"
+          value={user.relatedCounts.properties}
+          href={`/properties?userPublicId=${user.userPublicId}`}
+        />
+        <RelatedCard
+          label="Listings"
+          value={user.relatedCounts.listings}
+          href={`/listings?userPublicId=${user.userPublicId}`}
+        />
+        <RelatedCard
+          label="Documents"
+          value={user.relatedCounts.documents}
+          href={`/documents?userPublicId=${user.userPublicId}`}
+        />
+        <RelatedCard
+          label="Verification reviews"
+          value={user.relatedCounts.verificationReviews}
+          href="/verification-reviews"
+        />
+        <RelatedCard
+          label="Deal reservations"
+          value={user.relatedCounts.dealReservations}
+          href="/deal-reservations"
+        />
         <RelatedCard label="Bookings" value={user.relatedCounts.bookings} href="/bookings" />
         <RelatedCard label="Payments" value={user.relatedCounts.payments} href="/payments" />
         <RelatedCard label="Messages" value={user.relatedCounts.messages} href="/messages" />
@@ -54,5 +82,17 @@ export default async function UserDetailPage({ params }: UserDetailPageProps) {
 }
 
 function RelatedCard({ label, value, href }: { label: string; value: number; href: string }) {
-  return <Card><CardHeader><CardTitle>{label}</CardTitle></CardHeader><CardContent><div className="asancha-cluster-between"><strong>{value}</strong><a href={href}>Open</a></div></CardContent></Card>;
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{label}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="asancha-cluster-between">
+          <strong>{value}</strong>
+          <a href={href}>Open</a>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }

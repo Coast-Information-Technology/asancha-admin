@@ -40,9 +40,7 @@ export function UserBookingsTab({ userPublicId }: UserBookingsTabProps) {
             <CardTitle>Bookings</CardTitle>
             <Badge tone="neutral">0 bookings</Badge>
           </div>
-          <CardDescription>
-            Booking records connected to user {userPublicId}.
-          </CardDescription>
+          <CardDescription>Booking records connected to user {userPublicId}.</CardDescription>
         </CardHeader>
 
         <CardContent>

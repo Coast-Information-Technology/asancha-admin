@@ -138,8 +138,8 @@ export function DocumentReviewPanel({
       </div>
 
       <div className={styles.dangerBox}>
-        Internal notes are restricted staff-only context. They must never be exposed to public users,
-        customer-facing messages, emails, notifications, or document status support views.
+        Internal notes are restricted staff-only context. They must never be exposed to public
+        users, customer-facing messages, emails, notifications, or document status support views.
       </div>
 
       <div>
@@ -150,9 +150,7 @@ export function DocumentReviewPanel({
       {document.reviewSummary.latestSafeUserMessage ? (
         <div className={styles.summaryItem}>
           <p className={styles.summaryLabel}>Latest safe user message</p>
-          <p className={styles.panelDescription}>
-            {document.reviewSummary.latestSafeUserMessage}
-          </p>
+          <p className={styles.panelDescription}>{document.reviewSummary.latestSafeUserMessage}</p>
         </div>
       ) : null}
 

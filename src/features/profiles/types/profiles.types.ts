@@ -29,11 +29,7 @@
  */
 
 export type ProfileType =
-  | 'investor'
-  | 'property_owner'
-  | 'property_agent'
-  | 'property_sourcer'
-  | 'service_provider';
+  'investor' | 'property_owner' | 'property_agent' | 'property_sourcer' | 'service_provider';
 
 export type ProfileStatus =
   | 'draft'
@@ -46,20 +42,10 @@ export type ProfileStatus =
   | 'suspended';
 
 export type ProfileVerificationStatus =
-  | 'not_started'
-  | 'pending'
-  | 'in_review'
-  | 'approved'
-  | 'rejected'
-  | 'flagged';
+  'not_started' | 'pending' | 'in_review' | 'approved' | 'rejected' | 'flagged';
 
 export type ProfileActionType =
-  | 'approve'
-  | 'reject'
-  | 'place_on_hold'
-  | 'request_correction'
-  | 'suspend'
-  | 'restore';
+  'approve' | 'reject' | 'place_on_hold' | 'request_correction' | 'suspend' | 'restore';
 
 export interface ProfileListItem {
   profilePublicId: string;

@@ -31,13 +31,7 @@
 import { isStaffRole, type StaffRole } from './staff-role-guards';
 
 export type StaffAccountStatus =
-  | 'active'
-  | 'pending'
-  | 'invited'
-  | 'locked'
-  | 'suspended'
-  | 'disabled'
-  | 'unknown';
+  'active' | 'pending' | 'invited' | 'locked' | 'suspended' | 'disabled' | 'unknown';
 
 export interface StaffUserSummary {
   publicId: string;
@@ -144,7 +138,11 @@ export function normaliseStaffSession(value: unknown): StaffSession {
 
   const roleFromRoot = rawSession.role;
   const roleFromUser = rawUser?.role;
-  const role = isStaffRole(roleFromRoot) ? roleFromRoot : isStaffRole(roleFromUser) ? roleFromUser : null;
+  const role = isStaffRole(roleFromRoot)
+    ? roleFromRoot
+    : isStaffRole(roleFromUser)
+      ? roleFromUser
+      : null;
 
   const accountStatusFromRoot = rawSession.accountStatus;
   const accountStatusFromUser = rawUser?.accountStatus;

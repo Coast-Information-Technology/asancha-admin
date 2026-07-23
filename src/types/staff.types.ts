@@ -28,13 +28,7 @@ import type { ApiTimestampedResource } from './api.types';
 export type StaffRole = 'super_admin' | 'admin' | 'customer_care_rep';
 
 export type StaffAccountStatus =
-  | 'active'
-  | 'pending'
-  | 'invited'
-  | 'locked'
-  | 'suspended'
-  | 'disabled'
-  | 'unknown';
+  'active' | 'pending' | 'invited' | 'locked' | 'suspended' | 'disabled' | 'unknown';
 
 export interface StaffRecord extends ApiTimestampedResource {
   staffPublicId: string;

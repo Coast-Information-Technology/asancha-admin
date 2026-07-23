@@ -25,10 +25,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getListingsList } from '../api/listings.api';
-import {
-  LISTINGS_QUERY_KEYS,
-  LISTINGS_STALE_TIME_MS,
-} from '../constants/listings.constants';
+import { LISTINGS_QUERY_KEYS, LISTINGS_STALE_TIME_MS } from '../constants/listings.constants';
 import type { ListingsListResponse, ListingsQuery } from '../types/listings.types';
 
 export function useListingsList(query: ListingsQuery = {}) {

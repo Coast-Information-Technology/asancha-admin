@@ -12,7 +12,8 @@ export interface PropertyDetailPageProps {
 function getStatusTone(status: string) {
   if (status === 'approved') return 'success';
   if (status === 'rejected' || status === 'suspended') return 'danger';
-  if (status === 'submitted' || status === 'under_review' || status === 'correction_requested') return 'warning';
+  if (status === 'submitted' || status === 'under_review' || status === 'correction_requested')
+    return 'warning';
   return 'neutral';
 }
 
@@ -38,14 +39,32 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
       title="Property detail"
     >
       <section aria-label="Property related records" className="asancha-card-grid">
-        <RelatedCard label="Documents" value={property.relatedSummary.documentsCount} href={`/properties/${property.propertyPublicId}/documents`} />
-        <RelatedCard label="Listings" value={property.relatedSummary.listingsCount} href={`/properties/${property.propertyPublicId}/listings`} />
-        <RelatedCard label="Reservations" value={property.relatedSummary.reservationsCount} href="/deal-reservations" />
-        <RelatedCard label="Activities" value={property.relatedSummary.activitiesCount} href={`/properties/${property.propertyPublicId}/activities`} />
+        <RelatedCard
+          label="Documents"
+          value={property.relatedSummary.documentsCount}
+          href={`/properties/${property.propertyPublicId}/documents`}
+        />
+        <RelatedCard
+          label="Listings"
+          value={property.relatedSummary.listingsCount}
+          href={`/properties/${property.propertyPublicId}/listings`}
+        />
+        <RelatedCard
+          label="Reservations"
+          value={property.relatedSummary.reservationsCount}
+          href="/deal-reservations"
+        />
+        <RelatedCard
+          label="Activities"
+          value={property.relatedSummary.activitiesCount}
+          href={`/properties/${property.propertyPublicId}/activities`}
+        />
       </section>
 
       <Card>
-        <CardHeader><CardTitle>Property workflow status</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Property workflow status</CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="asancha-cluster">
             <Badge tone="info">Source: {property.sourceLabel}</Badge>
@@ -61,8 +80,15 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 function RelatedCard({ label, value, href }: { label: string; value: number; href: string }) {
   return (
     <Card>
-      <CardHeader><CardTitle>{label}</CardTitle></CardHeader>
-      <CardContent><div className="asancha-cluster-between"><strong>{value}</strong><a href={href}>Open</a></div></CardContent>
+      <CardHeader>
+        <CardTitle>{label}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="asancha-cluster-between">
+          <strong>{value}</strong>
+          <a href={href}>Open</a>
+        </div>
+      </CardContent>
     </Card>
   );
 }

@@ -10,11 +10,25 @@ export default function InvestorProfilesPage() {
   return (
     <ManagementListPage
       description="Investor profiles with onboarding, verification, and investment-readiness context."
-      filters={[{ label: 'All profiles', href: '/profiles' }, { label: 'Pending', href: '/profiles/investors?status=pending' }, { label: 'Approved', href: '/profiles/investors?status=approved' }]}
+      filters={[
+        { label: 'All profiles', href: '/profiles' },
+        { label: 'Pending', href: '/profiles/investors?status=pending' },
+        { label: 'Approved', href: '/profiles/investors?status=approved' },
+      ]}
       metrics={[
-        { label: 'Investor profiles', value: String(profiles.length), detail: 'Demo investor records', tone: 'info' },
+        {
+          label: 'Investor profiles',
+          value: String(profiles.length),
+          detail: 'Demo investor records',
+          tone: 'info',
+        },
         { label: 'Approved', value: '1', detail: 'Ready for deal matching', tone: 'success' },
-        { label: 'Pending review', value: '0', detail: 'Awaiting staff assessment', tone: 'warning' },
+        {
+          label: 'Pending review',
+          value: '0',
+          detail: 'Awaiting staff assessment',
+          tone: 'warning',
+        },
         { label: 'Correction required', value: '0', detail: 'User action needed', tone: 'danger' },
       ]}
       title="Investor profiles"

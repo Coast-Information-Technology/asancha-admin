@@ -31,6 +31,7 @@ import type { LucideIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { signOutStaff } from '../../../features/auth/api/auth.api';
+import { useStaffSession } from '../../../features/auth/hooks/use-staff-session';
 import type {
   AdminNavigationItem,
   StaffNavigationRole,
@@ -74,19 +75,34 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   const setCommandQuery = useAdminSearchStore((state) => state.setQuery);
   const closeCommandMenu = useAdminSearchStore((state) => state.closeCommandMenu);
   const clearSession = useStaffAuthStore((state) => state.clearSession);
+  const authenticatedStaff = useStaffAuthStore((state) => state.user);
+  const isAuthRoute = pathname === '/auth' || pathname.startsWith('/auth/');
+
+  useStaffSession({ enabled: !isAuthRoute });
+
+  const currentStaff: AdminShellStaff = authenticatedStaff
+    ? {
+        displayName: authenticatedStaff.firstName ?? getFirstName(authenticatedStaff.displayName),
+        email: authenticatedStaff.email,
+        role: authenticatedStaff.role,
+        avatarUrl: authenticatedStaff.avatarUrl,
+      }
+    : staff;
 
   const handleLogout = useCallback(() => {
-    void signOutStaff().catch(() => undefined).finally(() => {
-      clearSession();
-      router.replace('/auth/sign-in');
-    });
+    void signOutStaff()
+      .catch(() => undefined)
+      .finally(() => {
+        clearSession();
+        router.replace('/auth/sign-in');
+      });
   }, [clearSession, router]);
 
   const effectiveLogout = onLogout ?? handleLogout;
   const commandItems = useMemo<CommandMenuItem[]>(() => {
     const seenHrefs = new Set<string>();
 
-    return flattenNavigation(getSidebarNavigation(staff.role))
+    return flattenNavigation(getSidebarNavigation(currentStaff.role))
       .filter((item) => {
         if (seenHrefs.has(item.href)) {
           return false;
@@ -110,7 +126,7 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
           },
         };
       });
-  }, [closeCommandMenu, router, setCommandQuery, staff.role]);
+  }, [closeCommandMenu, currentStaff.role, router, setCommandQuery]);
 
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent): void => {
@@ -132,7 +148,7 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
     closeMobileDrawer();
   }, [closeMobileDrawer, pathname, setActivePathname]);
 
-  if (pathname === '/auth' || pathname.startsWith('/auth/')) {
+  if (isAuthRoute) {
     return children;
   }
 
@@ -143,16 +159,16 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
       </a>
 
       <div className={styles.desktopSidebar}>
-        <AdminSidebar collapsed={sidebarCollapsed} role={staff.role} />
+        <AdminSidebar collapsed={sidebarCollapsed} role={currentStaff.role} />
       </div>
 
-      <AdminTopBar staff={staff} onLogout={effectiveLogout} />
-      <MobileAdminTopBar role={staff.role} />
+      <AdminTopBar staff={currentStaff} onLogout={effectiveLogout} />
+      <MobileAdminTopBar role={currentStaff.role} />
 
       <MobileAdminDrawer
         onClose={closeMobileDrawer}
         open={mobileDrawerOpen}
-        role={staff.role}
+        role={currentStaff.role}
       />
 
       <main
@@ -194,6 +210,10 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   );
 }
 
+function getFirstName(displayName: string): string {
+  return displayName.trim().split(/\s+/)[0] ?? displayName;
+}
+
 function getSidebarNavigation(role: StaffNavigationRole): AdminNavigationItem[] {
   if (role === 'super_admin') {
     return getSuperAdminSidebarNavigation();
@@ -207,7 +227,10 @@ function getSidebarNavigation(role: StaffNavigationRole): AdminNavigationItem[] 
 }
 
 function flattenNavigation(items: readonly AdminNavigationItem[]): AdminNavigationItem[] {
-  return items.flatMap((item) => [item, ...(item.children ? flattenNavigation(item.children) : [])]);
+  return items.flatMap((item) => [
+    item,
+    ...(item.children ? flattenNavigation(item.children) : []),
+  ]);
 }
 
 function getNavigationIcon(iconName: string): LucideIcon {

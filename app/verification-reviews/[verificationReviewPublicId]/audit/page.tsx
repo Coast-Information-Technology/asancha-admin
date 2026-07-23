@@ -144,8 +144,8 @@ export default async function VerificationReviewAuditPage({
           <CardContent>
             <p className="asancha-page-description">
               This page will later show safe audit summaries such as action category, actor label,
-              target label, status, source, request ID, correlation ID, and created time. It must not
-              expose passwords, tokens, API keys, webhook secrets, private KYC notes, raw risk
+              target label, status, source, request ID, correlation ID, and created time. It must
+              not expose passwords, tokens, API keys, webhook secrets, private KYC notes, raw risk
               payloads, private document URLs, raw files, ObjectIds, or restricted payloads.
             </p>
           </CardContent>

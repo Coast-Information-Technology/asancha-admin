@@ -21,13 +21,7 @@
  */
 
 import { Button } from '../ui/button/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '../ui/card/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card/card';
 
 import type { DashboardMetric } from '../../features/dashboard/types/dashboard.types';
 

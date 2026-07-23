@@ -77,23 +77,21 @@ export const VERIFICATION_REVIEW_STATUS_LABELS: Record<VerificationReviewStatus,
   archived: 'Archived',
 };
 
-export const VERIFICATION_REVIEW_TARGET_TYPE_LABELS: Record<
-  VerificationReviewTargetType,
-  string
-> = {
-  general_profile: 'General profile',
-  investor_profile: 'Investor profile',
-  property_owner_profile: 'Property owner profile',
-  property_agent_profile: 'Property agent profile',
-  property_sourcer_profile: 'Property sourcer profile',
-  service_provider_profile: 'Service provider profile',
-  api_partner_profile: 'API partner profile',
-  company: 'Company',
-  property: 'Property',
-  document: 'Document',
-  payment: 'Payment',
-  api_client: 'API client',
-};
+export const VERIFICATION_REVIEW_TARGET_TYPE_LABELS: Record<VerificationReviewTargetType, string> =
+  {
+    general_profile: 'General profile',
+    investor_profile: 'Investor profile',
+    property_owner_profile: 'Property owner profile',
+    property_agent_profile: 'Property agent profile',
+    property_sourcer_profile: 'Property sourcer profile',
+    service_provider_profile: 'Service provider profile',
+    api_partner_profile: 'API partner profile',
+    company: 'Company',
+    property: 'Property',
+    document: 'Document',
+    payment: 'Payment',
+    api_client: 'API client',
+  };
 
 export const VERIFICATION_RISK_RATING_LABELS: Record<VerificationRiskRating, string> = {
   unknown: 'Unknown',

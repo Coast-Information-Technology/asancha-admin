@@ -37,16 +37,10 @@ export interface UseVerificationReviewsActionOptions {
   onError?: (message: string) => void;
 }
 
-export function useVerificationReviewsAction(
-  options: UseVerificationReviewsActionOptions = {},
-) {
+export function useVerificationReviewsAction(options: UseVerificationReviewsActionOptions = {}) {
   const queryClient = useQueryClient();
 
-  return useMutation<
-    VerificationReviewMutationResponse,
-    Error,
-    VerificationReviewActionInput
-  >({
+  return useMutation<VerificationReviewMutationResponse, Error, VerificationReviewActionInput>({
     mutationFn: async (input) => {
       const parsedInput = verificationReviewsActionSchema.parse(input);
 

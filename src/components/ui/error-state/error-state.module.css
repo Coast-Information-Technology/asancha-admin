@@ -1,0 +1,50 @@
+/** Styles the shared recoverable error-state component. */
+
+.errorState {
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--asancha-color-danger-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-danger-muted);
+  padding: 2rem;
+  text-align: center;
+}
+
+.icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-radius: var(--asancha-radius-full);
+  background: var(--asancha-color-danger);
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.title {
+  margin: 0;
+  color: var(--asancha-color-danger);
+  font-size: var(--asancha-font-size-lg);
+}
+
+.description {
+  max-width: 38rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.code {
+  margin: 0;
+  color: var(--asancha-color-text-subtle);
+  font-family: var(--asancha-font-family-mono, ui-monospace, monospace);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.action {
+  margin-top: 0.5rem;
+}

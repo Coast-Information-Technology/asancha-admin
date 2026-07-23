@@ -9,7 +9,12 @@ import { DEMO_COMPANIES } from '../../src/lib/demo/management-demo-data';
 
 const metrics: readonly ManagementListMetric[] = [
   { label: 'All companies', value: '4', detail: 'Registered demo companies', tone: 'info' },
-  { label: 'Under review', value: '2', detail: 'Company or verification review active', tone: 'warning' },
+  {
+    label: 'Under review',
+    value: '2',
+    detail: 'Company or verification review active',
+    tone: 'warning',
+  },
   { label: 'Approved', value: '1', detail: 'Ready for permitted workflows', tone: 'success' },
   { label: 'Needs attention', value: '2', detail: 'Pending, on hold, or flagged', tone: 'danger' },
 ];

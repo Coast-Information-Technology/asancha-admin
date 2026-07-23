@@ -24,10 +24,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getProfilesList } from '../api/profiles.api';
-import {
-  PROFILES_QUERY_KEYS,
-  PROFILES_STALE_TIME_MS,
-} from '../constants/profiles.constants';
+import { PROFILES_QUERY_KEYS, PROFILES_STALE_TIME_MS } from '../constants/profiles.constants';
 import type { ProfilesListResponse, ProfilesQuery } from '../types/profiles.types';
 
 export function useProfilesList(query: ProfilesQuery = {}) {

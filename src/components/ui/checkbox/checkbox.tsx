@@ -45,8 +45,16 @@ export function Checkbox({ id, label, helperText, errorText, className, ...props
       />
       <span className={styles.content}>
         <span className={styles.label}>{label}</span>
-        {helperText ? <span className={styles.helper} id={descriptionId}>{helperText}</span> : null}
-        {errorText ? <span className={styles.error} id={errorId}>{errorText}</span> : null}
+        {helperText ? (
+          <span className={styles.helper} id={descriptionId}>
+            {helperText}
+          </span>
+        ) : null}
+        {errorText ? (
+          <span className={styles.error} id={errorId}>
+            {errorText}
+          </span>
+        ) : null}
       </span>
     </label>
   );

@@ -450,11 +450,13 @@ export async function getCompaniesList(query: CompaniesQuery = {}): Promise<Comp
   const payload = await getJsonFromApi(COMPANIES_API_PATHS.list, createCompaniesQuery(query));
   const parsed = parseCompaniesListResponse(unwrapEnvelopeData(payload));
 
-  return parsed ?? {
-    ...FALLBACK_COMPANIES_LIST_RESPONSE,
-    page: query.page ?? 1,
-    pageSize: query.pageSize ?? 20,
-  };
+  return (
+    parsed ?? {
+      ...FALLBACK_COMPANIES_LIST_RESPONSE,
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 20,
+    }
+  );
 }
 
 export async function getCompanyDetail(companyPublicId: string): Promise<CompanyDetail> {
