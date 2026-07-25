@@ -1,157 +1,267 @@
-// src/components/staff/create-staff-form.tsx
-
 /**
  * File purpose:
- * Renders the create-staff form for Asancha Admin.
+ * Renders the validated create-staff form for Asancha Admin.
  *
  * Role in the project:
- * This component collects permitted staff invite details and submits them
- * through the staff feature mutation hook.
- *
- * Key exports:
- * - CreateStaffForm renders a frontend-safe create staff form.
+ * Collects the backend staff registration payload and submits it through the
+ * staff feature mutation hook.
  *
  * Business relevance:
  * Staff creation supports authorised internal team growth while preserving the
- * approved staff role matrix.
+ * approved role matrix. Super admin creation is never available in this form.
  *
  * Security note:
- * This form intentionally excludes super_admin. Super admin creation is
- * seed/bootstrap only and must not exist in frontend routes, forms, modals,
- * dropdowns, or actions. Backend authorization remains final.
+ * Passwords are sent only to the backend request and are not stored in admin
+ * state, logs, or success messages. Backend authorization remains final.
  */
 
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { canCreateStaffRole } from '../../lib/auth/staff-role-guards';
+import {
+  STAFF_CREATION_RULES,
+  STAFF_ROLE_LABELS,
+  type StaffCreationTargetRole,
+} from '../../lib/constants/staff-roles.constants';
+import { createDefaultFormMode, createZodFormResolver } from '../../lib/zod/form-resolver';
+import { useStaffAuthStore } from '../../store/staff-auth.store';
+import { Alert } from '../ui/alert/alert';
+import { Button } from '../ui/button/button';
+import { Input } from '../ui/input/input';
+import { Select } from '../ui/select/select';
 
 import { useCreateStaff } from '../../features/staff/hooks/use-create-staff';
-import type { CreateStaffInput, CreateStaffRole } from '../../features/staff/types/staff.types';
+import { createStaffSchema } from '../../features/staff/schemas/create-staff.schema';
+import type { CreateStaffSchemaInput } from '../../features/staff/schemas/create-staff.schema';
 
 import styles from './staff.module.css';
+
+const EMPTY_ALLOWED_ROLES: readonly StaffCreationTargetRole[] = [];
+
+const DEFAULT_FORM_VALUES: CreateStaffSchemaInput = {
+  email: '',
+  password: '',
+  role: 'customer_care_rep',
+  displayName: '',
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+  jobTitle: '',
+  department: '',
+};
 
 export interface CreateStaffFormProps {
   onCreated?: (message: string) => void;
 }
 
 export function CreateStaffForm({ onCreated }: CreateStaffFormProps) {
-  const [displayName, setDisplayName] = useState('');
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState<CreateStaffRole>('customer_care_rep');
-  const [inviteMessage, setInviteMessage] = useState('');
-  const [localMessage, setLocalMessage] = useState<string | null>(null);
+  const actorRole = useStaffAuthStore((state) => state.user?.role);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [serverErrorMessage, setServerErrorMessage] = useState<string | null>(null);
+  const allowedRoles = actorRole ? STAFF_CREATION_RULES[actorRole] : EMPTY_ALLOWED_ROLES;
+  const canSubmit = Boolean(
+    actorRole && allowedRoles.some((targetRole) => canCreateStaffRole(actorRole, targetRole)),
+  );
+  const {
+    clearErrors,
+    formState: { errors },
+    getValues,
+    handleSubmit,
+    register,
+    reset,
+    setError,
+    setValue,
+  } = useForm<CreateStaffSchemaInput>({
+    defaultValues: DEFAULT_FORM_VALUES,
+    mode: createDefaultFormMode(),
+    reValidateMode: 'onChange',
+    resolver: createZodFormResolver(createStaffSchema),
+  });
+
+  useEffect(() => {
+    if (allowedRoles.length === 0) {
+      return;
+    }
+
+    const selectedRole = getValues('role');
+
+    if (!allowedRoles.includes(selectedRole)) {
+      setValue('role', allowedRoles[0], { shouldValidate: true });
+    }
+  }, [allowedRoles, getValues, setValue]);
 
   const createStaffMutation = useCreateStaff({
     onSuccess: (message) => {
-      setDisplayName('');
-      setEmail('');
-      setRole('customer_care_rep');
-      setInviteMessage('');
-      setLocalMessage(message);
+      reset({
+        ...DEFAULT_FORM_VALUES,
+        role: allowedRoles[0] ?? 'customer_care_rep',
+      });
+      setServerErrorMessage(null);
+      setSuccessMessage(message);
       onCreated?.(message);
     },
     onError: (message) => {
-      setLocalMessage(message);
+      setSuccessMessage(null);
+      setServerErrorMessage(message);
     },
   });
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleValidSubmit(values: CreateStaffSchemaInput): Promise<void> {
+    clearErrors('root');
+    setSuccessMessage(null);
+    setServerErrorMessage(null);
 
-    const payload: CreateStaffInput = {
-      displayName,
-      email,
-      role,
-      inviteMessage: inviteMessage.trim().length > 0 ? inviteMessage : undefined,
-    };
+    if (!actorRole || !canCreateStaffRole(actorRole, values.role)) {
+      setError('root', {
+        message: 'Your staff role is not permitted to create this account.',
+        type: 'permission',
+      });
+      return;
+    }
 
-    createStaffMutation.mutate(payload);
+    createStaffMutation.mutate(values);
   }
 
+  const permissionErrorMessage = errors.root?.message;
+
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.notice} role="status">
-        This form can only create admin or customer care accounts. It must never create a
-        super_admin account.
-      </div>
-
-      <div className={styles.formGrid}>
-        <label className={styles.field}>
-          <span className={styles.label}>Display name</span>
-          <input
-            className={styles.input}
-            maxLength={120}
-            minLength={2}
-            name="displayName"
-            onChange={(event) => setDisplayName(event.target.value)}
-            placeholder="Example: Asancha Operations"
-            required
-            type="text"
-            value={displayName}
-          />
-          <span className={styles.helpText}>Use the staff member&apos;s safe display name.</span>
-        </label>
-
-        <label className={styles.field}>
-          <span className={styles.label}>Staff email</span>
-          <input
-            className={styles.input}
-            maxLength={160}
-            name="email"
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="staff@example.com"
-            required
-            type="email"
-            value={email}
-          />
-          <span className={styles.helpText}>The staff invite will be sent to this email.</span>
-        </label>
-      </div>
-
-      <label className={styles.field}>
-        <span className={styles.label}>Role</span>
-        <select
-          className={styles.select}
-          name="role"
-          onChange={(event) => setRole(event.target.value as CreateStaffRole)}
-          required
-          value={role}
-        >
-          <option value="customer_care_rep">Customer care representative</option>
-          <option value="admin">Admin</option>
-        </select>
-        <span className={styles.helpText}>
-          Super admin is intentionally not available in this form.
-        </span>
-      </label>
-
-      <label className={styles.field}>
-        <span className={styles.label}>Invite message</span>
-        <textarea
-          className={styles.textarea}
-          maxLength={500}
-          name="inviteMessage"
-          onChange={(event) => setInviteMessage(event.target.value)}
-          placeholder="Optional short message for the staff invite."
-          value={inviteMessage}
-        />
-        <span className={styles.helpText}>Optional. Do not include passwords or secrets.</span>
-      </label>
-
-      {localMessage ? (
-        <div className={styles.notice} role="status">
-          {localMessage}
-        </div>
+    <form className={styles.form} onSubmit={handleSubmit(handleValidSubmit)}>
+      {!actorRole ? (
+        <Alert title="Checking staff permissions" tone="info">
+          Your current staff session is still loading. The form will enable when the backend session
+          confirms your staff role.
+        </Alert>
       ) : null}
 
+      {actorRole && !canSubmit ? (
+        <Alert title="Staff creation unavailable" tone="danger">
+          Your current staff role cannot create staff accounts. Customer care representatives cannot
+          create staff accounts.
+        </Alert>
+      ) : null}
+
+      {permissionErrorMessage ? (
+        <Alert title="Staff creation blocked" tone="danger">
+          {permissionErrorMessage}
+        </Alert>
+      ) : null}
+
+      {serverErrorMessage ? (
+        <Alert title="Staff creation failed" tone="danger">
+          {serverErrorMessage}
+        </Alert>
+      ) : null}
+
+      {successMessage ? (
+        <Alert title="Staff account created" tone="success">
+          The staff member can now continue with the account setup.
+        </Alert>
+      ) : null}
+
+      <div className={styles.formGrid}>
+        <Input
+          autoComplete="given-name"
+          errorText={errors.firstName?.message}
+          label="First name"
+          placeholder="Amelia"
+          {...register('firstName')}
+        />
+
+        <Input
+          autoComplete="family-name"
+          errorText={errors.lastName?.message}
+          label="Last name"
+          placeholder="Grant"
+          {...register('lastName')}
+        />
+
+        <Input
+          autoComplete="email"
+          errorText={errors.email?.message}
+          label="Email address"
+          placeholder="staff@example.com"
+          type="email"
+          {...register('email')}
+        />
+
+        <Input
+          autoComplete="tel"
+          errorText={errors.phoneNumber?.message}
+          label="Phone number"
+          placeholder="+447000000000"
+          type="tel"
+          {...register('phoneNumber')}
+        />
+
+        <Input
+          errorText={errors.jobTitle?.message}
+          label="Job title"
+          placeholder="Operations Admin"
+          {...register('jobTitle')}
+        />
+
+        <Input
+          errorText={errors.department?.message}
+          label="Department"
+          placeholder="Operations"
+          {...register('department')}
+        />
+
+        <div className={styles.fullField}>
+          <Input
+            autoComplete="name"
+            errorText={errors.displayName?.message}
+            label="Display name"
+            placeholder="Amelia Grant"
+            {...register('displayName')}
+          />
+        </div>
+
+        <div className={styles.fullField}>
+          <Select
+            errorText={errors.role?.message}
+            label="Staff role"
+            options={allowedRoles.map((role) => ({
+              label: STAFF_ROLE_LABELS[role],
+              value: role,
+            }))}
+            placeholder={canSubmit ? 'Select a staff role' : 'Role unavailable'}
+            {...register('role')}
+          />
+        </div>
+
+        <div className={styles.fullField}>
+          <Input
+            autoComplete="new-password"
+            errorText={errors.password?.message}
+            label="Temporary password"
+            placeholder="Enter a secure temporary password"
+            type="password"
+            {...register('password')}
+          />
+          <p className={styles.fieldNote}>
+            Use at least 10 characters with an uppercase letter, lowercase letter, number, and
+            symbol.
+          </p>
+        </div>
+      </div>
+
+      <p className={styles.formNote}>
+        The password is submitted securely and is not stored or shown after account creation.
+      </p>
+
       <div className={styles.actions}>
-        <button
-          className={styles.primaryButton}
-          disabled={createStaffMutation.isPending}
+        <Button
+          className={styles.submitButton}
+          disabled={!canSubmit}
+          loading={createStaffMutation.isPending}
           type="submit"
         >
-          {createStaffMutation.isPending ? 'Submitting…' : 'Create staff invite'}
-        </button>
+          Create staff account
+        </Button>
       </div>
     </form>
   );

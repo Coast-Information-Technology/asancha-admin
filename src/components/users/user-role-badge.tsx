@@ -35,6 +35,8 @@ const ROLE_LABELS: Record<PublicUserRole, string> = {
   property_sourcer: 'Property sourcer',
   service_provider: 'Service provider',
   api_partner: 'API partner',
+  admin: 'Admin',
+  super_admin: 'Super admin',
 };
 
 function getRoleClassName(role: PublicUserRole): string {
@@ -42,8 +44,12 @@ function getRoleClassName(role: PublicUserRole): string {
     return `${styles.badge} ${styles.badgeNeutral}`;
   }
 
-  if (role === 'api_partner') {
+  if (role === 'api_partner' || role === 'admin') {
     return `${styles.badge} ${styles.badgeWarning}`;
+  }
+
+  if (role === 'super_admin') {
+    return `${styles.badge} ${styles.badgeDanger}`;
   }
 
   return `${styles.badge} ${styles.badgeInfo}`;

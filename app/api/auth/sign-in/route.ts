@@ -125,6 +125,7 @@ export async function POST(request: Request) {
       session: authResult.session,
       redirectTo: '/dashboard',
     },
+    error: null,
   });
   const cookieOptions = {
     httpOnly: true,

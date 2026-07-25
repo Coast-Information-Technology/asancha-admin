@@ -40,11 +40,12 @@ import type {
   UpdateStaffRoleInput,
   UpdateStaffStatusInput,
 } from '../types/staff.types';
+import { adminPost } from '../../../lib/api/admin-fetch';
 
 const STAFF_API_PATHS = {
   list: '/api/v1/admin/staff',
   detail: (staffPublicId: string) => `/api/v1/admin/staff/${encodeURIComponent(staffPublicId)}`,
-  create: '/api/v1/admin/staff',
+  create: '/admin/staff',
   updateStatus: (staffPublicId: string) =>
     `/api/v1/admin/staff/${encodeURIComponent(staffPublicId)}/status`,
   updateRole: (staffPublicId: string) =>
@@ -407,9 +408,13 @@ export async function getStaffDetail(staffPublicId: string): Promise<StaffDetail
 }
 
 export async function createStaff(input: CreateStaffInput): Promise<StaffMutationResponse> {
-  const payload = await sendJsonToApi(STAFF_API_PATHS.create, 'POST', input);
+  const response = await adminPost<unknown, CreateStaffInput>(STAFF_API_PATHS.create, input);
 
-  return parseMutationResponse(payload, 'pending_staff_invite', 'Staff invite submitted.');
+  return parseMutationResponse(
+    response.data,
+    'pending_staff_invite',
+    response.message || 'Staff invite submitted.',
+  );
 }
 
 export async function updateStaffStatus(

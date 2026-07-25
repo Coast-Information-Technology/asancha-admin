@@ -1,0 +1,463 @@
+/*
+ * src/components/profiles/profile-detail-view.module.css
+ *
+ * File purpose:
+ * Provides the cover, profile summary card, tab panel, field layout, and
+ * responsive states for the Asancha Admin Profile Details page.
+ *
+ * Role in the project:
+ * These styles create a profile-management hierarchy inspired by the supplied
+ * reference while preserving the existing Asancha Admin dark design system.
+ *
+ * Business relevance:
+ * Staff should be able to identify the profile quickly, scan account state,
+ * and move through profile workflows without a crowded detail screen.
+ *
+ * Security note:
+ * Styles do not enforce permissions. Backend authorization and redaction remain
+ * final.
+ */
+
+.profileLayout {
+  display: grid;
+  min-width: 0;
+  gap: 0;
+}
+
+.cover {
+  position: relative;
+  min-height: 13rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--asancha-color-brand) 45%, var(--asancha-color-border));
+  border-radius: var(--asancha-radius-xl) var(--asancha-radius-xl) 0 0;
+  background: linear-gradient(120deg, #183a9b 0%, #315edb 48%, #132c78 100%);
+}
+
+.coverPattern,
+.coverPattern::before,
+.coverPattern::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+}
+
+.coverPattern {
+  opacity: 0.65;
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0 37%,
+      rgb(255 255 255 / 0.11) 37% 49%,
+      transparent 49% 100%
+    ),
+    linear-gradient(45deg, transparent 0 57%, rgb(255 255 255 / 0.08) 57% 70%, transparent 70% 100%);
+}
+
+.coverPattern::before {
+  width: 30rem;
+  height: 30rem;
+  inset: -17rem auto auto -7rem;
+  border: 5rem solid rgb(255 255 255 / 0.07);
+  border-radius: 50%;
+}
+
+.coverPattern::after {
+  width: 24rem;
+  height: 24rem;
+  inset: -12rem -6rem auto auto;
+  border: 4rem solid rgb(0 0 0 / 0.08);
+  border-radius: 50%;
+}
+
+.coverActions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding: 1.25rem;
+}
+
+.profileColumns {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-items: start;
+  gap: 1.25rem;
+  margin: -4rem 1.5rem 0;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
+}
+
+.summaryCard {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface);
+  box-shadow: var(--asancha-shadow-lg);
+}
+
+.summaryIdentity {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  padding: 1.5rem 1.25rem 1.35rem;
+  text-align: center;
+}
+
+.avatar {
+  display: grid;
+  width: 6.5rem;
+  height: 6.5rem;
+  place-items: center;
+  margin-top: -0.15rem;
+  border: 0.35rem solid var(--asancha-color-surface);
+  border-radius: 50%;
+  color: var(--asancha-color-brand-contrast);
+  background: linear-gradient(145deg, var(--asancha-color-brand), #5f83ff);
+  box-shadow:
+    0 0 0 1px var(--asancha-color-border),
+    0 0.75rem 1.5rem rgb(0 0 0 / 0.28);
+  font-size: 1.65rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.summaryIdentity h2 {
+  max-width: 100%;
+  margin: 0.35rem 0 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-lg);
+  overflow-wrap: anywhere;
+}
+
+.summaryIdentity p {
+  max-width: 100%;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  overflow-wrap: anywhere;
+}
+
+.identityBadges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.45rem;
+}
+
+.summaryRows {
+  border-top: 1px solid var(--asancha-color-border);
+}
+
+.summaryRow {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+}
+
+.summaryRow > span {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.summaryRow strong {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-xs);
+  text-align: right;
+}
+
+.summaryActions {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1.25rem;
+}
+
+.detailPanel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface);
+  box-shadow: var(--asancha-shadow-md);
+}
+
+.tabs {
+  display: flex;
+  gap: 0.15rem;
+  overflow-x: auto;
+  padding: 0 1.25rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  scrollbar-width: thin;
+}
+
+.tab,
+.tabActive {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 3.75rem;
+  padding: 0 0.9rem;
+  border: 0;
+  color: var(--asancha-color-text-muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tab:hover,
+.tab:focus-visible,
+.tabActive {
+  color: var(--asancha-color-text);
+}
+
+.tabActive::after {
+  position: absolute;
+  right: 0.9rem;
+  bottom: -1px;
+  left: 0.9rem;
+  height: 2px;
+  border-radius: 999px 999px 0 0;
+  background: var(--asancha-color-brand);
+  content: '';
+}
+
+.tabContent {
+  min-width: 0;
+  padding: 1.75rem;
+}
+
+.tabSection {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-md);
+}
+
+.sectionHeading p {
+  margin: 0.4rem 0 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+}
+
+.fieldGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.readOnlyField {
+  display: grid;
+  min-width: 0;
+  gap: 0.45rem;
+}
+
+.readOnlyField dt {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 800;
+}
+
+.readOnlyField dd {
+  display: flex;
+  min-height: 2.75rem;
+  min-width: 0;
+  align-items: center;
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-md);
+  color: var(--asancha-color-text);
+  background: var(--asancha-color-surface-subtle);
+  font-size: var(--asancha-font-size-sm);
+  overflow-wrap: anywhere;
+}
+
+.tabEmpty {
+  padding: 1rem;
+  border: 1px dashed var(--asancha-color-border);
+  border-radius: var(--asancha-radius-md);
+  color: var(--asancha-color-text-muted);
+  background: var(--asancha-color-surface-subtle);
+  font-size: var(--asancha-font-size-sm);
+}
+
+.relatedGrid,
+.relatedCounts {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.relatedLinkCard {
+  min-width: 0;
+}
+
+.relatedCount {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-md);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.relatedCount span {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+}
+
+.relatedCount strong {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-lg);
+}
+
+.loadingLayout {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.loadingCover {
+  width: 100%;
+  border-radius: var(--asancha-radius-xl);
+}
+
+.loadingColumns {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: -4rem;
+  padding: 0 1.5rem;
+  grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
+}
+
+.loadingSummaryCard {
+  position: relative;
+  z-index: 1;
+}
+
+.loadingSummaryContent {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.loadingAvatar {
+  margin-bottom: 0.5rem;
+}
+
+.loadingRows,
+.loadingFields {
+  display: grid;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.loadingTabs {
+  display: flex;
+  gap: 1rem;
+}
+
+.loadingFields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.loadingField {
+  display: grid;
+  gap: 0.45rem;
+}
+
+@media (max-width: 900px) {
+  .profileColumns,
+  .loadingColumns {
+    grid-template-columns: minmax(13rem, 15rem) minmax(0, 1fr);
+  }
+
+  .tabs {
+    padding-inline: 0.85rem;
+  }
+
+  .tabContent {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .cover {
+    min-height: 10rem;
+    border-radius: var(--asancha-radius-lg) var(--asancha-radius-lg) 0 0;
+  }
+
+  .profileColumns,
+  .loadingColumns {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: -3rem 0 0;
+    padding-inline: 0;
+  }
+
+  .summaryCard,
+  .detailPanel {
+    border-radius: var(--asancha-radius-lg);
+  }
+
+  .summaryCard {
+    margin-inline: 0.25rem;
+  }
+
+  .fieldGrid,
+  .relatedGrid,
+  .relatedCounts,
+  .loadingFields {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .coverActions {
+    justify-content: stretch;
+    padding: 0.85rem;
+  }
+
+  .coverActions > * {
+    flex: 1;
+  }
+
+  .tabContent {
+    padding: 1rem;
+  }
+
+  .sectionHeading {
+    flex-direction: column;
+  }
+
+  .relatedCount {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .relatedCount .asancha-button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}

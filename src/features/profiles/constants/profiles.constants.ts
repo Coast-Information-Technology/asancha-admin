@@ -35,11 +35,10 @@ import type {
 } from '../types/profiles.types';
 
 export const PROFILES_API_PATHS = {
-  list: '/api/v1/admin/profiles',
-  detail: (profilePublicId: string) =>
-    `/api/v1/admin/profiles/${encodeURIComponent(profilePublicId)}`,
+  list: '/admin/profiles',
+  detail: (profilePublicId: string) => `/admin/profiles/${encodeURIComponent(profilePublicId)}`,
   action: (profilePublicId: string) =>
-    `/api/v1/admin/profiles/${encodeURIComponent(profilePublicId)}/actions`,
+    `/admin/profiles/${encodeURIComponent(profilePublicId)}/actions`,
 } as const;
 
 export const PROFILES_QUERY_KEYS = {
@@ -61,6 +60,7 @@ export const PROFILES_QUERY_KEYS = {
 export const PROFILES_STALE_TIME_MS = 60_000;
 
 export const PROFILE_TYPE_LABELS: Record<ProfileType, string> = {
+  general: 'General',
   investor: 'Investor',
   property_owner: 'Property owner',
   property_agent: 'Property agent',
@@ -69,6 +69,7 @@ export const PROFILE_TYPE_LABELS: Record<ProfileType, string> = {
 };
 
 export const PROFILE_TYPE_ROUTES: Record<ProfileType, string> = {
+  general: '/profiles',
   investor: '/profiles/investors',
   property_owner: '/profiles/property-owners',
   property_agent: '/profiles/property-agents',
@@ -85,6 +86,7 @@ export const PROFILE_STATUS_LABELS: Record<ProfileStatus, string> = {
   approved: 'Approved',
   rejected: 'Rejected',
   suspended: 'Suspended',
+  completed: 'Completed',
 };
 
 export const PROFILE_VERIFICATION_STATUS_LABELS: Record<ProfileVerificationStatus, string> = {
@@ -94,6 +96,7 @@ export const PROFILE_VERIFICATION_STATUS_LABELS: Record<ProfileVerificationStatu
   approved: 'Approved',
   rejected: 'Rejected',
   flagged: 'Flagged',
+  not_available: 'Not available',
 };
 
 export const PROFILE_ACTION_LABELS: Record<ProfileActionType, string> = {

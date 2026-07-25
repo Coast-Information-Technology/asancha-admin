@@ -32,6 +32,10 @@ function getString(value: unknown): string | null {
   return trimmedValue.length > 0 ? trimmedValue : null;
 }
 
+function getBoolean(value: unknown): boolean | undefined {
+  return typeof value === 'boolean' ? value : undefined;
+}
+
 function getFirstString(...values: unknown[]): string | null {
   for (const value of values) {
     const stringValue = getString(value);
@@ -139,11 +143,19 @@ export function normaliseBackendStaffAuth(
     user: {
       publicId,
       email,
+      phoneNumber: getFirstString(user.phoneNumber) ?? undefined,
       firstName: firstName ?? undefined,
       lastName: lastName ?? undefined,
       displayName,
       role,
       accountStatus,
+      isVerified: getBoolean(user.isVerified),
+      emailVerifiedAt: getFirstString(user.emailVerifiedAt) ?? undefined,
+      onboardingStatus: getFirstString(user.onboardingStatus) ?? undefined,
+      isActive: getBoolean(user.isActive),
+      isSuspended: getBoolean(user.isSuspended),
+      createdAt: getFirstString(user.createdAt) ?? undefined,
+      updatedAt: getFirstString(user.updatedAt) ?? undefined,
     },
     role,
     accountStatus,

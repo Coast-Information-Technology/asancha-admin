@@ -75,7 +75,6 @@ export function MobileAdminTopBar({ role }: MobileAdminTopBarProps) {
           type="button"
         >
           <Menu aria-hidden size={18} strokeWidth={2} />
-          <span className={styles.menuLabel}>Menu</span>
         </button>
       </nav>
     </header>

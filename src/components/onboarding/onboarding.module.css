@@ -1,0 +1,291 @@
+/*
+ * src/components/onboarding/onboarding.module.css
+ *
+ * File purpose:
+ * Provides CSS Module styles for Admin Onboarding list and detail components.
+ *
+ * Role in the project:
+ * These styles support onboarding filters, safe record tables, nested data
+ * sections, metadata cards, loading skeletons, and responsive layouts.
+ *
+ * Business relevance:
+ * Onboarding records help authorised staff understand workflow progress and
+ * verification readiness across the five supported public business roles.
+ *
+ * Security note:
+ * Styling does not enforce permissions. Backend authorization, redaction, and
+ * audit logging remain final.
+ */
+
+.filterToolbar {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1.5fr) repeat(3, minmax(9rem, 1fr)) auto;
+  gap: 0.75rem;
+  align-items: end;
+  padding: 1rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.filterActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.tableWrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 74rem;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--asancha-color-surface-subtle);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.recordTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.recordMeta {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.recordMeta span {
+  overflow-wrap: anywhere;
+}
+
+.mutedText {
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+}
+
+.emptyState {
+  display: grid;
+  gap: 0.5rem;
+  place-items: center;
+  padding: 2rem;
+  border: 1px dashed var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.emptyDescription {
+  max-width: 36rem;
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.skeletonStack {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.detailStack {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.detailHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.detailHeading {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.detailEyebrow {
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.detailTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+
+.detailId {
+  margin: 0;
+  color: var(--asancha-color-text-subtle);
+  font-family: var(--asancha-font-mono);
+  font-size: var(--asancha-font-size-xs);
+  overflow-wrap: anywhere;
+}
+
+.detailBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.metadataGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+}
+
+.metadataItem {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.metadataLabel {
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 750;
+}
+
+.metadataValue {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+
+.sectionStack {
+  display: grid;
+  gap: 1rem;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-lg);
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-lg);
+  background: var(--asancha-color-surface-subtle);
+}
+
+.fieldLabel {
+  color: var(--asancha-color-text-subtle);
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 750;
+}
+
+.fieldValue {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.skeletonDetail {
+  display: grid;
+  gap: 1rem;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (max-width: 1200px) {
+  .filterToolbar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .filterToolbar > :first-child,
+  .filterActions {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 760px) {
+  .filterToolbar,
+  .skeletonGrid,
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .filterToolbar > :first-child,
+  .filterActions {
+    grid-column: auto;
+  }
+
+  .filterActions > * {
+    flex: 1;
+  }
+}

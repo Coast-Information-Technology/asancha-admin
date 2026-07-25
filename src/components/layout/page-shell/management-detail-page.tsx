@@ -27,6 +27,7 @@ export interface ManagementDetailPageProps {
   statusTone: BadgeTone;
   summary: string;
   links: readonly ManagementDetailLink[];
+  dataSource?: 'demo' | 'live';
   children?: ReactNode;
 }
 
@@ -40,14 +41,17 @@ export function ManagementDetailPage({
   statusTone,
   summary,
   links,
+  dataSource = 'demo',
   children,
 }: ManagementDetailPageProps) {
   return (
     <PageShell description={description} title={title}>
-      <Alert className={styles.notice} title="Demo record detail" tone="info">
-        This record is frontend-only demo data shaped like a backend detail response. Related links
-        represent the workflows staff will access from the live record.
-      </Alert>
+      {dataSource === 'demo' ? (
+        <Alert className={styles.notice} title="Demo record detail" tone="info">
+          This record is frontend-only demo data shaped like a backend detail response. Related
+          links represent the workflows staff will access from the live record.
+        </Alert>
+      ) : null}
 
       <div className={styles.body}>
         <Card>

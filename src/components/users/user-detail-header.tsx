@@ -71,12 +71,16 @@ export function UserDetailHeader({ user }: UserDetailHeaderProps) {
 
         <div className={styles.headerItem}>
           <span className={styles.headerItemLabel}>Profiles</span>
-          <span className={styles.headerItemValue}>{user.relatedCounts.profiles}</span>
+          <span className={styles.headerItemValue}>
+            {user.relatedCounts?.profiles ?? 'Not available'}
+          </span>
         </div>
 
         <div className={styles.headerItem}>
           <span className={styles.headerItemLabel}>Messages</span>
-          <span className={styles.headerItemValue}>{user.relatedCounts.messages}</span>
+          <span className={styles.headerItemValue}>
+            {user.relatedCounts?.messages ?? 'Not available'}
+          </span>
         </div>
       </div>
     </header>

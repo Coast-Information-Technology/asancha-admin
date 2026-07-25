@@ -68,6 +68,11 @@
   font-size: var(--asancha-font-size-xs);
 }
 
+.skeletonStack {
+  display: grid;
+  gap: 0.5rem;
+}
+
 .badge {
   display: inline-flex;
   width: fit-content;

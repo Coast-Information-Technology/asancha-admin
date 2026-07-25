@@ -86,10 +86,15 @@ export interface StaffListResponse {
 }
 
 export interface CreateStaffInput {
-  displayName: string;
   email: string;
+  password: string;
   role: CreateStaffRole;
-  inviteMessage?: string;
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  jobTitle: string;
+  department: string;
 }
 
 export interface UpdateStaffStatusInput {

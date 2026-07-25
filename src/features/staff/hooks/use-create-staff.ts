@@ -27,6 +27,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { getApiErrorMessage } from '../../../lib/api/api-error';
 import { createStaff, updateStaffRole, updateStaffStatus } from '../api/staff.api';
 import { createStaffSchema } from '../schemas/create-staff.schema';
 import { updateStaffRoleSchema } from '../schemas/update-staff-role.schema';
@@ -57,7 +58,7 @@ export function useCreateStaff(options: UseStaffMutationOptions = {}) {
       options.onSuccess?.(response.message);
     },
     onError: (error) => {
-      options.onError?.(error.message || 'Unable to create staff invite.');
+      options.onError?.(getApiErrorMessage(error));
     },
   });
 }
@@ -76,7 +77,7 @@ export function useUpdateStaffStatus(options: UseStaffMutationOptions = {}) {
       options.onSuccess?.(response.message);
     },
     onError: (error) => {
-      options.onError?.(error.message || 'Unable to update staff status.');
+      options.onError?.(getApiErrorMessage(error));
     },
   });
 }
@@ -95,7 +96,7 @@ export function useUpdateStaffRole(options: UseStaffMutationOptions = {}) {
       options.onSuccess?.(response.message);
     },
     onError: (error) => {
-      options.onError?.(error.message || 'Unable to update staff role.');
+      options.onError?.(getApiErrorMessage(error));
     },
   });
 }

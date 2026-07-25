@@ -36,7 +36,9 @@ export type PublicUserRole =
   | 'property_agent'
   | 'property_sourcer'
   | 'service_provider'
-  | 'api_partner';
+  | 'api_partner'
+  | 'admin'
+  | 'super_admin';
 
 export type UserAccountStatus =
   | 'active'
@@ -67,7 +69,13 @@ export interface UserListItem {
   status: UserAccountStatus;
   verificationStatus: UserVerificationStatus;
   createdAtLabel: string;
+  createdAt?: string;
+  updatedAtLabel?: string;
   lastSeenAtLabel?: string;
+  isVerified?: boolean;
+  isActive?: boolean;
+  isSuspended?: boolean;
+  mustChangePassword?: boolean;
   href: string;
 }
 
@@ -94,8 +102,14 @@ export interface UserDetail {
   status: UserAccountStatus;
   verificationStatus: UserVerificationStatus;
   createdAtLabel: string;
+  createdAt?: string;
+  updatedAtLabel?: string;
   lastSeenAtLabel?: string;
-  relatedCounts: UserRelatedCounts;
+  isVerified?: boolean;
+  isActive?: boolean;
+  isSuspended?: boolean;
+  mustChangePassword?: boolean;
+  relatedCounts?: UserRelatedCounts;
 }
 
 export interface UserQuery {

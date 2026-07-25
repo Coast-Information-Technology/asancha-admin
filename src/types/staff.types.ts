@@ -54,8 +54,14 @@ export type StaffCreationRole = Exclude<StaffRole, 'super_admin'>;
 
 export interface CreateStaffInput {
   email: string;
-  displayName: string;
+  password: string;
   role: StaffCreationRole;
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  jobTitle: string;
+  department: string;
 }
 
 export interface UpdateStaffStatusInput {

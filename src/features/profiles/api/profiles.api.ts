@@ -2,38 +2,35 @@
 
 /**
  * File purpose:
- * Provides API helpers for Asancha Admin profile management.
+ * Provides API helpers for the confirmed Asancha Admin profile read endpoints.
  *
  * Role in the project:
- * This file centralises profile list, profile detail, and profile review action
- * requests with safe fallback responses for early implementation.
- *
- * Key exports:
- * - getProfilesList loads paginated profile records.
- * - getProfileDetail loads safe profile detail data by public ID.
- * - submitProfileAction submits permission-aware profile review actions.
+ * This file translates the backend profile response envelope into the safe,
+ * display-ready shapes consumed by the Profiles list and detail experiences.
  *
  * Business relevance:
- * Profile management supports onboarding review, user role readiness, related
- * company/property/listing workflows, documents, verification, and support.
+ * The admin profile list contains both general profiles and role-specific
+ * business profiles. The UI must preserve the distinction between profile
+ * completion state and business-profile verification state.
  *
  * Security note:
- * API helpers do not authorize access. Backend permissions, allowed action
- * transitions, private note handling, safe user messaging, redaction, visibility,
- * and audit logging remain final.
+ * Only public IDs and backend-supplied safe profile fields are normalized here.
+ * Backend authorization, redaction, and audit logging remain final.
  */
 
-import {
-  FALLBACK_PROFILES_LIST_RESPONSE,
-  PROFILES_API_PATHS,
-} from '../constants/profiles.constants';
+import { adminGet, adminPost } from '../../../lib/api/admin-fetch';
+import { formatDateTime } from '../../../lib/formatters/date';
+
+import { PROFILES_API_PATHS } from '../constants/profiles.constants';
 import type {
   ProfileActionInput,
+  ProfileCompletionStatus,
   ProfileDetail,
   ProfileListItem,
   ProfileMutationResponse,
   ProfileRelatedSummary,
   ProfileStatus,
+  ProfileSummary,
   ProfileType,
   ProfileVerificationStatus,
   ProfilesListResponse,
@@ -42,37 +39,12 @@ import type {
 
 type JsonRecord = Record<string, unknown>;
 
-function createFallbackProfileDetail(profilePublicId: string): ProfileDetail {
-  return {
-    profilePublicId,
-    userPublicId: 'pending_user_public_id',
-    displayName: 'Profile detail pending',
-    emailLabel: 'Email hidden until API connection',
-    profileType: 'investor',
-    status: 'pending',
-    verificationStatus: 'not_started',
-    createdAtLabel: 'Pending API connection',
-    summary: 'Live profile details will appear after backend integration.',
-    relatedSummary: {
-      relatedUserLabel: 'Pending user connection',
-      relatedPropertiesCount: 0,
-      relatedListingsCount: 0,
-      relatedDocumentsCount: 0,
-      relatedVerificationReviewsCount: 0,
-    },
-  };
-}
-
 function isRecord(value: unknown): value is JsonRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function getString(value: unknown): string | null {
-  return typeof value === 'string' ? value : null;
-}
-
-function getNumber(value: unknown): number | null {
-  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : null;
 }
 
 function getBoolean(value: unknown): boolean | null {
@@ -81,6 +53,7 @@ function getBoolean(value: unknown): boolean | null {
 
 function isProfileType(value: unknown): value is ProfileType {
   return (
+    value === 'general' ||
     value === 'investor' ||
     value === 'property_owner' ||
     value === 'property_agent' ||
@@ -89,17 +62,8 @@ function isProfileType(value: unknown): value is ProfileType {
   );
 }
 
-function isProfileStatus(value: unknown): value is ProfileStatus {
-  return (
-    value === 'draft' ||
-    value === 'pending' ||
-    value === 'under_review' ||
-    value === 'correction_requested' ||
-    value === 'on_hold' ||
-    value === 'approved' ||
-    value === 'rejected' ||
-    value === 'suspended'
-  );
+function isProfileCompletionStatus(value: unknown): value is ProfileCompletionStatus {
+  return value === 'not_started' || value === 'in_progress' || value === 'completed';
 }
 
 function isProfileVerificationStatus(value: unknown): value is ProfileVerificationStatus {
@@ -109,165 +73,53 @@ function isProfileVerificationStatus(value: unknown): value is ProfileVerificati
     value === 'in_review' ||
     value === 'approved' ||
     value === 'rejected' ||
-    value === 'flagged'
+    value === 'flagged' ||
+    value === 'not_available'
   );
 }
 
-function getApiBaseUrl(): string | null {
-  const value = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
-
-  if (!value) {
-    return null;
+function getStringArray(value: unknown): readonly string[] | undefined {
+  if (!Array.isArray(value)) {
+    return undefined;
   }
 
-  return value.replace(/\/+$/, '');
+  const values = value.filter((item): item is string => typeof item === 'string');
+
+  return values.length > 0 ? values : [];
 }
 
-function createApiUrl(path: string, query?: URLSearchParams): string | null {
-  const baseUrl = getApiBaseUrl();
-
-  if (!baseUrl) {
-    return null;
-  }
-
-  const safePath = path.startsWith('/') ? path : `/${path}`;
-  const queryString = query?.toString();
-
-  return queryString ? `${baseUrl}${safePath}?${queryString}` : `${baseUrl}${safePath}`;
-}
-
-function unwrapEnvelopeData(payload: unknown): unknown {
-  if (!isRecord(payload)) {
-    return payload;
-  }
-
-  if ('data' in payload) {
-    return payload.data;
-  }
-
-  return payload;
-}
-
-function createProfilesQuery(query: ProfilesQuery): URLSearchParams {
-  const params = new URLSearchParams();
-
-  if (query.profileType) {
-    params.set('profileType', query.profileType);
-  }
-
-  if (query.status) {
-    params.set('status', query.status);
-  }
-
-  if (query.verificationStatus) {
-    params.set('verificationStatus', query.verificationStatus);
-  }
-
-  if (query.search) {
-    params.set('search', query.search);
-  }
-
-  params.set('page', String(query.page ?? 1));
-  params.set('pageSize', String(query.pageSize ?? 20));
-
-  return params;
-}
-
-function parseProfileListItem(value: unknown): ProfileListItem | null {
+function parseProfileSummary(value: unknown): ProfileSummary | undefined {
   if (!isRecord(value)) {
-    return null;
-  }
-
-  const profilePublicId = getString(value.profilePublicId);
-  const userPublicId = getString(value.userPublicId);
-  const displayName = getString(value.displayName);
-  const emailLabel = getString(value.emailLabel);
-  const profileType = isProfileType(value.profileType) ? value.profileType : null;
-  const status = isProfileStatus(value.status) ? value.status : null;
-  const verificationStatus = isProfileVerificationStatus(value.verificationStatus)
-    ? value.verificationStatus
-    : null;
-  const createdAtLabel = getString(value.createdAtLabel);
-  const href = getString(value.href);
-
-  if (
-    !profilePublicId ||
-    !userPublicId ||
-    !displayName ||
-    !emailLabel ||
-    !profileType ||
-    !status ||
-    !verificationStatus ||
-    !createdAtLabel ||
-    !href
-  ) {
-    return null;
+    return undefined;
   }
 
   return {
-    profilePublicId,
-    userPublicId,
-    displayName,
-    emailLabel,
-    profileType,
-    status,
-    verificationStatus,
-    companyLabel: getString(value.companyLabel) ?? undefined,
-    createdAtLabel,
-    updatedAtLabel: getString(value.updatedAtLabel) ?? undefined,
-    href,
+    type: getString(value.type) ?? undefined,
+    category: getString(value.category) ?? undefined,
+    fundingMethod: getString(value.fundingMethod) ?? undefined,
+    serviceCategories: getStringArray(value.serviceCategories),
   };
 }
 
-function parseProfilesListResponse(value: unknown): ProfilesListResponse | null {
-  if (!isRecord(value) || !Array.isArray(value.items)) {
-    return null;
-  }
-
-  const total = getNumber(value.total);
-  const page = getNumber(value.page);
-  const pageSize = getNumber(value.pageSize);
-  const hasNextPage = getBoolean(value.hasNextPage);
-  const items = value.items.map(parseProfileListItem);
-
-  if (
-    total === null ||
-    page === null ||
-    pageSize === null ||
-    hasNextPage === null ||
-    items.some((item) => item === null)
-  ) {
-    return null;
-  }
-
-  return {
-    items: items.filter((item): item is ProfileListItem => item !== null),
-    total,
-    page,
-    pageSize,
-    hasNextPage,
-  };
-}
-
-function parseRelatedSummary(value: unknown): ProfileRelatedSummary | null {
+function parseRelatedSummary(value: unknown): ProfileRelatedSummary | undefined {
   if (!isRecord(value)) {
-    return null;
+    return undefined;
   }
 
   const relatedUserLabel = getString(value.relatedUserLabel);
-  const relatedPropertiesCount = getNumber(value.relatedPropertiesCount);
-  const relatedListingsCount = getNumber(value.relatedListingsCount);
-  const relatedDocumentsCount = getNumber(value.relatedDocumentsCount);
-  const relatedVerificationReviewsCount = getNumber(value.relatedVerificationReviewsCount);
+  const relatedPropertiesCount = value.relatedPropertiesCount;
+  const relatedListingsCount = value.relatedListingsCount;
+  const relatedDocumentsCount = value.relatedDocumentsCount;
+  const relatedVerificationReviewsCount = value.relatedVerificationReviewsCount;
 
   if (
     !relatedUserLabel ||
-    relatedPropertiesCount === null ||
-    relatedListingsCount === null ||
-    relatedDocumentsCount === null ||
-    relatedVerificationReviewsCount === null
+    typeof relatedPropertiesCount !== 'number' ||
+    typeof relatedListingsCount !== 'number' ||
+    typeof relatedDocumentsCount !== 'number' ||
+    typeof relatedVerificationReviewsCount !== 'number'
   ) {
-    return null;
+    return undefined;
   }
 
   return {
@@ -280,35 +132,65 @@ function parseRelatedSummary(value: unknown): ProfileRelatedSummary | null {
   };
 }
 
-function parseProfileDetail(value: unknown): ProfileDetail | null {
+function getProfileStatus(
+  profileType: ProfileType,
+  completionStatus: ProfileCompletionStatus | undefined,
+  verificationStatus: ProfileVerificationStatus,
+): ProfileStatus {
+  if (profileType === 'general') {
+    if (completionStatus === 'completed') return 'completed';
+    if (completionStatus === 'in_progress') return 'pending';
+    return 'draft';
+  }
+
+  if (verificationStatus === 'approved') return 'approved';
+  if (verificationStatus === 'rejected') return 'rejected';
+  if (verificationStatus === 'flagged') return 'on_hold';
+
+  return 'pending';
+}
+
+function getDisplayName(record: JsonRecord, email: string): string {
+  const displayName = getString(record.displayName);
+
+  if (displayName) {
+    return displayName;
+  }
+
+  const name = [getString(record.firstName), getString(record.lastName)].filter(Boolean).join(' ');
+
+  return name || email;
+}
+
+function parseProfileListItem(value: unknown): ProfileListItem | null {
   if (!isRecord(value)) {
     return null;
   }
 
-  const profilePublicId = getString(value.profilePublicId);
+  const profilePublicId = getString(value.publicId) ?? getString(value.profilePublicId);
   const userPublicId = getString(value.userPublicId);
-  const displayName = getString(value.displayName);
-  const emailLabel = getString(value.emailLabel);
+  const email = getString(value.email);
   const profileType = isProfileType(value.profileType) ? value.profileType : null;
-  const status = isProfileStatus(value.status) ? value.status : null;
+  const createdAt = getString(value.createdAt);
+  const updatedAt = getString(value.updatedAt);
+  const isActive = getBoolean(value.isActive);
+  const completionStatus = isProfileCompletionStatus(value.profileCompletionStatus)
+    ? value.profileCompletionStatus
+    : undefined;
   const verificationStatus = isProfileVerificationStatus(value.verificationStatus)
     ? value.verificationStatus
-    : null;
-  const createdAtLabel = getString(value.createdAtLabel);
-  const summary = getString(value.summary);
-  const relatedSummary = parseRelatedSummary(value.relatedSummary);
+    : profileType === 'general'
+      ? 'not_available'
+      : 'not_started';
 
   if (
     !profilePublicId ||
     !userPublicId ||
-    !displayName ||
-    !emailLabel ||
+    !email ||
     !profileType ||
-    !status ||
-    !verificationStatus ||
-    !createdAtLabel ||
-    !summary ||
-    !relatedSummary
+    !createdAt ||
+    !updatedAt ||
+    isActive === null
   ) {
     return null;
   }
@@ -316,107 +198,148 @@ function parseProfileDetail(value: unknown): ProfileDetail | null {
   return {
     profilePublicId,
     userPublicId,
-    displayName,
-    emailLabel,
+    displayName: getDisplayName(value, email),
+    emailLabel: email,
+    firstName: getString(value.firstName) ?? undefined,
+    lastName: getString(value.lastName) ?? undefined,
+    phoneNumber: getString(value.phoneNumber) ?? undefined,
+    preferredContactMethod: getString(value.preferredContactMethod) ?? undefined,
     profileType,
-    status,
+    status: getProfileStatus(profileType, completionStatus, verificationStatus),
     verificationStatus,
-    createdAtLabel,
-    updatedAtLabel: getString(value.updatedAtLabel) ?? undefined,
-    summary,
-    relatedSummary,
+    profileCompletionStatus: completionStatus,
+    isVerified: getBoolean(value.isVerified) ?? undefined,
+    isActive,
+    summary: parseProfileSummary(value.summary),
+    createdAt,
+    createdAtLabel: formatDateTime(createdAt),
+    updatedAt,
+    updatedAtLabel: formatDateTime(updatedAt),
+    href: `/profiles/${encodeURIComponent(profilePublicId)}`,
   };
 }
 
-async function getJsonFromApi(path: string, query?: URLSearchParams): Promise<unknown> {
-  const url = createApiUrl(path, query);
+function parseProfilesListResponse(value: unknown): ProfilesListResponse | null {
+  const rawItems = Array.isArray(value) ? value : isRecord(value) ? value.items : null;
 
-  if (!url) {
+  if (!Array.isArray(rawItems)) {
     return null;
   }
 
-  const response = await fetch(url, {
-    method: 'GET',
-    credentials: 'include',
-    cache: 'no-store',
-    headers: {
-      Accept: 'application/json',
-    },
-  });
+  const items = rawItems.map(parseProfileListItem);
 
-  if (!response.ok) {
+  if (items.some((item) => item === null)) {
     return null;
   }
 
-  return response.json() as Promise<unknown>;
+  const parsedItems = items.filter((item): item is ProfileListItem => item !== null);
+
+  return {
+    items: parsedItems,
+    total: parsedItems.length,
+    page: 1,
+    pageSize: parsedItems.length || 20,
+    hasNextPage: false,
+  };
 }
 
-async function sendJsonToApi(path: string, body: unknown): Promise<unknown> {
-  const url = createApiUrl(path);
+function parseProfileDetail(value: unknown): ProfileDetail | null {
+  const parsed = parseProfileListItem(value);
 
-  if (!url) {
+  if (!parsed) {
     return null;
   }
 
-  const response = await fetch(url, {
-    method: 'POST',
-    credentials: 'include',
-    cache: 'no-store',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+  return {
+    ...parsed,
+    profileSummary: parsed.summary,
+    summary: `${parsed.displayName}'s ${parsed.profileType.replace(/_/g, ' ')} profile record from the Asancha backend.`,
+    relatedSummary: parseRelatedSummary(isRecord(value) ? value.relatedSummary : undefined),
+  };
+}
+
+function matchesSearch(profile: ProfileListItem, search: string): boolean {
+  if (!search) {
+    return true;
+  }
+
+  return [
+    profile.displayName,
+    profile.emailLabel,
+    profile.profilePublicId,
+    profile.userPublicId,
+    profile.phoneNumber,
+  ]
+    .filter(Boolean)
+    .some((value) => value?.toLowerCase().includes(search));
+}
+
+function applyLocalQuery(
+  response: ProfilesListResponse,
+  query: ProfilesQuery,
+): ProfilesListResponse {
+  const search = query.search?.trim().toLowerCase() ?? '';
+  const filteredItems = response.items.filter((profile) => {
+    return (
+      (!query.profileType || profile.profileType === query.profileType) &&
+      (!query.status || profile.status === query.status) &&
+      (!query.verificationStatus || profile.verificationStatus === query.verificationStatus) &&
+      matchesSearch(profile, search)
+    );
   });
+  const page = Math.max(1, query.page ?? 1);
+  const pageSize = Math.max(1, query.pageSize ?? response.pageSize);
+  const start = (page - 1) * pageSize;
 
-  if (!response.ok) {
-    return null;
-  }
-
-  return response.json() as Promise<unknown>;
+  return {
+    items: filteredItems.slice(start, start + pageSize),
+    total: filteredItems.length,
+    page,
+    pageSize,
+    hasNextPage: start + pageSize < filteredItems.length,
+  };
 }
 
 export async function getProfilesList(query: ProfilesQuery = {}): Promise<ProfilesListResponse> {
-  const payload = await getJsonFromApi(PROFILES_API_PATHS.list, createProfilesQuery(query));
-  const parsed = parseProfilesListResponse(unwrapEnvelopeData(payload));
+  const response = await adminGet<unknown>(PROFILES_API_PATHS.list);
+  const parsed = parseProfilesListResponse(response.data);
 
-  return (
-    parsed ?? {
-      ...FALLBACK_PROFILES_LIST_RESPONSE,
-      page: query.page ?? 1,
-      pageSize: query.pageSize ?? 20,
-    }
-  );
+  if (!parsed) {
+    throw new Error('The profiles list response did not match the confirmed API structure.');
+  }
+
+  return applyLocalQuery(parsed, query);
 }
 
 export async function getProfileDetail(profilePublicId: string): Promise<ProfileDetail> {
-  const payload = await getJsonFromApi(PROFILES_API_PATHS.detail(profilePublicId));
-  const parsed = parseProfileDetail(unwrapEnvelopeData(payload));
+  const response = await adminGet<unknown>(PROFILES_API_PATHS.detail(profilePublicId));
+  const parsed = parseProfileDetail(response.data);
 
-  return parsed ?? createFallbackProfileDetail(profilePublicId);
+  if (!parsed) {
+    throw new Error('The profile detail response did not match the confirmed API structure.');
+  }
+
+  return parsed;
 }
 
+/** Profile actions remain a foundation until their backend contract is confirmed. */
 export async function submitProfileAction(
   input: ProfileActionInput,
 ): Promise<ProfileMutationResponse> {
-  const payload = await sendJsonToApi(PROFILES_API_PATHS.action(input.profilePublicId), {
+  const response = await adminPost<unknown>(PROFILES_API_PATHS.action(input.profilePublicId), {
     action: input.action,
     reason: input.reason,
     safeUserMessage: input.safeUserMessage,
     internalNote: input.internalNote,
   });
-
-  const data = unwrapEnvelopeData(payload);
-
-  if (!isRecord(data)) {
-    return {
-      profilePublicId: input.profilePublicId,
-      message: 'Profile action submitted.',
-    };
-  }
+  const data = response.data;
 
   return {
-    profilePublicId: getString(data.profilePublicId) ?? input.profilePublicId,
-    message: getString(data.message) ?? 'Profile action submitted.',
+    profilePublicId:
+      isRecord(data) && getString(data.profilePublicId)
+        ? getString(data.profilePublicId)!
+        : input.profilePublicId,
+    message:
+      isRecord(data) && getString(data.message) ? getString(data.message)! : response.message,
   };
 }

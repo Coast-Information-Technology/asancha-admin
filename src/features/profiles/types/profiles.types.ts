@@ -29,7 +29,14 @@
  */
 
 export type ProfileType =
-  'investor' | 'property_owner' | 'property_agent' | 'property_sourcer' | 'service_provider';
+  | 'general'
+  | 'investor'
+  | 'property_owner'
+  | 'property_agent'
+  | 'property_sourcer'
+  | 'service_provider';
+
+export type ProfileCompletionStatus = 'not_started' | 'in_progress' | 'completed' | 'unknown';
 
 export type ProfileStatus =
   | 'draft'
@@ -39,10 +46,11 @@ export type ProfileStatus =
   | 'on_hold'
   | 'approved'
   | 'rejected'
-  | 'suspended';
+  | 'suspended'
+  | 'completed';
 
 export type ProfileVerificationStatus =
-  'not_started' | 'pending' | 'in_review' | 'approved' | 'rejected' | 'flagged';
+  'not_started' | 'pending' | 'in_review' | 'approved' | 'rejected' | 'flagged' | 'not_available';
 
 export type ProfileActionType =
   'approve' | 'reject' | 'place_on_hold' | 'request_correction' | 'suspend' | 'restore';
@@ -52,13 +60,30 @@ export interface ProfileListItem {
   userPublicId: string;
   displayName: string;
   emailLabel: string;
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  preferredContactMethod?: string;
   profileType: ProfileType;
   status: ProfileStatus;
   verificationStatus: ProfileVerificationStatus;
+  profileCompletionStatus?: ProfileCompletionStatus;
+  isVerified?: boolean;
+  isActive?: boolean;
+  summary?: ProfileSummary;
   companyLabel?: string;
+  createdAt?: string;
   createdAtLabel: string;
+  updatedAt?: string;
   updatedAtLabel?: string;
   href: string;
+}
+
+export interface ProfileSummary {
+  type?: string;
+  category?: string;
+  fundingMethod?: string;
+  serviceCategories?: readonly string[];
 }
 
 export interface ProfileRelatedSummary {
@@ -75,13 +100,23 @@ export interface ProfileDetail {
   userPublicId: string;
   displayName: string;
   emailLabel: string;
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  preferredContactMethod?: string;
   profileType: ProfileType;
   status: ProfileStatus;
   verificationStatus: ProfileVerificationStatus;
+  profileCompletionStatus?: ProfileCompletionStatus;
+  isVerified?: boolean;
+  isActive?: boolean;
+  profileSummary?: ProfileSummary;
+  createdAt?: string;
   createdAtLabel: string;
+  updatedAt?: string;
   updatedAtLabel?: string;
   summary: string;
-  relatedSummary: ProfileRelatedSummary;
+  relatedSummary?: ProfileRelatedSummary;
 }
 
 export interface ProfilesQuery {

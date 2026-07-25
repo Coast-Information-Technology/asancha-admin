@@ -45,7 +45,7 @@ export const USERS_QUERY_KEYS = {
 export function useUsers(query: UserQuery = {}) {
   return useQuery<UsersResponse>({
     queryKey: USERS_QUERY_KEYS.list(query),
-    queryFn: () => getUsers(query),
+    queryFn: () => getUsers(),
     staleTime: 60_000,
   });
 }

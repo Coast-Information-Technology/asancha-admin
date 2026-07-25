@@ -30,6 +30,7 @@ export async function POST() {
     data: {
       signedOut: true,
     },
+    error: null,
   });
 
   Object.values(STAFF_COOKIE_NAMES).forEach((name) => {

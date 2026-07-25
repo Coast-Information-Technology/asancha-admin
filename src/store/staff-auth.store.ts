@@ -34,11 +34,19 @@ import type { StaffRole } from '../lib/auth/staff-role-guards';
 export interface StaffAuthUser {
   staffPublicId: string;
   email: string;
+  phoneNumber?: string;
   firstName?: string;
   lastName?: string;
   displayName: string;
   role: StaffRole;
   accountStatus: StaffAccountStatus;
+  isVerified?: boolean;
+  emailVerifiedAt?: string;
+  onboardingStatus?: string;
+  isActive?: boolean;
+  isSuspended?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
   avatarUrl?: string;
 }
 
@@ -62,11 +70,19 @@ interface SessionUserCandidate {
   staffPublicId?: unknown;
   publicId?: unknown;
   email?: unknown;
+  phoneNumber?: unknown;
   firstName?: unknown;
   lastName?: unknown;
   displayName?: unknown;
   role?: unknown;
   accountStatus?: unknown;
+  isVerified?: unknown;
+  emailVerifiedAt?: unknown;
+  onboardingStatus?: unknown;
+  isActive?: unknown;
+  isSuspended?: unknown;
+  createdAt?: unknown;
+  updatedAt?: unknown;
   avatarUrl?: unknown;
 }
 
@@ -127,11 +143,20 @@ function createUserFromSession(session: StaffSession | null): StaffAuthUser | nu
   const staffPublicId =
     getStringValue(candidate.staffPublicId) ?? getStringValue(candidate.publicId);
   const email = getStringValue(candidate.email);
+  const phoneNumber = getStringValue(candidate.phoneNumber) ?? undefined;
   const firstName = getStringValue(candidate.firstName) ?? undefined;
   const lastName = getStringValue(candidate.lastName) ?? undefined;
   const displayName = getStringValue(candidate.displayName) ?? email;
   const role = candidate.role;
   const accountStatus = candidate.accountStatus;
+  const isVerified = typeof candidate.isVerified === 'boolean' ? candidate.isVerified : undefined;
+  const emailVerifiedAt = getStringValue(candidate.emailVerifiedAt) ?? undefined;
+  const onboardingStatus = getStringValue(candidate.onboardingStatus) ?? undefined;
+  const isActive = typeof candidate.isActive === 'boolean' ? candidate.isActive : undefined;
+  const isSuspended =
+    typeof candidate.isSuspended === 'boolean' ? candidate.isSuspended : undefined;
+  const createdAt = getStringValue(candidate.createdAt) ?? undefined;
+  const updatedAt = getStringValue(candidate.updatedAt) ?? undefined;
   const avatarUrl = getStringValue(candidate.avatarUrl) ?? undefined;
 
   if (
@@ -147,11 +172,19 @@ function createUserFromSession(session: StaffSession | null): StaffAuthUser | nu
   return {
     staffPublicId,
     email,
+    phoneNumber,
     firstName,
     lastName,
     displayName,
     role,
     accountStatus,
+    isVerified,
+    emailVerifiedAt,
+    onboardingStatus,
+    isActive,
+    isSuspended,
+    createdAt,
+    updatedAt,
     avatarUrl,
   };
 }

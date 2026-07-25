@@ -2,28 +2,24 @@
 
 /**
  * File purpose:
- * Renders a reusable profiles table for Asancha Admin.
+ * Renders the Asancha Admin profiles table and its loading and empty states.
  *
  * Role in the project:
- * This component displays safe profile list rows with profile type, status,
- * verification status, related user context, company context, timestamps, and a
- * navigation action to the profile detail page.
- *
- * Key exports:
- * - ProfilesTable renders profile list items.
+ * This component displays normalized records returned by GET /admin/profiles
+ * and provides navigation to each public profile detail page.
  *
  * Business relevance:
- * Profile tables power role-specific profile screens and review/support
- * workflows for investors, owners, agents, sourcers, and service providers.
+ * Staff can distinguish general profiles from role-specific business profiles,
+ * review completion and verification state, and open related workflows.
  *
  * Security note:
- * Profile rows must use public IDs only and must not expose ObjectIds, private
- * KYC notes, internal admin notes, restricted document URLs, secrets, or
- * unauthorised audit details.
+ * Profile rows use public IDs and safe backend fields only. Backend visibility,
+ * authorization, redaction, and audit logging remain final.
  */
 
 import { Badge } from '../ui/badge/badge';
 import { Button } from '../ui/button/button';
+import { Skeleton } from '../ui/skeleton/skeleton';
 
 import { PROFILE_VERIFICATION_STATUS_LABELS } from '../../features/profiles/constants/profiles.constants';
 import type {
@@ -38,6 +34,7 @@ import styles from './profiles.module.css';
 
 export interface ProfilesTableProps {
   profiles: readonly ProfileListItem[];
+  isLoading?: boolean;
   emptyTitle?: string;
   emptyDescription?: string;
 }
@@ -60,10 +57,11 @@ function getVerificationTone(status: ProfileVerificationStatus) {
 
 export function ProfilesTable({
   profiles,
+  isLoading = false,
   emptyTitle = 'No profiles found',
-  emptyDescription = 'No profile records match this view yet. Try adjusting filters when live search is connected.',
+  emptyDescription = 'No profile records match this view. Try another profile section or filter.',
 }: ProfilesTableProps) {
-  if (profiles.length === 0) {
+  if (profiles.length === 0 && !isLoading) {
     return (
       <div className={styles.emptyState}>
         <p className={styles.emptyTitle}>{emptyTitle}</p>
@@ -89,46 +87,76 @@ export function ProfilesTable({
         </thead>
 
         <tbody>
-          {profiles.map((profile) => (
-            <tr key={profile.profilePublicId}>
-              <td>
-                <p className={styles.profileTitle}>{profile.displayName}</p>
-                <div className={styles.profileMeta}>
-                  <span>{profile.emailLabel}</span>
-                  <span aria-hidden="true">•</span>
-                  <span>{profile.profilePublicId}</span>
-                  <span aria-hidden="true">•</span>
-                  <span>User: {profile.userPublicId}</span>
-                </div>
-              </td>
+          {isLoading
+            ? Array.from({ length: 6 }, (_, index) => (
+                <tr key={`profile-skeleton-${index}`}>
+                  <td>
+                    <div className={styles.skeletonStack}>
+                      <Skeleton height="0.9rem" width="9rem" />
+                      <Skeleton height="0.7rem" width="15rem" />
+                    </div>
+                  </td>
+                  <td>
+                    <Skeleton height="1.5rem" rounded width="6rem" />
+                  </td>
+                  <td>
+                    <Skeleton height="1.5rem" rounded width="5rem" />
+                  </td>
+                  <td>
+                    <Skeleton height="1.5rem" rounded width="6rem" />
+                  </td>
+                  <td>
+                    <Skeleton height="0.8rem" width="5rem" />
+                  </td>
+                  <td>
+                    <Skeleton height="0.8rem" width="7rem" />
+                  </td>
+                  <td>
+                    <Skeleton height="0.8rem" width="7rem" />
+                  </td>
+                  <td>
+                    <Skeleton height="2rem" rounded width="4.5rem" />
+                  </td>
+                </tr>
+              ))
+            : profiles.map((profile) => (
+                <tr key={profile.profilePublicId}>
+                  <td>
+                    <p className={styles.profileTitle}>{profile.displayName}</p>
+                    <div className={styles.profileMeta}>
+                      <span>{profile.emailLabel}</span>
+                      <span aria-hidden="true">•</span>
+                      <span>{profile.profilePublicId}</span>
+                      <span aria-hidden="true">•</span>
+                      <span>User: {profile.userPublicId}</span>
+                    </div>
+                  </td>
 
-              <td>
-                <ProfileTypeBadge profileType={profile.profileType} />
-              </td>
+                  <td>
+                    <ProfileTypeBadge profileType={profile.profileType} />
+                  </td>
 
-              <td>
-                <ProfileStatusBadge status={profile.status} />
-              </td>
+                  <td>
+                    <ProfileStatusBadge status={profile.status} />
+                  </td>
 
-              <td>
-                <Badge tone={getVerificationTone(profile.verificationStatus)}>
-                  {PROFILE_VERIFICATION_STATUS_LABELS[profile.verificationStatus]}
-                </Badge>
-              </td>
+                  <td>
+                    <Badge tone={getVerificationTone(profile.verificationStatus)}>
+                      {PROFILE_VERIFICATION_STATUS_LABELS[profile.verificationStatus]}
+                    </Badge>
+                  </td>
 
-              <td>{profile.companyLabel ?? 'Not linked'}</td>
+                  <td>{profile.companyLabel ?? 'Not linked'}</td>
+                  <td>{profile.createdAtLabel}</td>
+                  <td>{profile.updatedAtLabel ?? 'Not available'}</td>
 
-              <td>{profile.createdAtLabel}</td>
-
-              <td>{profile.updatedAtLabel ?? 'Not available'}</td>
-
-              <td>
-                <Button href={profile.href} size="sm" variant="secondary">
-                  Open
-                </Button>
-              </td>
-            </tr>
-          ))}
+                  <td>
+                    <Button href={profile.href} size="sm" variant="secondary">
+                      Open
+                    </Button>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </table>
     </div>

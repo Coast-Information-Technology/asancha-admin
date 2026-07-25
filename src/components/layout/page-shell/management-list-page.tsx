@@ -31,6 +31,7 @@ export interface ManagementListPageProps {
   totalLabel: string;
   metrics: readonly ManagementListMetric[];
   filters?: readonly ManagementListFilter[];
+  dataSource?: 'demo' | 'live';
   children: ReactNode;
 }
 
@@ -41,14 +42,17 @@ export function ManagementListPage({
   totalLabel,
   metrics,
   filters = [],
+  dataSource = 'demo',
   children,
 }: ManagementListPageProps) {
   return (
     <PageShell actions={actions} description={description} title={title}>
-      <Alert className={styles.notice} title="Demo records loaded" tone="info">
-        This list uses clearly labelled records shaped like the expected backend response. Select a
-        row to open its detail page and related workflows.
-      </Alert>
+      {dataSource === 'demo' ? (
+        <Alert className={styles.notice} title="Demo records loaded" tone="info">
+          This list uses clearly labelled records shaped like the expected backend response. Select
+          a row to open its detail page and related workflows.
+        </Alert>
+      ) : null}
 
       <div className={styles.body}>
         <section aria-label={`${title} summary`} className={styles.metricsGrid}>
@@ -57,7 +61,7 @@ export function ManagementListPage({
               <CardHeader className={styles.metricHeader}>
                 <div className={styles.metricLabelRow}>
                   <CardTitle className={styles.metricLabel}>{metric.label}</CardTitle>
-                  <Badge tone={metric.tone}>Demo</Badge>
+                  {dataSource === 'demo' ? <Badge tone={metric.tone}>Demo</Badge> : null}
                 </div>
               </CardHeader>
               <CardContent className={styles.metricContent}>
@@ -82,7 +86,7 @@ export function ManagementListPage({
         <Card className={styles.recordsCard}>
           <CardHeader className={styles.recordsHeader}>
             <CardTitle>All {totalLabel}</CardTitle>
-            <Badge tone="muted">{totalLabel}</Badge>
+            <Badge tone={dataSource === 'demo' ? 'muted' : 'info'}>{totalLabel}</Badge>
           </CardHeader>
           <CardContent className={styles.recordsContent}>{children}</CardContent>
         </Card>

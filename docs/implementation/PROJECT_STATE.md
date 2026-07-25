@@ -1,6 +1,6 @@
 # Asancha Admin Implementation State
 
-Last reviewed: 2026-07-21
+Last reviewed: 2026-07-25
 
 ## Repository scope
 
@@ -36,10 +36,10 @@ ready and verified.
 | 4     | Staff authentication screens           | Complete    | Sign-in, password recovery, invite verification, locked, and unauthorized screens exist.                                                                                                                         |
 | 5     | Admin shell and navigation             | Complete    | Desktop/mobile shell, role-aware navigation, messages, notifications, staff menu, and theme controls exist.                                                                                                      |
 | 6     | Dashboards                             | Partial     | Resolver and role dashboards exist, but the active dashboard source is mock data.                                                                                                                                |
-| 7     | Review queues                          | Partial     | Queue routes and UI foundations exist; live queue integration is incomplete.                                                                                                                                     |
-| 8     | Users                                  | Partial     | List/detail/tab UI and API foundations exist; pages still use demo records.                                                                                                                                      |
-| 9     | Staff                                  | Partial     | Staff list/detail/create UI and API foundations exist; live page integration is incomplete.                                                                                                                      |
-| 10    | Profiles                               | Partial     | Role-specific list/detail UI and API foundations exist; live page integration is incomplete.                                                                                                                     |
+| 7     | Review queues                          | Partial     | Queue routes and UI foundations exist; the Admin Onboarding list/detail read flow is live, while the remaining queue integrations are incomplete.                                                                |
+| 8     | Users                                  | Partial     | Confirmed GET list/detail endpoints are connected; local filtering/pagination remains until backend query support is confirmed, and status mutation is blocked pending its contract.                             |
+| 9     | Staff                                  | Partial     | Staff creation is connected to the confirmed POST endpoint; staff list/detail read integration remains incomplete.                                                                                               |
+| 10    | Profiles                               | Partial     | Confirmed GET list/detail endpoints are connected for general and role-specific profiles; related user-profile reads and profile actions remain pending.                                                         |
 | 11    | Companies                              | Partial     | List/detail/related workflow UI and API foundations exist; live page integration is incomplete.                                                                                                                  |
 | 12    | Properties                             | Partial     | List/detail/related workflow UI and API foundations exist; live page integration is incomplete.                                                                                                                  |
 | 13    | Listings                               | Partial     | List/detail/review/visibility/activity/audit UI and API foundations exist; live page integration is incomplete.                                                                                                  |
@@ -57,7 +57,7 @@ ready and verified.
 | 25    | Settings                               | Partial     | Landing preview exists; settings submodules and live permission-aware controls remain.                                                                                                                           |
 | 26    | My staff account                       | Partial     | Routes exist as preview foundations; live profile, security, preferences, and activity actions remain.                                                                                                           |
 | 27    | States and accessibility hardening     | Partial     | Loading, safe alerts, skeletons, error/empty/permission states, and protected route states exist; full accessibility review remains.                                                                             |
-| 28    | Testing and QA                         | Partial     | `npm run lint`, `npm run typecheck`, and `npm run build` pass. Automated tests are not configured, and `npm run format:check` currently fails.                                                                   |
+| 28    | Testing and QA                         | Partial     | `npm run lint`, `npm run typecheck`, and `npm run build` pass. Automated tests are not configured.                                                                                                               |
 | 29    | Vercel deployment                      | Not started | Production deployment, domain, environment, and release checks remain.                                                                                                                                           |
 
 ## Current validation baseline
@@ -70,7 +70,10 @@ ready and verified.
 
 ## Next implementation target
 
-Connect the existing users, staff, profiles, companies, properties, listings,
-documents, and verif ication review pages to their feature hooks before
-implementing the later roadmap modules.
-
+The confirmed Admin Onboarding list/detail endpoints are connected. The list
+uses the confirmed `profileType` and `email` query parameters; status and
+verification filters are applied locally until those backend query contracts
+are confirmed. Nested document URLs and financial/sensitive fields are
+redacted before display. Next, connect confirmed related user profile reads,
+then continue integrating later modules only when their admin read response
+contracts are confirmed by the backend team.

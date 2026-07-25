@@ -28,7 +28,7 @@
 export const AUTH_API_PATHS = {
   staffSignIn: '/auth/login',
   staffSignOut: '/auth/logout',
-  currentStaffSession: '/auth/me',
+  currentStaffSession: '/users/me',
   forgotPassword: '/auth/forgot-password',
   resetPassword: '/auth/reset-password',
   setPassword: '/auth/set-password',

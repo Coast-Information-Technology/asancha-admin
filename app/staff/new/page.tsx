@@ -25,8 +25,7 @@
  */
 
 import { PageShell } from '../../../src/components/layout/page-shell/page-shell';
-import { Badge } from '../../../src/components/ui/badge/badge';
-import { Button } from '../../../src/components/ui/button/button';
+import { CreateStaffForm } from '../../../src/components/staff/create-staff-form';
 import {
   Card,
   CardContent,
@@ -35,93 +34,25 @@ import {
   CardTitle,
 } from '../../../src/components/ui/card/card';
 
-const allowedCreationRules = [
-  {
-    actor: 'super_admin',
-    allowed: 'admin',
-    description: 'Super admins may invite/create admin staff where backend permission allows.',
-  },
-  {
-    actor: 'super_admin',
-    allowed: 'customer_care_rep',
-    description:
-      'Super admins may invite/create customer care staff where backend permission allows.',
-  },
-  {
-    actor: 'admin',
-    allowed: 'customer_care_rep',
-    description: 'Admins may invite/create customer care staff only.',
-  },
-] as const;
-
-const blockedCreationRules = [
-  'No frontend form may create super_admin.',
-  'Admin must not create admin.',
-  'Admin must not create super_admin.',
-  'Customer care must not create staff accounts.',
-] as const;
+import styles from '../../../src/components/staff/staff.module.css';
 
 export default function NewStaffPage() {
   return (
     <PageShell
-      description="Create permitted staff accounts through the authorised invite/setup flow."
+      description="Create an authorised staff account through the secure backend registration flow."
       title="Create staff"
     >
-      <section className="asancha-card-grid">
-        {allowedCreationRules.map((rule) => (
-          <Card key={`${rule.actor}-${rule.allowed}`}>
-            <CardHeader>
-              <div className="asancha-cluster-between">
-                <CardTitle>{rule.actor}</CardTitle>
-                <Badge tone="success">May create {rule.allowed}</Badge>
-              </div>
-              <CardDescription>{rule.description}</CardDescription>
-            </CardHeader>
-
-            <CardContent>
-              <p className="asancha-page-description">
-                The live create-staff form will be connected in the staff feature layer and must
-                enforce this role matrix in the UI while the backend remains final authority.
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </section>
-
       <section>
-        <Card>
-          <CardHeader>
-            <div className="asancha-cluster-between">
-              <CardTitle>Blocked staff creation paths</CardTitle>
-              <Badge tone="danger">Strict rule</Badge>
-            </div>
+        <Card className={styles.createStaffCard}>
+          <CardHeader className={styles.createStaffHeader}>
+            <CardTitle>Staff creation form</CardTitle>
             <CardDescription>
-              These options must not appear in any route, form, modal, dropdown, or action.
+              Enter the new staff member&apos;s account and role details below.
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
-            <ul
-              style={{
-                display: 'grid',
-                gap: '0.75rem',
-                margin: 0,
-                paddingLeft: '1.25rem',
-                color: 'var(--asancha-color-text-muted)',
-                fontSize: 'var(--asancha-font-size-sm)',
-                lineHeight: 'var(--asancha-line-height-relaxed)',
-              }}
-            >
-              {blockedCreationRules.map((rule) => (
-                <li key={rule}>{rule}</li>
-              ))}
-            </ul>
-
-            <div style={{ marginTop: '1rem' }}>
-              <Button href="/staff" size="sm" variant="secondary">
-                Back to staff
-              </Button>
-            </div>
+          <CardContent className={styles.createStaffContent}>
+            <CreateStaffForm />
           </CardContent>
         </Card>
       </section>

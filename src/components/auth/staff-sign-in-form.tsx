@@ -144,11 +144,6 @@ export function StaffSignInForm({
       <Button fullWidth loading={loading} type="submit">
         Sign in
       </Button>
-
-      <p className={styles.footerNote}>
-        Staff accounts are created by authorised administrators only. Super admin creation is not
-        available from this frontend.
-      </p>
     </form>
   );
 }

@@ -95,8 +95,7 @@
 }
 
 @media (max-width: 520px) {
-  .brand span,
-  .menuLabel {
+  .brand span {
     display: none;
   }
 }

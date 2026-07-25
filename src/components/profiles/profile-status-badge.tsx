@@ -30,7 +30,7 @@ export interface ProfileStatusBadgeProps {
 }
 
 function getProfileStatusClassName(status: ProfileStatus): string {
-  if (status === 'approved') {
+  if (status === 'approved' || status === 'completed') {
     return `${styles.badge} ${styles.badgeSuccess}`;
   }
 

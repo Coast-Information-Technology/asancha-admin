@@ -66,5 +66,6 @@ export async function GET() {
     data: {
       session: authResult.session,
     },
+    error: null,
   });
 }

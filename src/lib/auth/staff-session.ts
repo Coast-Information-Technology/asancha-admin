@@ -36,11 +36,19 @@ export type StaffAccountStatus =
 export interface StaffUserSummary {
   publicId: string;
   email: string;
+  phoneNumber?: string;
   firstName?: string;
   lastName?: string;
   displayName?: string;
   role: StaffRole;
   accountStatus: StaffAccountStatus;
+  isVerified?: boolean;
+  emailVerifiedAt?: string;
+  onboardingStatus?: string;
+  isActive?: boolean;
+  isSuspended?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface StaffSession {
@@ -162,11 +170,19 @@ export function normaliseStaffSession(value: unknown): StaffSession {
   const user: StaffUserSummary = {
     publicId,
     email,
+    phoneNumber: normaliseString(rawUser?.phoneNumber),
     firstName: normaliseString(rawUser?.firstName),
     lastName: normaliseString(rawUser?.lastName),
     displayName: normaliseString(rawUser?.displayName),
     role,
     accountStatus,
+    isVerified: typeof rawUser?.isVerified === 'boolean' ? rawUser.isVerified : undefined,
+    emailVerifiedAt: normaliseString(rawUser?.emailVerifiedAt),
+    onboardingStatus: normaliseString(rawUser?.onboardingStatus),
+    isActive: typeof rawUser?.isActive === 'boolean' ? rawUser.isActive : undefined,
+    isSuspended: typeof rawUser?.isSuspended === 'boolean' ? rawUser.isSuspended : undefined,
+    createdAt: normaliseString(rawUser?.createdAt),
+    updatedAt: normaliseString(rawUser?.updatedAt),
   };
 
   return {
