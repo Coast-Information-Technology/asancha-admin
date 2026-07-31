@@ -48,15 +48,14 @@ export const CUSTOMER_CARE_SIDEBAR_NAVIGATION: readonly AdminNavigationItem[] = 
     description: 'Support view for booking assistance.',
     badgeKey: 'bookingSupportCount',
     allowedRoles: ['customer_care_rep'],
-    children: [
-      {
-        label: 'Booking Support',
-        href: '/bookings/support',
-        iconName: 'Headphones',
-        badgeKey: 'bookingSupportCount',
-        allowedRoles: ['customer_care_rep'],
-      },
-    ],
+  },
+  {
+    label: 'Support',
+    href: '/support',
+    iconName: 'Headphones',
+    description: 'Manage safe customer support cases and escalations.',
+    badgeKey: 'supportAttentionCount',
+    allowedRoles: ['customer_care_rep'],
   },
   {
     label: 'Messages',
@@ -65,21 +64,6 @@ export const CUSTOMER_CARE_SIDEBAR_NAVIGATION: readonly AdminNavigationItem[] = 
     description: 'Assigned support messages and conversation threads.',
     badgeKey: 'messageUnreadCount',
     allowedRoles: ['customer_care_rep'],
-    children: [
-      {
-        label: 'All Messages',
-        href: '/messages',
-        iconName: 'MessagesSquare',
-        allowedRoles: ['customer_care_rep'],
-      },
-      {
-        label: 'Assigned Messages',
-        href: '/messages/assigned',
-        iconName: 'Inbox',
-        badgeKey: 'messageUnreadCount',
-        allowedRoles: ['customer_care_rep'],
-      },
-    ],
   },
   {
     label: 'Documents Status',

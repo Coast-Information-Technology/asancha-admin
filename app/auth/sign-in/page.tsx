@@ -23,19 +23,27 @@
 
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 
 import {
   StaffSignInForm,
   type StaffSignInFormValues,
 } from '../../../src/components/auth/staff-sign-in-form';
+import { AUTH_REDIRECT_PATHS } from '../../../src/features/auth/constants/auth.constants';
 import { useStaffSignIn } from '../../../src/features/auth/hooks/use-staff-sign-in';
+import { getSafeRedirectPath } from '../../../src/lib/utils/safe-redirect';
 
 function SignInContent() {
+  const searchParams = useSearchParams();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const redirectTo = getSafeRedirectPath(searchParams.get('returnTo'), {
+    fallbackPath: AUTH_REDIRECT_PATHS.dashboard,
+  });
 
   const signInMutation = useStaffSignIn({
+    redirectTo,
     onSuccess: (message) => {
       setErrorMessage(null);
       setSuccessMessage(message ?? 'Sign in successful. Redirecting...');

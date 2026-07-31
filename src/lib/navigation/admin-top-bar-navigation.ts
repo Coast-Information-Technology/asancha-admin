@@ -41,6 +41,9 @@ export type NavigationBadgeKey =
   | 'documentReviewCount'
   | 'verificationReviewCount'
   | 'bookingSupportCount'
+  | 'verificationAttentionCount'
+  | 'supportAttentionCount'
+  | 'transactionCaseAttentionCount'
   | 'apiAccessReviewCount'
   | 'aiReviewCount';
 
@@ -63,6 +66,14 @@ export const ALL_STAFF_NAVIGATION_ROLES: readonly StaffNavigationRole[] = [
 
 export const ADMIN_TOP_BAR_NAVIGATION: readonly AdminNavigationItem[] = [
   {
+    label: 'Messages',
+    href: '/messages',
+    iconName: 'MessagesSquare',
+    description: 'Open staff messages and conversations requiring attention.',
+    badgeKey: 'messageUnreadCount',
+    allowedRoles: ALL_STAFF_NAVIGATION_ROLES,
+  },
+  {
     label: 'Notifications',
     href: '/notifications',
     iconName: 'Bell',
@@ -81,7 +92,7 @@ export function getNavigationSection(item: AdminNavigationItem): NavigationSecti
     return 'overview';
   }
 
-  if (['Review Queues', 'Onboarding'].includes(item.label)) {
+  if (['Review Queues', 'Onboarding', 'Verification'].includes(item.label)) {
     return 'work';
   }
 
@@ -94,7 +105,6 @@ export function getNavigationSection(item: AdminNavigationItem): NavigationSecti
       'Properties',
       'Listings',
       'Documents',
-      'Verification Reviews',
       'Records',
     ].includes(item.label)
   ) {
@@ -102,9 +112,15 @@ export function getNavigationSection(item: AdminNavigationItem): NavigationSecti
   }
 
   if (
-    ['Operations', 'Deal Reservations', 'Deal Activities', 'Payments', 'Bookings'].includes(
-      item.label,
-    )
+    [
+      'Operations',
+      'Support',
+      'Transaction Cases',
+      'Deal Reservations',
+      'Deal Activities',
+      'Payments',
+      'Bookings',
+    ].includes(item.label)
   ) {
     return 'operations';
   }

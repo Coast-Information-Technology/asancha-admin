@@ -84,10 +84,12 @@ export type StaffPermissionKey =
   | 'bookings:create'
   | 'bookings:update'
   | 'bookings:reschedule'
+  | 'support:view'
   | 'messages:view'
   | 'messages:view_assigned'
   | 'messages:reply'
   | 'messages:assign'
+  | 'transaction_cases:view'
   | 'notifications:view'
   | 'notifications:send_system'
   | 'notifications:send_user'
@@ -173,6 +175,8 @@ const SUPER_ADMIN_PERMISSIONS: readonly StaffPermissionKey[] = [
   'bookings:create',
   'bookings:update',
   'bookings:reschedule',
+  'support:view',
+  'transaction_cases:view',
   'messages:view',
   'messages:view_assigned',
   'messages:reply',
@@ -251,6 +255,8 @@ const ADMIN_PERMISSIONS: readonly StaffPermissionKey[] = [
   'bookings:create',
   'bookings:update',
   'bookings:reschedule',
+  'support:view',
+  'transaction_cases:view',
   'messages:view',
   'messages:view_assigned',
   'messages:reply',
@@ -280,6 +286,7 @@ const CUSTOMER_CARE_PERMISSIONS: readonly StaffPermissionKey[] = [
   'verification_reviews:view_status',
   'payments:view_status',
   'bookings:view_support',
+  'support:view',
   'messages:view',
   'messages:view_assigned',
   'messages:reply',

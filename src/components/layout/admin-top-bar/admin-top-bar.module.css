@@ -108,7 +108,7 @@
   gap: 0.65rem;
 }
 
-.notificationButton {
+.shortcutButton {
   position: relative;
   display: inline-flex;
   width: 2.5rem;
@@ -120,7 +120,7 @@
   text-decoration: none;
 }
 
-.notificationButton:hover {
+.shortcutButton:hover {
   background: var(--asancha-color-surface-muted);
   color: var(--asancha-color-text);
 }

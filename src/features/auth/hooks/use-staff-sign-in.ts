@@ -64,7 +64,7 @@ export function useStaffSignIn(options: AuthHookOptions = {}) {
       setLoading(false);
       options.onSuccess?.(response.message);
 
-      router.replace(response.redirectTo ?? options.redirectTo ?? AUTH_REDIRECT_PATHS.dashboard);
+      router.replace(options.redirectTo ?? response.redirectTo ?? AUTH_REDIRECT_PATHS.dashboard);
     },
 
     onError: (error) => {

@@ -26,6 +26,7 @@ import {
 } from './api-response';
 import { createNetworkApiError, createUnknownApiError, isApiError } from './api-error';
 import { env } from '../env/env';
+import { notifySessionExpired } from '../auth/session-expiry';
 
 export type ApiClientMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -148,6 +149,10 @@ export async function apiClient<TData, TBody = unknown>(
     });
 
     const responseBody = await parseResponseBody(response);
+
+    if (response.status === 401) {
+      notifySessionExpired();
+    }
 
     if (!response.ok) {
       throw createApiErrorFromRawResponse(responseBody, response.status, path);

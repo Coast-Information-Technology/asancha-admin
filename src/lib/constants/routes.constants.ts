@@ -72,6 +72,16 @@ export const ADMIN_ROUTES = {
     submitted: '/onboarding?status=submitted',
   },
 
+  verification: {
+    root: '/verification',
+    onboarding: '/verification/onboarding',
+    properties: '/verification/properties',
+    payments: '/verification/payments',
+    apiPartners: '/verification/api-partners',
+    propertyTransactions: '/verification/property-transactions',
+    queries: '/verification/queries',
+  },
+
   users: {
     root: '/users',
     public: '/users/public',
@@ -133,6 +143,14 @@ export const ADMIN_ROUTES = {
     root: '/bookings',
     new: '/bookings/new',
     support: '/bookings/support',
+  },
+
+  support: {
+    root: '/support',
+  },
+
+  transactionCases: {
+    root: '/transaction-cases',
   },
 
   messages: {

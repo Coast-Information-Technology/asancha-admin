@@ -38,6 +38,7 @@ export type PublicUserRole =
   | 'service_provider'
   | 'api_partner'
   | 'admin'
+  | 'customer_care_rep'
   | 'super_admin';
 
 export type UserAccountStatus =

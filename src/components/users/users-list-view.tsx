@@ -74,6 +74,7 @@ const ROLE_OPTIONS: readonly { label: string; value: PublicUserRole }[] = [
   { label: 'Service provider', value: 'service_provider' },
   { label: 'API partner', value: 'api_partner' },
   { label: 'Admin', value: 'admin' },
+  { label: 'Customer care', value: 'customer_care_rep' },
   { label: 'Super admin', value: 'super_admin' },
 ];
 

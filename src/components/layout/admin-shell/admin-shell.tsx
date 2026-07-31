@@ -28,14 +28,17 @@ import type { ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import * as LucideIcons from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { signOutStaff } from '../../../features/auth/api/auth.api';
+import { AUTH_REDIRECT_PATHS } from '../../../features/auth/constants/auth.constants';
 import { useStaffSession } from '../../../features/auth/hooks/use-staff-session';
+import { SESSION_EXPIRED_EVENT } from '../../../lib/auth/session-expiry';
 import type {
   AdminNavigationItem,
   StaffNavigationRole,
 } from '../../../lib/navigation/admin-top-bar-navigation';
+import { createReturnToParam } from '../../../lib/utils/safe-redirect';
 import { getAdminSidebarNavigation } from '../../../lib/navigation/admin-sidebar-navigation';
 import { getCustomerCareSidebarNavigation } from '../../../lib/navigation/customer-care-sidebar-navigation';
 import { getSuperAdminSidebarNavigation } from '../../../lib/navigation/super-admin-sidebar-navigation';
@@ -77,8 +80,9 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   const clearSession = useStaffAuthStore((state) => state.clearSession);
   const authenticatedStaff = useStaffAuthStore((state) => state.user);
   const isAuthRoute = pathname === '/auth' || pathname.startsWith('/auth/');
+  const sessionRedirecting = useRef(false);
 
-  useStaffSession({ enabled: !isAuthRoute });
+  useStaffSession({ enabled: !isAuthRoute, redirectOnUnauthorized: true });
 
   const currentStaff: AdminShellStaff = authenticatedStaff
     ? {
@@ -99,6 +103,32 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   }, [clearSession, router]);
 
   const effectiveLogout = onLogout ?? handleLogout;
+
+  useEffect(() => {
+    if (isAuthRoute) {
+      sessionRedirecting.current = false;
+      return;
+    }
+
+    const handleSessionExpired = (): void => {
+      if (sessionRedirecting.current) {
+        return;
+      }
+
+      sessionRedirecting.current = true;
+      clearSession();
+
+      const returnTo = createReturnToParam(window.location.pathname, window.location.search);
+      router.replace(`${AUTH_REDIRECT_PATHS.signIn}?returnTo=${returnTo}`);
+    };
+
+    window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+
+    return () => {
+      window.removeEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+    };
+  }, [clearSession, isAuthRoute, router]);
+
   const commandItems = useMemo<CommandMenuItem[]>(() => {
     const seenHrefs = new Set<string>();
 

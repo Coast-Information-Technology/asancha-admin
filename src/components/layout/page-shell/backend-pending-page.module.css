@@ -1,0 +1,51 @@
+/*
+ * src/components/layout/page-shell/backend-pending-page.module.css
+ *
+ * File purpose:
+ * Provides CSS Module styling for backend-pending Admin workspace pages.
+ *
+ * Role in the project:
+ * These styles keep placeholder workspaces consistent with the shared Asancha
+ * Admin page shell, cards, spacing, typography, and responsive layout.
+ *
+ * Business relevance:
+ * Pending integrations should communicate readiness without presenting
+ * misleading operational data.
+ *
+ * Security note:
+ * Styles do not enforce permissions or backend access control.
+ */
+
+.notice {
+  margin-bottom: 0;
+}
+
+.card {
+  max-width: 70rem;
+}
+
+.subheading {
+  margin: 0 0 0.75rem;
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 800;
+}
+
+.list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--asancha-color-text-muted);
+  line-height: var(--asancha-line-height-relaxed);
+}
+
+.list li::marker {
+  color: var(--asancha-color-accent);
+}
+
+.list code {
+  color: var(--asancha-color-text);
+  font-family: var(--asancha-font-mono);
+  font-size: var(--asancha-font-size-xs);
+}

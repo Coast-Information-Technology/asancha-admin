@@ -53,6 +53,7 @@ function isUserRole(value: unknown): value is PublicUserRole {
     value === 'service_provider' ||
     value === 'api_partner' ||
     value === 'admin' ||
+    value === 'customer_care_rep' ||
     value === 'super_admin'
   );
 }
@@ -81,24 +82,14 @@ function parseUserListItem(value: unknown): UserListItem | null {
   const userPublicId = getRequiredString(value, 'publicId');
   const email = getRequiredString(value, 'email');
   const role = isUserRole(value.role) ? value.role : null;
-  const isVerified = getBoolean(value.isVerified);
-  const isActive = getBoolean(value.isActive);
-  const isSuspended = getBoolean(value.isSuspended);
-  const mustChangePassword = getBoolean(value.mustChangePassword);
+  const isVerified = getBoolean(value.isVerified) ?? false;
+  const isActive = getBoolean(value.isActive) ?? true;
+  const isSuspended = getBoolean(value.isSuspended) ?? false;
+  const mustChangePassword = getBoolean(value.mustChangePassword) ?? false;
   const createdAt = getRequiredString(value, 'createdAt');
-  const updatedAt = getRequiredString(value, 'updatedAt');
+  const updatedAt = getRequiredString(value, 'updatedAt') ?? createdAt;
 
-  if (
-    !userPublicId ||
-    !email ||
-    !role ||
-    isVerified === null ||
-    isActive === null ||
-    isSuspended === null ||
-    mustChangePassword === null ||
-    !createdAt ||
-    !updatedAt
-  ) {
+  if (!userPublicId || !email || !role || !createdAt || !updatedAt) {
     return null;
   }
 
@@ -122,7 +113,19 @@ function parseUserListItem(value: unknown): UserListItem | null {
 }
 
 function parseUsersResponse(value: unknown): UsersResponse | null {
-  const rawItems = Array.isArray(value) ? value : isRecord(value) ? value.items : null;
+  const rawItems = Array.isArray(value)
+    ? value
+    : isRecord(value)
+      ? Array.isArray(value.items)
+        ? value.items
+        : Array.isArray(value.users)
+          ? value.users
+          : Array.isArray(value.records)
+            ? value.records
+            : Array.isArray(value.data)
+              ? value.data
+              : null
+      : null;
 
   if (!Array.isArray(rawItems)) {
     return null;
@@ -130,11 +133,11 @@ function parseUsersResponse(value: unknown): UsersResponse | null {
 
   const items = rawItems.map(parseUserListItem);
 
-  if (items.some((item) => item === null)) {
+  const parsedItems = items.filter((item): item is UserListItem => item !== null);
+
+  if (rawItems.length > 0 && parsedItems.length === 0) {
     return null;
   }
-
-  const parsedItems = items.filter((item): item is UserListItem => item !== null);
 
   return {
     items: parsedItems,
