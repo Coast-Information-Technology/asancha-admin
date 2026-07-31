@@ -26,7 +26,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 
-import { getApiErrorMessage, isApiError } from '../../../lib/api/api-error';
+import { getApiErrorMessage } from '../../../lib/api/api-error';
 import { createReturnToParam } from '../../../lib/utils/safe-redirect';
 import { useStaffAuthStore } from '../../../store/staff-auth.store';
 
@@ -66,13 +66,14 @@ export function useStaffSession(options: StaffSessionHookOptions = {}) {
     setHydrated(true);
     setErrorMessage(getApiErrorMessage(query.error));
 
-    if (
-      options.redirectOnUnauthorized &&
-      isApiError(query.error) &&
-      query.error.code === 'UNAUTHORIZED'
-    ) {
+    if (options.redirectOnUnauthorized) {
       const returnTo = createReturnToParam(window.location.pathname, window.location.search);
-      router.replace(`${AUTH_REDIRECT_PATHS.signIn}?returnTo=${returnTo}`);
+      const searchParams = new URLSearchParams({
+        force: '1',
+        returnTo,
+      });
+
+      router.replace(`${AUTH_REDIRECT_PATHS.signIn}?${searchParams.toString()}`);
     }
   }, [
     clearSession,

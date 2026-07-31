@@ -14,6 +14,17 @@
   color: var(--asancha-color-text);
 }
 
+.sessionGate {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 2rem;
+  background: var(--asancha-color-page);
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 700;
+}
+
 .desktopSidebar {
   position: fixed;
   inset: 0 auto 0 0;

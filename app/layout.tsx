@@ -23,12 +23,10 @@
 
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { cookies } from 'next/headers';
 import type { ReactNode } from 'react';
 
 import { AppProviders } from './providers';
-import { AdminShell, type AdminShellStaff } from '../src/components/layout/admin-shell/admin-shell';
-import type { StaffNavigationRole } from '../src/lib/navigation/admin-top-bar-navigation';
+import { AdminShell } from '../src/components/layout/admin-shell/admin-shell';
 
 import '../src/styles/globals.css';
 
@@ -56,8 +54,6 @@ export interface RootLayoutProps {
   children: ReactNode;
 }
 
-const STAFF_ROLE_COOKIE = 'asancha_admin_role';
-
 const THEME_INIT_SCRIPT = `(() => {
   try {
     const storedTheme = window.localStorage.getItem('asancha_admin_preferred_theme');
@@ -69,25 +65,7 @@ const THEME_INIT_SCRIPT = `(() => {
   } catch {}
 })();`;
 
-function isStaffNavigationRole(value: string | undefined): value is StaffNavigationRole {
-  return value === 'super_admin' || value === 'admin' || value === 'customer_care_rep';
-}
-
-function getFallbackStaff(role: StaffNavigationRole): AdminShellStaff {
-  return {
-    displayName: 'Asancha Staff',
-    email: 'Current staff session',
-    role,
-  };
-}
-
-export default async function RootLayout({ children }: RootLayoutProps) {
-  const cookieStore = await cookies();
-  const roleCookie = cookieStore.get(STAFF_ROLE_COOKIE)?.value;
-  const role: StaffNavigationRole = isStaffNavigationRole(roleCookie)
-    ? roleCookie
-    : 'customer_care_rep';
-
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
@@ -95,7 +73,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           {THEME_INIT_SCRIPT}
         </Script>
         <AppProviders>
-          <AdminShell staff={getFallbackStaff(role)}>{children}</AdminShell>
+          <AdminShell>{children}</AdminShell>
         </AppProviders>
       </body>
     </html>

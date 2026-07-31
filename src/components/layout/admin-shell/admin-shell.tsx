@@ -62,7 +62,7 @@ export interface AdminShellStaff {
 
 export interface AdminShellProps {
   children: ReactNode;
-  staff: AdminShellStaff;
+  staff?: AdminShellStaff;
   onLogout?: () => void;
 }
 
@@ -82,16 +82,23 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   const isAuthRoute = pathname === '/auth' || pathname.startsWith('/auth/');
   const sessionRedirecting = useRef(false);
 
-  useStaffSession({ enabled: !isAuthRoute, redirectOnUnauthorized: true });
+  const staffSessionQuery = useStaffSession({
+    enabled: !isAuthRoute,
+    redirectOnUnauthorized: true,
+  });
 
-  const currentStaff: AdminShellStaff = authenticatedStaff
-    ? {
+  const currentStaff = useMemo<AdminShellStaff | null>(() => {
+    if (authenticatedStaff) {
+      return {
         displayName: authenticatedStaff.firstName ?? getFirstName(authenticatedStaff.displayName),
         email: authenticatedStaff.email,
         role: authenticatedStaff.role,
         avatarUrl: authenticatedStaff.avatarUrl,
-      }
-    : staff;
+      };
+    }
+
+    return staff ?? null;
+  }, [authenticatedStaff, staff]);
 
   const handleLogout = useCallback(() => {
     void signOutStaff()
@@ -119,7 +126,12 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
       clearSession();
 
       const returnTo = createReturnToParam(window.location.pathname, window.location.search);
-      router.replace(`${AUTH_REDIRECT_PATHS.signIn}?returnTo=${returnTo}`);
+      const searchParams = new URLSearchParams({
+        force: '1',
+        returnTo,
+      });
+
+      router.replace(`${AUTH_REDIRECT_PATHS.signIn}?${searchParams.toString()}`);
     };
 
     window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
@@ -130,6 +142,10 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   }, [clearSession, isAuthRoute, router]);
 
   const commandItems = useMemo<CommandMenuItem[]>(() => {
+    if (!currentStaff) {
+      return [];
+    }
+
     const seenHrefs = new Set<string>();
 
     return flattenNavigation(getSidebarNavigation(currentStaff.role))
@@ -156,7 +172,7 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
           },
         };
       });
-  }, [closeCommandMenu, currentStaff.role, router, setCommandQuery]);
+  }, [closeCommandMenu, currentStaff, router, setCommandQuery]);
 
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent): void => {
@@ -180,6 +196,16 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
 
   if (isAuthRoute) {
     return children;
+  }
+
+  if (!currentStaff) {
+    return (
+      <div aria-live="polite" className={styles.sessionGate} role="status">
+        {staffSessionQuery.isError
+          ? 'Unable to verify the staff session.'
+          : 'Checking the staff session...'}
+      </div>
+    );
   }
 
   return (

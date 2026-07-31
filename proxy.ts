@@ -116,12 +116,18 @@ export function proxy(request: NextRequest) {
   const hasSessionCookie = Boolean(accessToken);
   const hasStaffRole = isStaffRole(role);
   const lockedAccount = isLockedAccountStatus(accountStatus);
+  const forceSignIn =
+    pathname === '/auth/sign-in' && request.nextUrl.searchParams.get('force') === '1';
 
   if (lockedAccount && pathname !== '/auth/locked') {
     return NextResponse.redirect(createRedirectUrl(request, '/auth/locked'));
   }
 
   if (isAuthRoute(pathname)) {
+    if (forceSignIn) {
+      return NextResponse.next();
+    }
+
     if (pathname === '/auth/locked' || pathname === '/auth/unauthorized') {
       return NextResponse.next();
     }
