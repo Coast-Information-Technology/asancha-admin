@@ -20,7 +20,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
   PROFILE_STATUS_LABELS,
@@ -28,7 +28,13 @@ import {
   PROFILE_TYPE_ROUTES,
 } from '../../features/profiles/constants/profiles.constants';
 import { useProfilesList } from '../../features/profiles/hooks/use-profiles-list';
-import type { ProfileStatus, ProfileType } from '../../features/profiles/types/profiles.types';
+import type {
+  ProfileBulkAction,
+  ProfileSortColumn,
+  ProfileSortState,
+  ProfileStatus,
+  ProfileType,
+} from '../../features/profiles/types/profiles.types';
 import { getApiErrorMessage } from '../../lib/api/api-error';
 import { Alert } from '../ui/alert/alert';
 import { Button } from '../ui/button/button';
@@ -108,19 +114,89 @@ function getPageCopy(profileType?: ProfileType) {
 
 export function ProfilesListView({ profileType }: ProfilesListViewProps) {
   const [status, setStatus] = useState<ProfileStatus | undefined>();
+  const [sortState, setSortState] = useState<ProfileSortState>({
+    column: 'createdAt',
+    direction: 'desc',
+  });
+  const [selectedProfileIds, setSelectedProfileIds] = useState<readonly string[]>([]);
+  const [bulkActionMessage, setBulkActionMessage] = useState('');
   const profilesQuery = useProfilesList({ profileType, status });
   const pageCopy = getPageCopy(profileType);
-  const profiles = profilesQuery.data?.items ?? [];
+  const profiles = useMemo(() => profilesQuery.data?.items ?? [], [profilesQuery.data?.items]);
   const isLoading = profilesQuery.isFetching;
 
+  const sortedProfiles = useMemo(() => {
+    return [...profiles].sort((left, right) => {
+      const leftValue = Date.parse(
+        sortState.column === 'createdAt' ? (left.createdAt ?? '') : (left.updatedAt ?? ''),
+      );
+      const rightValue = Date.parse(
+        sortState.column === 'createdAt' ? (right.createdAt ?? '') : (right.updatedAt ?? ''),
+      );
+
+      if (leftValue === rightValue) return 0;
+      if (!Number.isFinite(leftValue)) return 1;
+      if (!Number.isFinite(rightValue)) return -1;
+
+      return sortState.direction === 'asc' ? leftValue - rightValue : rightValue - leftValue;
+    });
+  }, [profiles, sortState]);
+
   useEffect(() => {
-    const syncStatus = () => setStatus(getStatusFromUrl());
+    const syncStatus = () => {
+      setStatus(getStatusFromUrl());
+      setSelectedProfileIds([]);
+    };
 
     syncStatus();
     window.addEventListener('popstate', syncStatus);
 
     return () => window.removeEventListener('popstate', syncStatus);
   }, []);
+
+  function handleSortChange(column: ProfileSortColumn) {
+    setSortState((current) => ({
+      column,
+      direction: current.column === column && current.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  }
+
+  function handleSelectionChange(profilePublicId: string, checked: boolean) {
+    setSelectedProfileIds((current) => {
+      const next = new Set(current);
+
+      if (checked) {
+        next.add(profilePublicId);
+      } else {
+        next.delete(profilePublicId);
+      }
+
+      return [...next];
+    });
+  }
+
+  function handleSelectAll(checked: boolean) {
+    setSelectedProfileIds((current) => {
+      const next = new Set(current);
+
+      sortedProfiles.forEach((profile) => {
+        if (checked) {
+          next.add(profile.profilePublicId);
+        } else {
+          next.delete(profile.profilePublicId);
+        }
+      });
+
+      return [...next];
+    });
+  }
+
+  function handleBulkAction(action: ProfileBulkAction) {
+    const actionLabel = action === 'approve' ? 'Approve' : 'Suspend';
+    setBulkActionMessage(
+      `${actionLabel} selected is ready in the interface, but a bulk profile-action contract is not connected yet.`,
+    );
+  }
 
   const metrics: readonly ManagementListMetric[] = [
     {
@@ -202,11 +278,24 @@ export function ProfilesListView({ profileType }: ProfilesListViewProps) {
           {getApiErrorMessage(profilesQuery.error)}
         </Alert>
       ) : (
-        <ProfilesTable
-          emptyDescription="No profile records match this view. Try another role or status filter."
-          isLoading={isLoading}
-          profiles={isLoading ? [] : profiles}
-        />
+        <>
+          {bulkActionMessage ? (
+            <Alert title="Bulk action not connected" tone="info">
+              {bulkActionMessage}
+            </Alert>
+          ) : null}
+          <ProfilesTable
+            emptyDescription="No profile records match this view. Try another role or status filter."
+            isLoading={isLoading}
+            onBulkAction={handleBulkAction}
+            onSelectAll={handleSelectAll}
+            onSelectionChange={handleSelectionChange}
+            onSortChange={handleSortChange}
+            profiles={isLoading ? [] : sortedProfiles}
+            selectedProfileIds={selectedProfileIds}
+            sortState={sortState}
+          />
+        </>
       )}
     </ManagementListPage>
   );

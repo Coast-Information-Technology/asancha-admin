@@ -99,9 +99,7 @@ export function AdminTopBar({ staff, onLogout }: AdminTopBarProps) {
               >
                 <Icon aria-hidden size={19} strokeWidth={2} />
                 {badgeCount > 0 ? (
-                  <span className={styles.badge}>
-                    {badgeCount > 99 ? '99+' : badgeCount}
-                  </span>
+                  <span className={styles.badge}>{badgeCount > 99 ? '99+' : badgeCount}</span>
                 ) : null}
               </Link>
             );

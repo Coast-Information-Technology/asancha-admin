@@ -55,6 +55,17 @@ export type ProfileVerificationStatus =
 export type ProfileActionType =
   'approve' | 'reject' | 'place_on_hold' | 'request_correction' | 'suspend' | 'restore';
 
+export type ProfileSortColumn = 'createdAt' | 'updatedAt';
+
+export type ProfileSortDirection = 'asc' | 'desc';
+
+export interface ProfileSortState {
+  column: ProfileSortColumn;
+  direction: ProfileSortDirection;
+}
+
+export type ProfileBulkAction = 'approve' | 'suspend';
+
 export interface ProfileListItem {
   profilePublicId: string;
   userPublicId: string;

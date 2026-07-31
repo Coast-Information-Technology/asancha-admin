@@ -28,7 +28,13 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 
 import { useUsers } from '../../features/users/hooks/use-users';
-import type { PublicUserRole, UserAccountStatus } from '../../features/users/types/users.types';
+import type {
+  PublicUserRole,
+  UserAccountStatus,
+  UserBulkAction,
+  UserSortColumn,
+  UserSortState,
+} from '../../features/users/types/users.types';
 import { getApiErrorMessage } from '../../lib/api/api-error';
 import { Alert } from '../ui/alert/alert';
 import { Button } from '../ui/button/button';
@@ -89,6 +95,31 @@ const VERIFICATION_OPTIONS = [
   { label: 'Not verified', value: 'not_verified' },
 ] as const;
 
+type UserFilterKey = keyof UserFilters;
+
+const FILTER_KEYS: readonly UserFilterKey[] = [
+  'search',
+  'role',
+  'status',
+  'verification',
+  'fromDate',
+  'toDate',
+];
+
+const FILTER_LABELS: Record<UserFilterKey, string> = {
+  search: 'Search',
+  role: 'Role',
+  status: 'Account status',
+  verification: 'Verification',
+  fromDate: 'From',
+  toDate: 'To',
+};
+
+const DEFAULT_SORT: UserSortState = {
+  column: 'createdAt',
+  direction: 'desc',
+};
+
 function isPublicUserRole(value: string): value is PublicUserRole {
   return ROLE_OPTIONS.some((option) => option.value === value);
 }
@@ -99,6 +130,26 @@ function isUserAccountStatus(value: string): value is UserAccountStatus {
 
 function isVerificationFilter(value: string): value is Exclude<VerificationFilter, ''> {
   return VERIFICATION_OPTIONS.some((option) => option.value === value);
+}
+
+function getFilterOptionLabel(key: UserFilterKey, value: UserFilters[UserFilterKey]): string {
+  if (!value) {
+    return '';
+  }
+
+  if (key === 'role') {
+    return ROLE_OPTIONS.find((option) => option.value === value)?.label ?? String(value);
+  }
+
+  if (key === 'status') {
+    return STATUS_OPTIONS.find((option) => option.value === value)?.label ?? String(value);
+  }
+
+  if (key === 'verification') {
+    return VERIFICATION_OPTIONS.find((option) => option.value === value)?.label ?? String(value);
+  }
+
+  return String(value);
 }
 
 function readUrlState(): { filters: UserFilters; page: number; pageSize: number } {
@@ -166,6 +217,10 @@ export function UsersListView() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isTableTransitioning, setIsTableTransitioning] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [sortState, setSortState] = useState<UserSortState>(DEFAULT_SORT);
+  const [selectedUserIds, setSelectedUserIds] = useState<readonly string[]>([]);
+  const [bulkActionMessage, setBulkActionMessage] = useState('');
 
   useEffect(() => {
     if (!isTableTransitioning) {
@@ -184,6 +239,7 @@ export function UsersListView() {
       setAppliedFilters(urlState.filters);
       setPage(urlState.page);
       setPageSize(urlState.pageSize);
+      setSelectedUserIds([]);
     };
 
     syncFromUrl();
@@ -225,10 +281,44 @@ export function UsersListView() {
   const totalPages = Math.max(1, Math.ceil(filteredUsers.length / pageSize));
   const currentPage = Math.min(page, totalPages);
   const isTableLoading = usersQuery.isFetching || isTableTransitioning;
+  const sortedUsers = useMemo(() => {
+    return [...filteredUsers].sort((left, right) => {
+      const leftValue = Date.parse(
+        sortState.column === 'createdAt' ? (left.createdAt ?? '') : (left.updatedAt ?? ''),
+      );
+      const rightValue = Date.parse(
+        sortState.column === 'createdAt' ? (right.createdAt ?? '') : (right.updatedAt ?? ''),
+      );
+
+      if (leftValue === rightValue) {
+        return 0;
+      }
+
+      if (!Number.isFinite(leftValue)) {
+        return 1;
+      }
+
+      if (!Number.isFinite(rightValue)) {
+        return -1;
+      }
+
+      return sortState.direction === 'asc' ? leftValue - rightValue : rightValue - leftValue;
+    });
+  }, [filteredUsers, sortState]);
   const visibleUsers = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
-    return filteredUsers.slice(start, start + pageSize);
-  }, [currentPage, filteredUsers, pageSize]);
+    return sortedUsers.slice(start, start + pageSize);
+  }, [currentPage, pageSize, sortedUsers]);
+
+  const activeFilterCount = FILTER_KEYS.filter((key) => Boolean(appliedFilters[key])).length;
+  const draftFilterCount = FILTER_KEYS.filter((key) => Boolean(draftFilters[key])).length;
+  const activeFilterChips = FILTER_KEYS.filter((key) => Boolean(appliedFilters[key])).map(
+    (key) => ({
+      key,
+      label: FILTER_LABELS[key],
+      value: getFilterOptionLabel(key, appliedFilters[key]),
+    }),
+  );
 
   const metrics: readonly ManagementListMetric[] = [
     {
@@ -261,6 +351,7 @@ export function UsersListView() {
     event.preventDefault();
     setIsTableTransitioning(true);
     setAppliedFilters(draftFilters);
+    setSelectedUserIds([]);
     setPage(1);
     writeUrlState(draftFilters, 1, pageSize);
   }
@@ -269,6 +360,7 @@ export function UsersListView() {
     setIsTableTransitioning(true);
     setDraftFilters(EMPTY_FILTERS);
     setAppliedFilters(EMPTY_FILTERS);
+    setSelectedUserIds([]);
     setPage(1);
     writeUrlState(EMPTY_FILTERS, 1, pageSize);
   }
@@ -285,6 +377,60 @@ export function UsersListView() {
     setPageSize(nextPageSize);
     setPage(1);
     writeUrlState(appliedFilters, 1, nextPageSize);
+  }
+
+  function handleSortChange(column: UserSortColumn) {
+    setSortState((current) => ({
+      column,
+      direction: current.column === column && current.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  }
+
+  function handleRemoveFilter(key: UserFilterKey) {
+    const nextFilters = { ...appliedFilters, [key]: '' } as UserFilters;
+    setDraftFilters(nextFilters);
+    setAppliedFilters(nextFilters);
+    setSelectedUserIds([]);
+    setPage(1);
+    setIsTableTransitioning(true);
+    writeUrlState(nextFilters, 1, pageSize);
+  }
+
+  function handleSelectionChange(userPublicId: string, checked: boolean) {
+    setSelectedUserIds((current) => {
+      const next = new Set(current);
+
+      if (checked) {
+        next.add(userPublicId);
+      } else {
+        next.delete(userPublicId);
+      }
+
+      return [...next];
+    });
+  }
+
+  function handleSelectAll(checked: boolean) {
+    setSelectedUserIds((current) => {
+      const next = new Set(current);
+
+      visibleUsers.forEach((user) => {
+        if (checked) {
+          next.add(user.userPublicId);
+        } else {
+          next.delete(user.userPublicId);
+        }
+      });
+
+      return [...next];
+    });
+  }
+
+  function handleBulkAction(action: UserBulkAction) {
+    const actionLabel = action === 'verify' ? 'Verify' : 'Deactivate';
+    setBulkActionMessage(
+      `${actionLabel} selected is ready in the interface, but the backend mutation contract is not connected yet.`,
+    );
   }
 
   async function handleRefresh() {
@@ -305,95 +451,160 @@ export function UsersListView() {
       title="Users"
       totalLabel={isTableLoading ? 'Loading users' : `${filteredUsers.length} users`}
     >
-      <form aria-label="User filters" className={styles.filterToolbar} onSubmit={handleApply}>
-        <div className={styles.filterFields}>
-          <Input
-            className={styles.searchInput}
-            disabled={isTableLoading}
-            label="Search users"
-            onChange={(event) =>
-              setDraftFilters((current) => ({ ...current, search: event.target.value }))
-            }
-            placeholder="Email, phone, or public ID"
-            type="search"
-            value={draftFilters.search}
-          />
-          <Select
-            label="Role"
-            disabled={isTableLoading}
-            onChange={(event) =>
-              setDraftFilters((current) => ({
-                ...current,
-                role: event.target.value as PublicUserRole | '',
-              }))
-            }
-            options={ROLE_OPTIONS}
-            placeholder="All roles"
-            value={draftFilters.role}
-          />
-          <Select
-            label="Account status"
-            disabled={isTableLoading}
-            onChange={(event) =>
-              setDraftFilters((current) => ({
-                ...current,
-                status: event.target.value as UserAccountStatus | '',
-              }))
-            }
-            options={STATUS_OPTIONS}
-            placeholder="All statuses"
-            value={draftFilters.status}
-          />
-          <Select
-            label="Verification status"
-            disabled={isTableLoading}
-            onChange={(event) =>
-              setDraftFilters((current) => ({
-                ...current,
-                verification: event.target.value as VerificationFilter,
-              }))
-            }
-            options={VERIFICATION_OPTIONS}
-            placeholder="All verification"
-            value={draftFilters.verification}
-          />
-          <Input
-            disabled={isTableLoading}
-            label="From date"
-            onChange={(event) =>
-              setDraftFilters((current) => ({ ...current, fromDate: event.target.value }))
-            }
-            type="date"
-            value={draftFilters.fromDate}
-          />
-          <Input
-            disabled={isTableLoading}
-            label="To date"
-            onChange={(event) =>
-              setDraftFilters((current) => ({ ...current, toDate: event.target.value }))
-            }
-            type="date"
-            value={draftFilters.toDate}
-          />
-        </div>
-        <div className={styles.filterActions}>
-          <Button disabled={isTableLoading} loading={isTableTransitioning} type="submit">
-            Apply filters
-          </Button>
-          <Button disabled={isTableLoading} onClick={handleClear} type="button" variant="secondary">
-            Clear filters
-          </Button>
+      <section aria-labelledby="user-filter-title" className={styles.filterPanel}>
+        <div className={styles.filterPanelHeader}>
+          <div>
+            <p className={styles.filterPanelTitle} id="user-filter-title">
+              Filters
+            </p>
+            <p className={styles.filterPanelMeta}>
+              {activeFilterCount > 0 ? `${activeFilterCount} active` : 'No filters applied'}
+            </p>
+          </div>
           <Button
-            disabled={isTableLoading}
-            loading={usersQuery.isFetching}
-            onClick={() => void handleRefresh()}
+            aria-controls="user-filter-form"
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen((current) => !current)}
             type="button"
             variant="ghost"
           >
-            Refresh
+            {filtersOpen ? 'Hide filters' : 'Show filters'}
           </Button>
         </div>
-      </form>
+
+        {filtersOpen ? (
+          <form
+            aria-label="User filters"
+            className={styles.filterToolbar}
+            id="user-filter-form"
+            onSubmit={handleApply}
+          >
+            <div className={styles.filterFields}>
+              <Input
+                className={styles.searchInput}
+                disabled={isTableLoading}
+                label="Search users"
+                onChange={(event) =>
+                  setDraftFilters((current) => ({ ...current, search: event.target.value }))
+                }
+                placeholder="Email, phone, or public ID"
+                type="search"
+                value={draftFilters.search}
+              />
+              <Select
+                label="Role"
+                disabled={isTableLoading}
+                onChange={(event) =>
+                  setDraftFilters((current) => ({
+                    ...current,
+                    role: event.target.value as PublicUserRole | '',
+                  }))
+                }
+                options={ROLE_OPTIONS}
+                placeholder="All roles"
+                value={draftFilters.role}
+              />
+              <Select
+                label="Account status"
+                disabled={isTableLoading}
+                onChange={(event) =>
+                  setDraftFilters((current) => ({
+                    ...current,
+                    status: event.target.value as UserAccountStatus | '',
+                  }))
+                }
+                options={STATUS_OPTIONS}
+                placeholder="All statuses"
+                value={draftFilters.status}
+              />
+              <Select
+                label="Verification status"
+                disabled={isTableLoading}
+                onChange={(event) =>
+                  setDraftFilters((current) => ({
+                    ...current,
+                    verification: event.target.value as VerificationFilter,
+                  }))
+                }
+                options={VERIFICATION_OPTIONS}
+                placeholder="All verification"
+                value={draftFilters.verification}
+              />
+              <Input
+                disabled={isTableLoading}
+                label="From date"
+                onChange={(event) =>
+                  setDraftFilters((current) => ({ ...current, fromDate: event.target.value }))
+                }
+                type="date"
+                value={draftFilters.fromDate}
+              />
+              <Input
+                disabled={isTableLoading}
+                label="To date"
+                onChange={(event) =>
+                  setDraftFilters((current) => ({ ...current, toDate: event.target.value }))
+                }
+                type="date"
+                value={draftFilters.toDate}
+              />
+            </div>
+            <div className={styles.filterActions}>
+              <Button
+                className={draftFilterCount > 0 ? styles.applyButtonActive : undefined}
+                disabled={isTableLoading}
+                loading={isTableTransitioning}
+                rightIcon={
+                  draftFilterCount > 0 ? (
+                    <span className={styles.filterCount}>{draftFilterCount}</span>
+                  ) : undefined
+                }
+                type="submit"
+              >
+                Apply filters
+              </Button>
+              <Button
+                disabled={isTableLoading}
+                onClick={handleClear}
+                type="button"
+                variant="secondary"
+              >
+                Clear filters
+              </Button>
+              <Button
+                disabled={isTableLoading}
+                loading={usersQuery.isFetching}
+                onClick={() => void handleRefresh()}
+                type="button"
+                variant="ghost"
+              >
+                Refresh
+              </Button>
+            </div>
+          </form>
+        ) : null}
+
+        {activeFilterChips.length > 0 ? (
+          <div aria-label="Applied filters" className={styles.filterChips}>
+            {activeFilterChips.map((chip) => (
+              <button
+                className={styles.filterChip}
+                key={chip.key}
+                onClick={() => handleRemoveFilter(chip.key)}
+                type="button"
+              >
+                <span>
+                  {chip.label}: {chip.value}
+                </span>
+                <span aria-hidden="true" className={styles.filterChipRemove}>
+                  ×
+                </span>
+                <span className="asancha-sr-only">Remove {chip.label} filter</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </section>
 
       {usersQuery.isError ? (
         <Alert title="Unable to load users" tone="danger">
@@ -403,9 +614,20 @@ export function UsersListView() {
 
       {!usersQuery.isError ? (
         <>
+          {bulkActionMessage ? (
+            <Alert title="Bulk action not connected" tone="info">
+              {bulkActionMessage}
+            </Alert>
+          ) : null}
           <UsersTable
             emptyDescription="No users match the selected filters. Try clearing a filter or changing the date range."
             isLoading={isTableLoading}
+            onBulkAction={handleBulkAction}
+            onSelectAll={handleSelectAll}
+            onSelectionChange={handleSelectionChange}
+            onSortChange={handleSortChange}
+            selectedUserIds={selectedUserIds}
+            sortState={sortState}
             users={isTableLoading ? [] : visibleUsers}
           />
           <UserPagination

@@ -10,18 +10,14 @@ export async function POST() {
   const accessToken = cookieStore.get(STAFF_COOKIE_NAMES.accessToken)?.value;
 
   if (accessToken && env.NEXT_PUBLIC_API_BASE_URL) {
-    try {
-      await fetch(`${env.NEXT_PUBLIC_API_BASE_URL}${AUTH_API_PATHS.staffSignOut}`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        cache: 'no-store',
-      });
-    } catch {
-      // Local session cleanup still completes if the backend is unavailable.
-    }
+    void fetch(`${env.NEXT_PUBLIC_API_BASE_URL}${AUTH_API_PATHS.staffSignOut}`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: 'no-store',
+    }).catch(() => undefined);
   }
 
   const response = NextResponse.json({

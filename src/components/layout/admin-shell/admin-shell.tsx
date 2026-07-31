@@ -50,6 +50,7 @@ import { AdminTopBar } from '../admin-top-bar/admin-top-bar';
 import { MobileAdminDrawer } from '../mobile-admin-drawer/mobile-admin-drawer';
 import { MobileAdminTopBar } from '../mobile-admin-top-bar/mobile-admin-top-bar';
 import { CommandMenu, type CommandMenuItem } from '../../ui/command-menu/command-menu';
+import { Skeleton } from '../../ui/skeleton/skeleton';
 
 import styles from './admin-shell.module.css';
 
@@ -82,7 +83,7 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   const isAuthRoute = pathname === '/auth' || pathname.startsWith('/auth/');
   const sessionRedirecting = useRef(false);
 
-  const staffSessionQuery = useStaffSession({
+  useStaffSession({
     enabled: !isAuthRoute,
     redirectOnUnauthorized: true,
   });
@@ -126,12 +127,13 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
       clearSession();
 
       const returnTo = createReturnToParam(window.location.pathname, window.location.search);
-      const searchParams = new URLSearchParams({
-        force: '1',
-        returnTo,
-      });
+      const redirectToSignIn = () => {
+        router.replace(`${AUTH_REDIRECT_PATHS.signIn}?force=1&returnTo=${returnTo}`);
+      };
 
-      router.replace(`${AUTH_REDIRECT_PATHS.signIn}?${searchParams.toString()}`);
+      void signOutStaff()
+        .catch(() => undefined)
+        .finally(redirectToSignIn);
     };
 
     window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
@@ -199,13 +201,7 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
   }
 
   if (!currentStaff) {
-    return (
-      <div aria-live="polite" className={styles.sessionGate} role="status">
-        {staffSessionQuery.isError
-          ? 'Unable to verify the staff session.'
-          : 'Checking the staff session...'}
-      </div>
-    );
+    return <AdminShellSkeleton />;
   }
 
   return (
@@ -262,6 +258,60 @@ export function AdminShell({ children, staff, onLogout }: AdminShellProps) {
           </div>
         </div>
       ) : null}
+    </div>
+  );
+}
+
+function AdminShellSkeleton() {
+  return (
+    <div
+      aria-busy="true"
+      aria-label="Loading admin workspace"
+      className={styles.sessionSkeleton}
+      role="status"
+    >
+      <aside className={styles.sessionSkeletonSidebar}>
+        <Skeleton height="2rem" width="8.5rem" />
+        <div className={styles.sessionSkeletonNav}>
+          {Array.from({ length: 8 }, (_, index) => (
+            <Skeleton height="1rem" key={index} width={index === 0 ? '8rem' : '6.5rem'} />
+          ))}
+        </div>
+      </aside>
+
+      <div className={styles.sessionSkeletonWorkspace}>
+        <header className={styles.sessionSkeletonTopBar}>
+          <Skeleton height="1rem" width="8rem" />
+          <div className={styles.sessionSkeletonTopBarActions}>
+            <Skeleton height="2.25rem" rounded width="2.25rem" />
+            <Skeleton height="2.25rem" rounded width="2.25rem" />
+            <Skeleton height="2.25rem" rounded width="9rem" />
+          </div>
+        </header>
+
+        <main className={styles.sessionSkeletonMain}>
+          <div className={styles.sessionSkeletonHeading}>
+            <Skeleton height="2rem" width="13rem" />
+            <Skeleton height="1rem" width="25rem" />
+          </div>
+
+          <div className={styles.sessionSkeletonMetrics}>
+            {Array.from({ length: 4 }, (_, index) => (
+              <div className={styles.sessionSkeletonCard} key={index}>
+                <Skeleton height="0.85rem" width="5rem" />
+                <Skeleton height="2rem" width="3.5rem" />
+                <Skeleton height="0.8rem" width="8rem" />
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.sessionSkeletonPanel}>
+            <Skeleton height="1.25rem" width="10rem" />
+            <Skeleton height="3rem" width="100%" />
+            <Skeleton height="14rem" width="100%" />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

@@ -104,6 +104,7 @@ function parseUserListItem(value: unknown): UserListItem | null {
     createdAtLabel: formatDateTime(createdAt),
     createdAt,
     updatedAtLabel: formatDateTime(updatedAt),
+    updatedAt,
     isVerified,
     isActive,
     isSuspended,

@@ -30,7 +30,7 @@ import { getApiErrorMessage } from '../../../lib/api/api-error';
 import { createReturnToParam } from '../../../lib/utils/safe-redirect';
 import { useStaffAuthStore } from '../../../store/staff-auth.store';
 
-import { getCurrentStaffSession } from '../api/auth.api';
+import { getCurrentStaffSession, signOutStaff } from '../api/auth.api';
 import { AUTH_QUERY_KEYS, AUTH_REDIRECT_PATHS } from '../constants/auth.constants';
 import type { StaffSessionHookOptions } from '../types/auth.types';
 
@@ -68,12 +68,13 @@ export function useStaffSession(options: StaffSessionHookOptions = {}) {
 
     if (options.redirectOnUnauthorized) {
       const returnTo = createReturnToParam(window.location.pathname, window.location.search);
-      const searchParams = new URLSearchParams({
-        force: '1',
-        returnTo,
-      });
+      const redirectToSignIn = () => {
+        router.replace(`${AUTH_REDIRECT_PATHS.signIn}?force=1&returnTo=${returnTo}`);
+      };
 
-      router.replace(`${AUTH_REDIRECT_PATHS.signIn}?${searchParams.toString()}`);
+      void signOutStaff()
+        .catch(() => undefined)
+        .finally(redirectToSignIn);
     }
   }, [
     clearSession,

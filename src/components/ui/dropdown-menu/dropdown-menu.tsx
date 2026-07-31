@@ -14,7 +14,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useClickOutside } from '../../../hooks/use-click-outside';
 import { cn } from '../../../lib/utils/cn';
@@ -45,16 +45,64 @@ export function DropdownMenu({
   align = 'right',
 }: DropdownMenuProps) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const [placement, setPlacement] = useState<'above' | 'below'>('below');
 
   useClickOutside(ref, () => onOpenChange(false), {
     enabled: open,
   });
 
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const updatePlacement = () => {
+      const triggerBounds = ref.current?.getBoundingClientRect();
+      const menuBounds = menuRef.current?.getBoundingClientRect();
+
+      if (!triggerBounds || !menuBounds) {
+        return;
+      }
+
+      const spacing = 12;
+      const spaceBelow = window.innerHeight - triggerBounds.bottom;
+      const spaceAbove = triggerBounds.top;
+      const needsUpwardPlacement =
+        spaceBelow < menuBounds.height + spacing && spaceAbove >= menuBounds.height + spacing;
+
+      setPlacement(needsUpwardPlacement ? 'above' : 'below');
+    };
+
+    updatePlacement();
+    window.addEventListener('resize', updatePlacement);
+    window.addEventListener('scroll', updatePlacement, true);
+
+    return () => {
+      window.removeEventListener('resize', updatePlacement);
+      window.removeEventListener('scroll', updatePlacement, true);
+    };
+  }, [open]);
+
   return (
     <div className={styles.root} ref={ref}>
-      <div onClick={() => onOpenChange(!open)}>{trigger}</div>
+      <div
+        onClick={() => {
+          if (!open) {
+            setPlacement('below');
+          }
+
+          onOpenChange(!open);
+        }}
+      >
+        {trigger}
+      </div>
       {open ? (
-        <div className={cn(styles.menu, styles[align])} role="menu">
+        <div
+          className={cn(styles.menu, styles[align], placement === 'above' && styles.above)}
+          ref={menuRef}
+          role="menu"
+        >
           {items.map((item) => (
             <button
               className={cn(styles.item, item.tone === 'danger' && styles.danger)}

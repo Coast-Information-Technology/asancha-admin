@@ -31,6 +31,11 @@
   right: 0;
 }
 
+.above {
+  top: auto;
+  bottom: calc(100% + 0.5rem);
+}
+
 .item {
   width: 100%;
   border: 0;

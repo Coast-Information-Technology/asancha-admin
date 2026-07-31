@@ -14,15 +14,80 @@
   color: var(--asancha-color-text);
 }
 
-.sessionGate {
-  display: grid;
+.sessionSkeleton {
+  display: flex;
   min-height: 100vh;
-  place-items: center;
-  padding: 2rem;
   background: var(--asancha-color-page);
-  color: var(--asancha-color-text-muted);
-  font-size: var(--asancha-font-size-sm);
-  font-weight: 700;
+}
+
+.sessionSkeletonSidebar {
+  display: grid;
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--asancha-admin-sidebar-width);
+  gap: 2rem;
+  align-content: start;
+  padding: 1.5rem 1.25rem;
+  border-right: 1px solid var(--asancha-color-border);
+  background: var(--asancha-color-surface);
+}
+
+.sessionSkeletonNav {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.sessionSkeletonWorkspace {
+  width: 100%;
+  margin-left: var(--asancha-admin-sidebar-width);
+}
+
+.sessionSkeletonTopBar {
+  display: flex;
+  height: var(--asancha-admin-top-bar-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  background: var(--asancha-color-surface);
+}
+
+.sessionSkeletonTopBarActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.sessionSkeletonMain {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.sessionSkeletonHeading {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sessionSkeletonMetrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.sessionSkeletonCard,
+.sessionSkeletonPanel {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--asancha-color-border);
+  border-radius: var(--asancha-radius-xl);
+  background: var(--asancha-color-surface);
+}
+
+.sessionSkeletonPanel {
+  min-height: 19rem;
 }
 
 .desktopSidebar {
@@ -104,6 +169,18 @@
 }
 
 @media (max-width: 1023px) {
+  .sessionSkeletonSidebar {
+    display: none;
+  }
+
+  .sessionSkeletonWorkspace {
+    margin-left: 0;
+  }
+
+  .sessionSkeletonTopBar {
+    height: var(--asancha-admin-mobile-top-bar-height);
+  }
+
   .desktopSidebar {
     display: none;
   }
@@ -112,5 +189,27 @@
   .main[data-sidebar-collapsed='true'] {
     padding-top: var(--asancha-admin-mobile-top-bar-height);
     padding-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .sessionSkeletonTopBar {
+    padding: 0 1rem;
+  }
+
+  .sessionSkeletonTopBarActions {
+    gap: 0.5rem;
+  }
+
+  .sessionSkeletonTopBarActions > :last-child {
+    width: 2.25rem !important;
+  }
+
+  .sessionSkeletonMain {
+    padding: 1.25rem;
+  }
+
+  .sessionSkeletonMetrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

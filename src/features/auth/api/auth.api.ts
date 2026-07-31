@@ -43,9 +43,13 @@ import type {
 
 async function requestLocalAuth<TData, TBody>(
   path: string,
-  options: { method?: 'GET' | 'POST'; body?: TBody } = {},
+  options: { method?: 'GET' | 'POST'; body?: TBody; timeoutMs?: number } = {},
 ): Promise<TData> {
   const method = options.method ?? 'POST';
+  const controller = new AbortController();
+  const timeoutId = options.timeoutMs
+    ? setTimeout(() => controller.abort(), options.timeoutMs)
+    : undefined;
   let response: Response;
 
   try {
@@ -58,9 +62,14 @@ async function requestLocalAuth<TData, TBody>(
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
       credentials: 'include',
       cache: 'no-store',
+      signal: controller.signal,
     });
   } catch (error) {
     throw createApiErrorFromRawResponse(error, 503, path);
+  } finally {
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
   }
 
   const responseBody = await response.json().catch(() => null);
@@ -93,6 +102,7 @@ export async function signOutStaff(): Promise<StaffSignOutResponse> {
 export async function getCurrentStaffSession(): Promise<StaffAuthSessionResponse> {
   return requestLocalAuth<StaffAuthSessionResponse, Record<string, never>>('/api/auth/session', {
     method: 'GET',
+    timeoutMs: 5_000,
   });
 }
 

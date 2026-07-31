@@ -19,7 +19,7 @@
 
 .tableWrap {
   width: 100%;
-  overflow-x: auto;
+  overflow: visible;
   border: 1px solid var(--asancha-color-border);
   border-radius: var(--asancha-radius-xl);
   background: var(--asancha-color-surface);
@@ -27,29 +27,201 @@
 
 .table {
   width: 100%;
-  min-width: 58rem;
+  min-width: 0;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
 .table th,
 .table td {
-  padding: 0.875rem 1rem;
+  padding: 0.7rem 1rem;
   border-bottom: 1px solid var(--asancha-color-border);
   text-align: left;
   vertical-align: top;
 }
 
-.table th {
+.table thead th {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  vertical-align: middle;
   color: var(--asancha-color-text-muted);
   font-size: var(--asancha-font-size-xs);
   font-weight: 850;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  background: var(--asancha-color-surface-subtle);
+  background: var(--asancha-color-surface-raised);
+}
+
+.table tbody tr:nth-child(even) {
+  background: color-mix(
+    in srgb,
+    var(--asancha-color-surface-subtle) 42%,
+    var(--asancha-color-surface)
+  );
+}
+
+.table tbody tr:hover,
+.table tbody tr.selectedRow {
+  background: color-mix(in srgb, var(--asancha-color-brand) 8%, var(--asancha-color-surface));
 }
 
 .table tr:last-child td {
   border-bottom: 0;
+}
+
+.selectionColumn {
+  width: 3.25rem;
+}
+
+.userColumn {
+  width: 26%;
+}
+
+.roleColumn {
+  width: 12%;
+}
+
+.statusColumn {
+  width: 13%;
+}
+
+.verificationColumn {
+  width: 14%;
+}
+
+.dateColumn {
+  width: 9.5%;
+}
+
+.actionColumn {
+  width: 4.5rem;
+}
+
+.selectionCell,
+.actionCell {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.roleCell {
+  text-align: left !important;
+}
+
+.tableCheckbox {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--asancha-color-brand);
+  cursor: pointer;
+}
+
+.tableCheckbox:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.sortButton {
+  display: inline-flex;
+  width: auto;
+  min-height: 1.5rem;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.sortButton:hover {
+  color: var(--asancha-color-text);
+}
+
+.sortButton:focus-visible,
+.filterChip:focus-visible {
+  outline: 2px solid var(--asancha-color-brand);
+  outline-offset: 2px;
+}
+
+.sortIndicator {
+  color: var(--asancha-color-brand);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.userHeader,
+.roleHeader,
+.statusHeader,
+.verificationHeader,
+.dateHeader {
+  text-align: left !important;
+}
+
+.truncatedValue {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userName.truncatedValue {
+  max-width: 100%;
+}
+
+.userMeta .truncatedValue {
+  max-width: 15rem;
+}
+
+.userMeta .publicIdValue {
+  max-width: 19rem;
+  font-family: var(--asancha-font-mono);
+}
+
+.rowActionButton {
+  width: 2.25rem;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0;
+}
+
+.kebabIcon {
+  font-size: 1.35rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.bulkToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--asancha-color-border);
+  background: color-mix(in srgb, var(--asancha-color-brand) 6%, var(--asancha-color-surface));
+}
+
+.bulkToolbarInfo {
+  margin: 0;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-sm);
+}
+
+.bulkToolbarInfo strong {
+  color: var(--asancha-color-text);
+}
+
+.bulkToolbarActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .tableLoadingState {
@@ -236,9 +408,90 @@
 .filterToolbar {
   display: grid;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0 1rem 1rem;
+  background: var(--asancha-color-surface-subtle);
+}
+
+.filterPanel {
   border-bottom: 1px solid var(--asancha-color-border);
   background: var(--asancha-color-surface-subtle);
+}
+
+.filterPanelHeader {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+}
+
+.filterPanelTitle,
+.filterPanelMeta {
+  margin: 0;
+}
+
+.filterPanelTitle {
+  color: var(--asancha-color-text);
+  font-size: var(--asancha-font-size-sm);
+  font-weight: 850;
+}
+
+.filterPanelMeta {
+  margin-top: 0.2rem;
+  color: var(--asancha-color-text-muted);
+  font-size: var(--asancha-font-size-xs);
+}
+
+.filterCount {
+  display: inline-flex;
+  min-width: 1.2rem;
+  min-height: 1.2rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.2);
+  color: inherit;
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 850;
+  line-height: 1;
+}
+
+.applyButtonActive {
+  box-shadow: 0 0 0 0.16rem color-mix(in srgb, var(--asancha-color-brand) 18%, transparent);
+}
+
+.filterChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0 1rem 0.9rem;
+}
+
+.filterChip {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.55rem 0.35rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--asancha-color-brand) 32%, var(--asancha-color-border));
+  border-radius: 999px;
+  background: var(--asancha-color-surface);
+  color: var(--asancha-color-brand);
+  font: inherit;
+  font-size: var(--asancha-font-size-xs);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.filterChip:hover {
+  background: color-mix(in srgb, var(--asancha-color-brand) 8%, var(--asancha-color-surface));
+}
+
+.filterChipRemove {
+  color: var(--asancha-color-text-muted);
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .filterFields {

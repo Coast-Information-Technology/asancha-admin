@@ -61,6 +61,17 @@ export type UserVerificationStatus =
   | 'rejected'
   | 'flagged';
 
+export type UserSortColumn = 'createdAt' | 'updatedAt';
+
+export type UserSortDirection = 'asc' | 'desc';
+
+export interface UserSortState {
+  column: UserSortColumn;
+  direction: UserSortDirection;
+}
+
+export type UserBulkAction = 'verify' | 'deactivate';
+
 export interface UserListItem {
   userPublicId: string;
   displayName: string;
@@ -72,6 +83,7 @@ export interface UserListItem {
   createdAtLabel: string;
   createdAt?: string;
   updatedAtLabel?: string;
+  updatedAt?: string;
   lastSeenAtLabel?: string;
   isVerified?: boolean;
   isActive?: boolean;
@@ -105,6 +117,7 @@ export interface UserDetail {
   createdAtLabel: string;
   createdAt?: string;
   updatedAtLabel?: string;
+  updatedAt?: string;
   lastSeenAtLabel?: string;
   isVerified?: boolean;
   isActive?: boolean;
