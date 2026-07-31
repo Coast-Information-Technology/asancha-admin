@@ -306,74 +306,76 @@ export function UsersListView() {
       totalLabel={isTableLoading ? 'Loading users' : `${filteredUsers.length} users`}
     >
       <form aria-label="User filters" className={styles.filterToolbar} onSubmit={handleApply}>
-        <Input
-          className={styles.searchInput}
-          disabled={isTableLoading}
-          label="Search users"
-          onChange={(event) =>
-            setDraftFilters((current) => ({ ...current, search: event.target.value }))
-          }
-          placeholder="Email, phone, or public ID"
-          type="search"
-          value={draftFilters.search}
-        />
-        <Select
-          label="Role"
-          disabled={isTableLoading}
-          onChange={(event) =>
-            setDraftFilters((current) => ({
-              ...current,
-              role: event.target.value as PublicUserRole | '',
-            }))
-          }
-          options={ROLE_OPTIONS}
-          placeholder="All roles"
-          value={draftFilters.role}
-        />
-        <Select
-          label="Account status"
-          disabled={isTableLoading}
-          onChange={(event) =>
-            setDraftFilters((current) => ({
-              ...current,
-              status: event.target.value as UserAccountStatus | '',
-            }))
-          }
-          options={STATUS_OPTIONS}
-          placeholder="All statuses"
-          value={draftFilters.status}
-        />
-        <Select
-          label="Verification status"
-          disabled={isTableLoading}
-          onChange={(event) =>
-            setDraftFilters((current) => ({
-              ...current,
-              verification: event.target.value as VerificationFilter,
-            }))
-          }
-          options={VERIFICATION_OPTIONS}
-          placeholder="All verification"
-          value={draftFilters.verification}
-        />
-        <Input
-          disabled={isTableLoading}
-          label="From date"
-          onChange={(event) =>
-            setDraftFilters((current) => ({ ...current, fromDate: event.target.value }))
-          }
-          type="date"
-          value={draftFilters.fromDate}
-        />
-        <Input
-          disabled={isTableLoading}
-          label="To date"
-          onChange={(event) =>
-            setDraftFilters((current) => ({ ...current, toDate: event.target.value }))
-          }
-          type="date"
-          value={draftFilters.toDate}
-        />
+        <div className={styles.filterFields}>
+          <Input
+            className={styles.searchInput}
+            disabled={isTableLoading}
+            label="Search users"
+            onChange={(event) =>
+              setDraftFilters((current) => ({ ...current, search: event.target.value }))
+            }
+            placeholder="Email, phone, or public ID"
+            type="search"
+            value={draftFilters.search}
+          />
+          <Select
+            label="Role"
+            disabled={isTableLoading}
+            onChange={(event) =>
+              setDraftFilters((current) => ({
+                ...current,
+                role: event.target.value as PublicUserRole | '',
+              }))
+            }
+            options={ROLE_OPTIONS}
+            placeholder="All roles"
+            value={draftFilters.role}
+          />
+          <Select
+            label="Account status"
+            disabled={isTableLoading}
+            onChange={(event) =>
+              setDraftFilters((current) => ({
+                ...current,
+                status: event.target.value as UserAccountStatus | '',
+              }))
+            }
+            options={STATUS_OPTIONS}
+            placeholder="All statuses"
+            value={draftFilters.status}
+          />
+          <Select
+            label="Verification status"
+            disabled={isTableLoading}
+            onChange={(event) =>
+              setDraftFilters((current) => ({
+                ...current,
+                verification: event.target.value as VerificationFilter,
+              }))
+            }
+            options={VERIFICATION_OPTIONS}
+            placeholder="All verification"
+            value={draftFilters.verification}
+          />
+          <Input
+            disabled={isTableLoading}
+            label="From date"
+            onChange={(event) =>
+              setDraftFilters((current) => ({ ...current, fromDate: event.target.value }))
+            }
+            type="date"
+            value={draftFilters.fromDate}
+          />
+          <Input
+            disabled={isTableLoading}
+            label="To date"
+            onChange={(event) =>
+              setDraftFilters((current) => ({ ...current, toDate: event.target.value }))
+            }
+            type="date"
+            value={draftFilters.toDate}
+          />
+        </div>
         <div className={styles.filterActions}>
           <Button disabled={isTableLoading} loading={isTableTransitioning} type="submit">
             Apply filters
