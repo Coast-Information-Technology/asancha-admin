@@ -5,8 +5,8 @@
  * Defines the invited staff set-password validation schema for Asancha Admin.
  *
  * Role in the project:
- * This schema validates invite token and password fields for invited staff
- * account setup.
+ * This schema validates the staff public ID, setup token, and password fields
+ * for invited staff account setup.
  *
  * Key exports:
  * - setPasswordSchema validates invited staff password setup input.
@@ -26,18 +26,23 @@ import { AUTH_FORM_LIMITS } from '../constants/auth.constants';
 
 export const setPasswordSchema = z
   .object({
-    inviteToken: z
+    userPublicId: z.string().trim().uuid('Staff setup link is invalid.'),
+    token: z
       .string()
       .trim()
-      .min(AUTH_FORM_LIMITS.tokenMinLength, 'Invite token is invalid.')
-      .max(AUTH_FORM_LIMITS.tokenMaxLength, 'Invite token is invalid.'),
+      .min(AUTH_FORM_LIMITS.tokenMinLength, 'Setup token is invalid.')
+      .max(AUTH_FORM_LIMITS.tokenMaxLength, 'Setup token is invalid.'),
     password: z
       .string()
       .min(
         AUTH_FORM_LIMITS.passwordMinLength,
         `Password must be at least ${AUTH_FORM_LIMITS.passwordMinLength} characters.`,
       )
-      .max(AUTH_FORM_LIMITS.passwordMaxLength, 'Password is too long.'),
+      .max(AUTH_FORM_LIMITS.passwordMaxLength, 'Password is too long.')
+      .regex(
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9])/,
+        'Password must include uppercase, lowercase, number, and special character.',
+      ),
     confirmPassword: z.string().min(1, 'Confirm your password.'),
   })
   .refine((values) => values.password === values.confirmPassword, {

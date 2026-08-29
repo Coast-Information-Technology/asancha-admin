@@ -42,9 +42,15 @@ export interface ResetPasswordRequest {
 }
 
 export interface SetPasswordRequest {
-  inviteToken: string;
+  userPublicId: string;
+  token: string;
   password: string;
   confirmPassword: string;
+}
+
+export interface SetPasswordApiRequest {
+  token: string;
+  password: string;
 }
 
 export interface VerifyStaffInviteRequest {

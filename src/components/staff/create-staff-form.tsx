@@ -11,8 +11,8 @@
  * approved role matrix. Super admin creation is never available in this form.
  *
  * Security note:
- * Passwords are sent only to the backend request and are not stored in admin
- * state, logs, or success messages. Backend authorization remains final.
+ * New staff members create their own password through the backend's first-time
+ * setup flow. Backend authorization remains final.
  */
 
 'use client';
@@ -43,14 +43,9 @@ const EMPTY_ALLOWED_ROLES: readonly StaffCreationTargetRole[] = [];
 
 const DEFAULT_FORM_VALUES: CreateStaffSchemaInput = {
   email: '',
-  password: '',
   role: 'customer_care_rep',
-  displayName: '',
   firstName: '',
   lastName: '',
-  phoneNumber: '',
-  jobTitle: '',
-  department: '',
 };
 
 export interface CreateStaffFormProps {
@@ -187,39 +182,6 @@ export function CreateStaffForm({ onCreated }: CreateStaffFormProps) {
           {...register('email')}
         />
 
-        <Input
-          autoComplete="tel"
-          errorText={errors.phoneNumber?.message}
-          label="Phone number"
-          placeholder="+447000000000"
-          type="tel"
-          {...register('phoneNumber')}
-        />
-
-        <Input
-          errorText={errors.jobTitle?.message}
-          label="Job title"
-          placeholder="Operations Admin"
-          {...register('jobTitle')}
-        />
-
-        <Input
-          errorText={errors.department?.message}
-          label="Department"
-          placeholder="Operations"
-          {...register('department')}
-        />
-
-        <div className={styles.fullField}>
-          <Input
-            autoComplete="name"
-            errorText={errors.displayName?.message}
-            label="Display name"
-            placeholder="Amelia Grant"
-            {...register('displayName')}
-          />
-        </div>
-
         <div className={styles.fullField}>
           <Select
             errorText={errors.role?.message}
@@ -233,24 +195,10 @@ export function CreateStaffForm({ onCreated }: CreateStaffFormProps) {
           />
         </div>
 
-        <div className={styles.fullField}>
-          <Input
-            autoComplete="new-password"
-            errorText={errors.password?.message}
-            label="Temporary password"
-            placeholder="Enter a secure temporary password"
-            type="password"
-            {...register('password')}
-          />
-          <p className={styles.fieldNote}>
-            Use at least 10 characters with an uppercase letter, lowercase letter, number, and
-            symbol.
-          </p>
-        </div>
       </div>
 
       <p className={styles.formNote}>
-        The password is submitted securely and is not stored or shown after account creation.
+        The staff member will be required to create a password before accessing the dashboard.
       </p>
 
       <div className={styles.actions}>

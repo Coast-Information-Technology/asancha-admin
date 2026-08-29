@@ -35,6 +35,7 @@ import type {
   ForgotPasswordRequest,
   ResetPasswordRequest,
   SetPasswordRequest,
+  SetPasswordApiRequest,
   StaffAuthSessionResponse,
   StaffSignInRequest,
   StaffSignOutResponse,
@@ -131,12 +132,18 @@ export async function resetStaffPassword(
 export async function setInvitedStaffPassword(
   payload: SetPasswordRequest,
 ): Promise<AuthActionResponse> {
-  const response = await authPost<AuthActionResponse, SetPasswordRequest>(
-    AUTH_API_PATHS.setPassword,
-    payload,
+  const requestBody: SetPasswordApiRequest = {
+    token: payload.token,
+    password: payload.password,
+  };
+  const response = await authPost<null, SetPasswordApiRequest>(
+    AUTH_API_PATHS.resetPassword,
+    requestBody,
   );
 
-  return response.data;
+  return {
+    message: response.message,
+  };
 }
 
 export async function verifyStaffInvite(inviteToken: string): Promise<VerifyStaffInviteResponse> {

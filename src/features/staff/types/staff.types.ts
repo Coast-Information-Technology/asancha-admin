@@ -87,14 +87,27 @@ export interface StaffListResponse {
 
 export interface CreateStaffInput {
   email: string;
-  password: string;
   role: CreateStaffRole;
-  displayName: string;
   firstName: string;
   lastName: string;
-  phoneNumber: string;
-  jobTitle: string;
-  department: string;
+}
+
+export interface CreateStaffResponseData {
+  publicId: string;
+  email: string;
+  role: CreateStaffRole;
+  isVerified: boolean;
+  isActive: boolean;
+  isSuspended: boolean;
+  mustChangePassword: boolean;
+  adminProfile: {
+    publicId: string;
+    firstName: string;
+    lastName: string;
+    isActive: boolean;
+  };
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UpdateStaffStatusInput {

@@ -25,6 +25,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
+import { ZodError } from 'zod';
 
 import { getApiErrorMessage } from '../../../lib/api/api-error';
 
@@ -39,6 +40,10 @@ import type {
 } from '../types/auth.types';
 
 function getSafeErrorMessage(error: unknown, fallbackMessage: string): string {
+  if (error instanceof ZodError) {
+    return error.issues[0]?.message ?? fallbackMessage;
+  }
+
   const message = getApiErrorMessage(error);
 
   return message || fallbackMessage;

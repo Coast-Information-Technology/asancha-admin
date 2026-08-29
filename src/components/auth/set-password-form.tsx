@@ -5,8 +5,8 @@
  * Provides the set-password form for invited staff accounts.
  *
  * Role in the project:
- * This component accepts an invite token from the page/route layer and allows a
- * newly invited staff user to set their first password.
+ * This component accepts a staff public ID and setup token from the page/route
+ * layer and allows a newly invited staff user to set their first password.
  *
  * Key exports:
  * - SetPasswordForm renders the invited staff password setup form.
@@ -29,17 +29,20 @@ import { useState, type FormEvent } from 'react';
 
 import { Button } from '../ui/button/button';
 import { Input } from '../ui/input/input';
+import { AUTH_FORM_LIMITS } from '../../features/auth/constants/auth.constants';
 
 import styles from './auth.module.css';
 
 export interface SetPasswordFormValues {
-  inviteToken: string;
+  userPublicId: string;
+  token: string;
   password: string;
   confirmPassword: string;
 }
 
 export interface SetPasswordFormProps {
-  inviteToken: string;
+  userPublicId: string;
+  token: string;
   loading?: boolean;
   errorMessage?: string | null;
   successMessage?: string | null;
@@ -47,7 +50,8 @@ export interface SetPasswordFormProps {
 }
 
 export function SetPasswordForm({
-  inviteToken,
+  userPublicId,
+  token,
   loading = false,
   errorMessage = null,
   successMessage = null,
@@ -55,14 +59,29 @@ export function SetPasswordForm({
 }: SetPasswordFormProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const passwordIsTooShort =
+    password.length > 0 && password.length < AUTH_FORM_LIMITS.passwordMinLength;
+  const passwordHasRequiredCharacters =
+    /[A-Z]/.test(password) &&
+    /[a-z]/.test(password) &&
+    /[0-9]/.test(password) &&
+    /[^A-Za-z0-9]/.test(password);
+  const passwordIsMissingRequiredCharacters =
+    password.length >= AUTH_FORM_LIMITS.passwordMinLength && !passwordHasRequiredCharacters;
   const passwordsDoNotMatch =
     password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
+  const canSubmit =
+    password.length >= AUTH_FORM_LIMITS.passwordMinLength &&
+    passwordHasRequiredCharacters &&
+    confirmPassword.length > 0 &&
+    !passwordsDoNotMatch;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
     await onSubmit({
-      inviteToken,
+      userPublicId,
+      token,
       password,
       confirmPassword,
     });
@@ -93,7 +112,14 @@ export function SetPasswordForm({
       <div className={styles.fields}>
         <Input
           autoComplete="new-password"
-          helperText="Use a strong password and keep it private."
+          errorText={
+            passwordIsTooShort
+              ? `Password must be at least ${AUTH_FORM_LIMITS.passwordMinLength} characters.`
+              : passwordIsMissingRequiredCharacters
+                ? 'Include uppercase, lowercase, a number, and a special character.'
+                : undefined
+          }
+          helperText={`Use at least ${AUTH_FORM_LIMITS.passwordMinLength} characters, including uppercase, lowercase, a number, and a special character.`}
           label="Password"
           name="password"
           onChange={(event) => setPassword(event.target.value)}
@@ -114,7 +140,7 @@ export function SetPasswordForm({
         />
       </div>
 
-      <Button disabled={passwordsDoNotMatch} fullWidth loading={loading} type="submit">
+      <Button disabled={!canSubmit} fullWidth loading={loading} type="submit">
         Set password
       </Button>
 

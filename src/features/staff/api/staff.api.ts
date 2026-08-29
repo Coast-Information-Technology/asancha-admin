@@ -29,6 +29,7 @@
 
 import type {
   CreateStaffInput,
+  CreateStaffResponseData,
   StaffAccountStatus,
   StaffDetail,
   StaffListItem,
@@ -408,13 +409,22 @@ export async function getStaffDetail(staffPublicId: string): Promise<StaffDetail
 }
 
 export async function createStaff(input: CreateStaffInput): Promise<StaffMutationResponse> {
-  const response = await adminPost<unknown, CreateStaffInput>(STAFF_API_PATHS.create, input);
+  const payload: CreateStaffInput = {
+    email: input.email,
+    role: input.role,
+    firstName: input.firstName,
+    lastName: input.lastName,
+  };
 
-  return parseMutationResponse(
-    response.data,
-    'pending_staff_invite',
-    response.message || 'Staff invite submitted.',
+  const response = await adminPost<CreateStaffResponseData, CreateStaffInput>(
+    STAFF_API_PATHS.create,
+    payload,
   );
+
+  return {
+    staffPublicId: response.data.publicId,
+    message: 'Staff account created successfully.',
+  };
 }
 
 export async function updateStaffStatus(

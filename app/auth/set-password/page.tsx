@@ -5,8 +5,8 @@
  * Renders the invited staff set-password page for Asancha Admin.
  *
  * Role in the project:
- * This page reads the invite token from the URL query string and connects
- * SetPasswordForm to the invited staff password setup hook.
+ * This page reads the staff public ID and setup token from the URL query string
+ * and connects SetPasswordForm to the invited staff password setup hook.
  *
  * Key exports:
  * - SetPasswordPage renders /auth/set-password.
@@ -60,7 +60,8 @@ function MissingInviteTokenState() {
 
 function SetPasswordContent() {
   const searchParams = useSearchParams();
-  const inviteToken = searchParams.get('inviteToken') ?? '';
+  const userPublicId = searchParams.get('userPublicId') ?? '';
+  const token = searchParams.get('token') ?? '';
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -80,17 +81,18 @@ function SetPasswordContent() {
     await setPasswordMutation.mutateAsync(values);
   };
 
-  if (!inviteToken) {
+  if (!userPublicId || !token) {
     return <MissingInviteTokenState />;
   }
 
   return (
     <SetPasswordForm
       errorMessage={errorMessage}
-      inviteToken={inviteToken}
       loading={setPasswordMutation.isPending}
       onSubmit={handleSubmit}
       successMessage={successMessage}
+      token={token}
+      userPublicId={userPublicId}
     />
   );
 }
